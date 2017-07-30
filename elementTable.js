@@ -35,7 +35,28 @@ function ElementTable(pos,size) {
 
     }
 
-    this.select = function() {
+    this.clicked = function() {
+        var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine"];
+        var coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
+        if (toolBar.selectedShape == "VerLine"){
+            var loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
+            this.verTable[loc.x+loc.y*(horz-1)] = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
+        } else if( contacts.indexOf(toolBar.selectedShape) > -1 ) {
+            var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
+            if (loc.x < horz-1) {
+                if (toolBar.selectedShape == "HorLine"){
+                    elementTable.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
+                } else {
+                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("I0",loc.add(elementTable.pos));
+                }
+                
+            }
+        } else if( coils.indexOf(toolBar.selectedShape) > -1 ) {
+            var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
+            if (loc.x == horz-1) {
+                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("I0",loc.add(elementTable.pos));
+            }
+        }
 
     }
 
@@ -47,10 +68,10 @@ function ElementTable(pos,size) {
         translate(this.pos.x*colSize,this.pos.y*linSize); // Move to the position
 
         for (var i = 1; i < this.size.x; i++) {
-            line(colSize*i,0,colSize*i,linSize*this.size.y);
+            line(colSize*i,linSize/2,colSize*i,linSize*(this.size.y-0.5));
         }
-        for (var i = 0; i <= this.size.y; i++) {
-            line(0,linSize*i,colSize*this.size.x,linSize*i);
+        for (var i = 0; i <= this.size.y-1; i++) {
+            line(0,linSize*(i+0.5),colSize*this.size.x,linSize*(i+0.5));
         }
         stroke(0);
         strokeWeight(3);

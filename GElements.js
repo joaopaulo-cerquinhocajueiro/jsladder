@@ -44,6 +44,7 @@ function GElement(name, pos) {
         } else if (this.status === "high") {
             stroke(150,0,0); // red
         }
+        noFill();
         this.shape(); // Draw the shape
         textSize(0.2); 
         noStroke();

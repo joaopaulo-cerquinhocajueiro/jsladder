@@ -20,7 +20,7 @@ function resize(width,height) {
 //        vert = 7;
 //    }
     colSize = floor(0.9*width / (1.5*horz));
-    linSize = floor(0.9*height / (1.5*vert));
+    linSize = floor(0.9*height / (1.1*vert));
     if (colSize < linSize) {
         linSize = colSize;
 //        vert = floor(height/linSize);
@@ -58,19 +58,7 @@ function draw() {
 
 function mousePressed() {
     if (elementTable.mouseIsOver()) {
-        if (toolBar.selectedShape == "VerLine"){
-            var loc = createVector(floor(mouseX/colSize-0.5),floor(mouseY/linSize-0.5));
-            elementTable.verTable[loc.x+loc.y*(horz-1)] = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
-        } else {
-            var loc = createVector(floor(mouseX/colSize),floor(mouseY/linSize));
-            if(toolBar.selectedShape=="ContactNO") {
-                elementTable.table[loc.x+loc.y*horz] = new ContactNO("I0",loc.add(elementTable.pos));
-            } else if(toolBar.selectedShape=="NC") {
-                table[loc.x+loc.y*horz] = new ContactNC("I0",loc);        
-            } else if(toolBar.selectedShape=="hor") {
-                table[loc.x+loc.y*horz] = new HorLine(  loc);
-            }            
-        }
+        elementTable.clicked();
     } else {
         toolBar.select();        
     }
