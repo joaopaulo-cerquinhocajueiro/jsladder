@@ -1,7 +1,9 @@
 // Object that represents the graphical elements of a ladder program
+
 function GElement(name, pos) {
     this.name = name;
     this.pos = pos;
+    this.actualColor = color(0,0,0);
     // The status of a graphical element may be "offline", "selected", "preview", "low" or "high"
     this.status = "offline";
     // How many squares the shape occupies
@@ -28,27 +30,34 @@ function GElement(name, pos) {
     
     // Draws a shape
     this.draw = function() {
+        // Colors for different status
+        var colorOffline = color(0,0,0);
+        var colorSelected = color(0,0,150); // blue
+        var colorPreview = color(180,180,180); // light gray
+        var colorLow = color(0,150,0); // green
+        var colorHigh = color(150,0,0); // red
+
         push();
-        strokeWeight(0.03);
+        if (this.status == "offline"){
+            this.actualColor = (colorOffline); // black
+        } else if (this.status == "selected") {
+            this.actualColor = (colorSelected); // blue
+        } else if (this.status == "preview") {
+            this.actualColor = (colorPreview); // light gray
+        } else if (this.status === "low") {
+            this.actualColor = (colorLow); // green
+        } else if (this.status === "high") {
+            this.actualColor = (colorHigh); // red
+        }strokeWeight(0.03);
         translate(this.pos.x*colSize,this.pos.y*linSize); // Move to the position
         scale(colSize,linSize); // Scale to the actual element size
         // Change color according to the status
-        if (this.status == "offline"){
-            stroke(0); // black
-        } else if (this.status == "selected") {
-            stroke(0,0,150); // blue
-        } else if (this.status == "preview") {
-            stroke(180,180,180); // light gray
-        } else if (this.status === "low") {
-            stroke(0,150,0); // green
-        } else if (this.status === "high") {
-            stroke(150,0,0); // red
-        }
+        stroke(this.actualColor); // red
         noFill();
         this.shape(); // Draw the shape
         textSize(0.2); 
         noStroke();
-        fill(0);
+        fill(this.actualColor); // red
         textAlign("center");
         text(this.name,0.5,0.95); // the variable name
         pop();
@@ -164,7 +173,7 @@ function CoilSet(name, pos) {
         textAlign(CENTER,CENTER);
         textSize(0.3);
         noStroke();
-        fill(0);
+        fill(this.actualColor);
         text('S',0.5,0.5);
     }
 }
@@ -182,7 +191,7 @@ function CoilReset(name, pos) {
         textAlign(CENTER,CENTER);
         textSize(0.3);
         noStroke();
-        fill(0);
+        fill(this.actualColor);
         text('R',0.5,0.5);
     }
 }

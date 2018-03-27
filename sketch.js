@@ -8,6 +8,16 @@ var colSize, linSize;
 var table = [];
 var verTable = [];
 
+var toolBar;
+var elementTable;
+var button,varList;
+var varListExist=false;
+var lastVarListPos;
+
+var inputs = ["a", "b", "c", "d"];
+var memories = ["x", "y", "z"];
+var outputs = ["q","coiso", "valvula"];
+
 function resize(width,height) {
 //    if (width < 200) {
 //        horz = floor(width/20);
@@ -33,20 +43,25 @@ function resize(width,height) {
 }
 
 
-var toolBar;
-var elementTable;
+
+function eraseAll() {
+    elementTable.eraseAll();
+}
 
 function setup() {
 
     canvas = createCanvas(innerWidth, innerHeight);
     resize(innerWidth,innerHeight);
     //frameRate(10);
-    //canvas.position(300,50);
+    //canvas.position(300,50);    
     canvas.parent('contentor');
     toolBar = new ToolBar(createVector(horz+1.5,0.3,0));
     elementTable = new ElementTable(createVector(0.3,0.3),createVector(horz,vert));
-}
 
+    button = createButton('Erase all');
+    button.position(colSize*12, linSize*8);
+    button.mousePressed(eraseAll);
+}
 
 function draw() {
     background(255,255,220);
@@ -60,11 +75,13 @@ function mousePressed() {
     if (elementTable.mouseIsOver()) {
         elementTable.clicked();
     } else {
-        toolBar.select();        
+        toolBar.select();
+        varList.remove();
     }
 }
 
 function windowResized() {
     canvas.resize(innerWidth,innerHeight);
     resize(innerWidth,innerHeight);
+    button.position(colSize*12, linSize*8);
 }
