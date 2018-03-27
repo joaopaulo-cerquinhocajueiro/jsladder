@@ -11,8 +11,8 @@ function ElementTable(pos,size) {
     var index = 0;
     for (var l = 0; l < this.size.y ; l++){
         for (var c = 0; c < this.size.x; c++){
-//            this.table[index++] = new GElement('',createVector(c,l).add(pos));
-            this.table[index++] = new window[random(contacts)]('',createVector(c,l).add(pos));
+            this.table[index++] = new GElement('',createVector(c,l).add(pos));
+//            this.table[index++] = new window[random(contacts)]('',createVector(c,l).add(pos));
         }
     }
 //    console.log(table);
@@ -45,7 +45,7 @@ function ElementTable(pos,size) {
 
     
     this.mouseIsOver = function(){
-        return ((mouseX>this.pos.x)&&(mouseX<this.pos.x+this.size.x*colSize)&&(mouseY>this.pos.y)&&(mouseY<this.pos.y+this.size.y*linSize));
+        return ((mouseX>this.pos.x)&&(mouseX<this.pos.x+this.size.x*colSize)&&(mouseY>this.pos.y+0.5*linSize)&&(mouseY<this.pos.y+this.size.y*linSize));
     }
     
     this.updateGE = function(element) {
@@ -101,13 +101,13 @@ function ElementTable(pos,size) {
     this.overWhat = function() {
         var outValue = "notHere";
         if (this.mouseIsOver()) {
-            if (mouseX/colSize-this.pos.x > horz-1+0.2) {
-                outValue = "coil";
+            if (mouseX/colSize-this.pos.x > horz-1+0.2) { // Se estiver na coluna final + 0.2
+                outValue = "coil";                        // então é coil
             } else {
-                var inCell = ((mouseX/colSize-this.pos.x)%1.0);
-                if (inCell>0.2 && inCell<0.8)
-                    outValue = "contact";
-                else
+                var inCell = ((mouseX/colSize-this.pos.x)%1.0); // calcula a posição dentro de uma célula
+                if (inCell>0.2 && inCell<0.8)                   // se entre 0.2 e 0.8
+                    outValue = "contact";                       // então é contato
+                else if((mouseY>this.pos.y+0.8*linSize) && (mouseY<this.pos.y+linSize*(this.size.y-0.2)))
                     outValue = "vertical"
             }
         }
