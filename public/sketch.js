@@ -10,7 +10,7 @@ var verTable = [];
 
 var toolBar;
 var elementTable;
-var button,varList;
+var buttonErase, buttonSave, varList;
 var varListExist=false;
 var lastVarListPos;
 
@@ -48,6 +48,12 @@ function eraseAll() {
     elementTable.eraseAll();
 }
 
+function saveCode(){
+    var filename = "teste";
+    var blob = new Blob([JSON.stringify([{"teste de texto":12},{"outro teste":0}])], {type: "text/json;charset=utf-8"});
+    saveAs(blob, filename+".json");
+}
+
 function setup() {
 
     canvas = createCanvas(innerWidth, innerHeight);
@@ -58,9 +64,13 @@ function setup() {
     toolBar = new ToolBar(createVector(horz+1.5,0.3,0));
     elementTable = new ElementTable(createVector(0.3,0.3),createVector(horz,vert));
 
-    button = createButton('Erase all');
-    button.position(colSize*12, linSize*8);
-    button.mousePressed(eraseAll);
+    buttonErase = createButton('Erase all');
+    buttonErase.position(colSize*12, linSize*8);
+    buttonErase.mousePressed(eraseAll);
+
+    buttonSave = createButton('Save code');
+    buttonSave.position(colSize*12, linSize*8.5);
+    buttonSave.mousePressed(saveCode);
 }
 
 function draw() {
@@ -83,5 +93,6 @@ function mousePressed() {
 function windowResized() {
     canvas.resize(innerWidth,innerHeight);
     resize(innerWidth,innerHeight);
-    button.position(colSize*12, linSize*8);
+    buttonErase.position(colSize*12, linSize*8);
+    buttonSave.position(colSize*12, linSize*8.5);
 }
