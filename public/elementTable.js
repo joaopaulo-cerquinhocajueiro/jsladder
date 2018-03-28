@@ -191,4 +191,26 @@ function ElementTable(pos,size) {
     }
         
     }
+
+    this.json = function(){
+        var tableJSON = [];
+        var verTableJSON = [];
+        index=0;
+        for (var l = 0; l < this.size.y ; l++){
+            for (var c = 0; c < this.size.x; c++){
+//                tableJSON[index] = this.table[index++].constructor.name;
+                tableJSON[index] = this.table[index++].json();
+            }
+        }
+    //    console.log(table);
+        index = 0;
+        for (var l = 0; l < this.size.y-1 ; l++){
+            for (var c = 0; c < this.size.x-1; c++){
+//                verTableJSON[index] = this.verTable[index++].constructor.name;
+                verTableJSON[index] = this.verTable[index++].json();
+}
+        }
+//        return JSON.stringify({table:this.table,verTable:this.verTable});
+        return JSON.stringify([tableJSON,verTableJSON]);
+    }
 }

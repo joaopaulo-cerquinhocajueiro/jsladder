@@ -62,6 +62,19 @@ function GElement(name, pos) {
         text(this.name,0.5,0.95); // the variable name
         pop();
     }
+
+    //json for saving and restoring
+    this.json = function(){
+        var returnValue;
+        if (this.constructor == GElement){
+            returnValue = "empty";
+        } else if ((this.constructor == HorLine) || (this.constructor == VerLine)){
+            returnValue = this.constructor.name;
+        } else {
+            returnValue = [this.constructor.name,this.name]
+        }
+        return returnValue
+    }
 }
 
 function HorLine(pos) {

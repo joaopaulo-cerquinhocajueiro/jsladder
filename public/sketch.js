@@ -50,8 +50,9 @@ function eraseAll() {
 
 function saveCode(){
     var filename = "teste";
-    var blob = new Blob([JSON.stringify([{"teste de texto":12},{"outro teste":0}])], {type: "text/json;charset=utf-8"});
+    var blob = new Blob([elementTable.json()], {type: "text/json;charset=utf-8"});
     saveAs(blob, filename+".json");
+ //   console.log(elementTable.json())
 }
 
 function setup() {
