@@ -197,20 +197,22 @@ function ElementTable(pos,size) {
         var verTableJSON = [];
         index=0;
         for (var l = 0; l < this.size.y ; l++){
+            tableJSON[l] = [];
             for (var c = 0; c < this.size.x; c++){
-//                tableJSON[index] = this.table[index++].constructor.name;
-                tableJSON[index] = this.table[index++].json();
+//                tableJSON[l][c] = this.table[index++].constructor.name;
+                tableJSON[l][c] = this.table[index++].json();
             }
         }
     //    console.log(table);
         index = 0;
         for (var l = 0; l < this.size.y-1 ; l++){
+            verTableJSON[l] = [];
             for (var c = 0; c < this.size.x-1; c++){
 //                verTableJSON[index] = this.verTable[index++].constructor.name;
-                verTableJSON[index] = this.verTable[index++].json();
+                verTableJSON[l][c] = this.verTable[index++].json();
 }
         }
 //        return JSON.stringify({table:this.table,verTable:this.verTable});
-        return JSON.stringify([tableJSON,verTableJSON]);
+        return JSON.stringify({"horizontal":tableJSON,"vertical":verTableJSON},null,2);
     }
 }

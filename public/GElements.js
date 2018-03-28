@@ -71,7 +71,8 @@ function GElement(name, pos) {
         } else if ((this.constructor == HorLine) || (this.constructor == VerLine)){
             returnValue = this.constructor.name;
         } else {
-            returnValue = [this.constructor.name,this.name]
+            returnValue = {};
+        returnValue[this.constructor.name] = this.name;
         }
         return returnValue
     }
