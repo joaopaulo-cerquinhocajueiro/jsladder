@@ -10,7 +10,7 @@ var verTable = [];
 
 var toolBar;
 var elementTable;
-var buttonErase, buttonSave, varList;
+var buttonErase, buttonSave, buttonLoad,varList;
 var varListExist=false;
 var lastVarListPos;
 
@@ -57,8 +57,8 @@ function saveCode(){
 
 function setup() {
 
-    canvas = createCanvas(innerWidth, innerHeight);
-    resize(innerWidth,innerHeight);
+    canvas = createCanvas(innerWidth*0.8, innerHeight*0.8);
+    resize(innerWidth*0.8,innerHeight*0.8);
     //frameRate(10);
     //canvas.position(300,50);    
     canvas.parent('contentor');
@@ -72,6 +72,8 @@ function setup() {
     buttonSave = createButton('Save code');
     buttonSave.position(colSize*12, linSize*8.5);
     buttonSave.mousePressed(saveCode);
+    // Sempre que mudar o arquivo, carrega o novo
+    document.getElementById('inputFile').addEventListener('change', handleFileSelect, false);
 }
 
 function draw() {
@@ -97,3 +99,31 @@ function windowResized() {
     buttonErase.position(colSize*12, linSize*8);
     buttonSave.position(colSize*12, linSize*8.5);
 }
+
+function handleFileSelect(evt) { // always when selecting a new file
+  var files = evt.target.files; // get the array with the file (there is only one)
+  f = files[0]; // select the first (and only) file
+//   // Add a description for the file
+//   var description = []; //using an array to make the file description
+//   description.push('<strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+//                f.size, ' bytes, last modified: ',
+//                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a');
+//   // Mount the description on the fileDescription
+//   document.getElementById('fileDescription').innerHTML = '<br>' + description.join('');
+
+  var reader = new FileReader(); // a reader
+
+  // Closure to capture the file information.
+  reader.onload = (function(theFile) {
+    return function(e) {
+      // Render thumbnail.
+      var span = document.createElement('span');
+      span.innerHTML = ['<br>', e.target.result].join('');
+      document.getElementById('fileDescription').insertBefore(span, null);
+    };
+  })(f);
+
+  // Read in the image file as a data URL.
+  reader.readAsText(f);
+}
+
