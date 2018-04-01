@@ -215,4 +215,36 @@ function ElementTable(pos,size) {
 //        return JSON.stringify({table:this.table,verTable:this.verTable});
         return JSON.stringify({"horizontal":tableJSON,"vertical":verTableJSON},null,2);
     }
+
+    this.writeJson = function(codeObject){
+        var horTableRead = codeObject.horizontal;
+        var verTableRead = codeObject.vertical;
+        var index = 0;  
+        for (var i=0;i<verTableRead.length;i++){
+            for (var j=0;j<verTableRead[i].length;j++){
+//                console.log(verTableRead[i][j]);
+                if(verTableRead[i][j]=='VerLine'){
+                    this.verTable[index++] = new VerLine(createVector(j+0.5,i+0.5).add(this.pos));
+                    
+                } else {
+                    this.verTable[index++] = new GElement('',createVector(j+0.5,i+0.5).add(this.pos));                
+                }
+            }
+        }
+        index = 0;  
+        for (var i=0;i<horTableRead.length;i++){
+            for (var j=0;j<horTableRead[i].length;j++){
+//                console.log(verTableRead[i][j]);
+                if(horTableRead[i][j]=='HorLine'){
+                    this.table[index++] = new HorLine(createVector(j,i).add(this.pos));
+                    
+                } else if(horTableRead[i][j]== 'empty'){
+                    this.table[index++] = new GElement('',createVector(j,i).add(this.pos));                
+                } else{
+                    this.table[index++] = new window[horTableRead[i][j].type](horTableRead[i][j].name,createVector(j,i).add(this.pos));
+                }
+            }
+          }
+    
+    }
 }

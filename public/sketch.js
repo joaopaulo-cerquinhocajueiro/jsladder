@@ -116,9 +116,12 @@ function handleFileSelect(evt) { // always when selecting a new file
   // Closure to capture the file information.
   reader.onload = (function(theFile) {
     return function(e) {
-      // Render thumbnail.
+      var codeObject = JSON.parse(e.target.result);
+      elementTable.writeJson(codeObject);
+      var horTableRead = codeObject.horizontal;
+      var verTableRead = codeObject.vertical;
       var span = document.createElement('span');
-      span.innerHTML = ['<br>', e.target.result].join('');
+      span.innerHTML = ['<br>',horTableRead[0],'<br>',verTableRead[0]].join('');
       document.getElementById('fileDescription').insertBefore(span, null);
     };
   })(f);

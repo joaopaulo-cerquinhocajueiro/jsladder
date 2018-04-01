@@ -72,7 +72,8 @@ function GElement(name, pos) {
             returnValue = this.constructor.name;
         } else {
             returnValue = {};
-        returnValue[this.constructor.name] = this.name;
+        returnValue['type'] = this.constructor.name;
+        returnValue['name'] = this.name;
         }
         return returnValue
     }
