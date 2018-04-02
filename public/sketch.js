@@ -10,7 +10,7 @@ var verTable = [];
 
 var toolBar;
 var elementTable;
-var buttonErase, buttonSave, buttonLoad,varList;
+var buttonErase, buttonSave, buttonSimulate,varList;
 var varListExist=false;
 var lastVarListPos;
 
@@ -55,6 +55,11 @@ function saveCode(){
  //   console.log(elementTable.json())
 }
 
+function simulate(){
+    elementTable.simulating = ! elementTable.simulating;
+    //console.log(elementTable.simulating);
+}
+
 function setup() {
 
     canvas = createCanvas(innerWidth*0.8, innerHeight*0.8);
@@ -72,6 +77,11 @@ function setup() {
     buttonSave = createButton('Save code');
     buttonSave.position(colSize*12, linSize*8.5);
     buttonSave.mousePressed(saveCode);
+
+    buttonSimulate = createButton('Simulate');
+    buttonSimulate.position(colSize*13, linSize*8);
+    buttonSimulate.mousePressed(simulate);
+
     // Sempre que mudar o arquivo, carrega o novo
     document.getElementById('inputFile').addEventListener('change', handleFileSelect, false);
 }

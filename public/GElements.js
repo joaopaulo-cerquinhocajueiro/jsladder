@@ -32,20 +32,20 @@ function GElement(name, pos) {
     this.draw = function() {
         // Colors for different status
         var colorOffline = color(0,0,0);
-        var colorSelected = color(0,0,150); // blue
+        var colorSelected = color(0,150,0); // blue
         var colorPreview = color(180,180,180); // light gray
-        var colorLow = color(0,150,0); // green
+        var colorLow = color(0,0,150); // green
         var colorHigh = color(150,0,0); // red
 
         push();
         if (this.status == "offline"){
             this.actualColor = (colorOffline); // black
         } else if (this.status == "selected") {
-            this.actualColor = (colorSelected); // blue
+            this.actualColor = (colorSelected); // green
         } else if (this.status == "preview") {
             this.actualColor = (colorPreview); // light gray
         } else if (this.status === "low") {
-            this.actualColor = (colorLow); // green
+            this.actualColor = (colorLow); // blue
         } else if (this.status === "high") {
             this.actualColor = (colorHigh); // red
         }strokeWeight(0.03);

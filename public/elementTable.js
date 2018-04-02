@@ -7,6 +7,7 @@ function ElementTable(pos,size) {
     var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine"];
     var coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
     this.selectVariable = false;
+    this.simulating = false;
 
     var index = 0;
     for (var l = 0; l < this.size.y ; l++){
@@ -53,6 +54,21 @@ function ElementTable(pos,size) {
     }
     
     this.update = function() {
+        if (this.simulating){
+            for (var index=0; index<horz*vert; index++){
+                this.table[index].status = "high";
+            }
+            for (var index=0; index<(horz-1)*(vert-1); index++){
+                this.verTable[index].status = "high";
+            }
+        } else {
+            for (var index=0; index<horz*vert; index++){
+                this.table[index].status = "offline";
+            }
+            for (var index=0; index<(horz-1)*(vert-1); index++){
+                this.verTable[index].status = "offline";
+            }
+        }
 
     }
     
@@ -115,6 +131,7 @@ function ElementTable(pos,size) {
     }
 
     this.draw = function() {
+        this.update();
         // Draw the grid
         push();
         noFill();
@@ -128,9 +145,19 @@ function ElementTable(pos,size) {
         for (var i = 0; i <= this.size.y-1; i++) {
             line(0,linSize*(i+0.5),colSize*this.size.x,linSize*(i+0.5));
         }
-        stroke(0);
+        //draw the power lines
         strokeWeight(3);
+        if(this.simulating){
+            stroke(150,0,0);
+        } else {
+            stroke(0);
+        }
         line(0,0,0,linSize*this.size.y);
+        if(this.simulating){
+            stroke(0,0,150);
+        } else {
+            stroke(0);
+        }
         line(colSize*this.size.x,0,colSize*this.size.x,linSize*this.size.y);
         pop();
         
