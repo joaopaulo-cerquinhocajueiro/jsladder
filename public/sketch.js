@@ -22,6 +22,9 @@ var buttonInputs = [];
 var dispMemories = [];
 var dispOutputs = [];
 
+function indexFromXY(x,y){
+    return y*horz+x
+}
 
 function choose(choices) {
     var index = Math.floor(Math.random() * choices.length);

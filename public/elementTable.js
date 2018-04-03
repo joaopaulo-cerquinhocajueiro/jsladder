@@ -55,12 +55,17 @@ function ElementTable(pos,size) {
     
     this.update = function() {
         if (this.simulating){ // If simulating
+            // Define a table of solved or not
+            var solvedTable = [];
+            var solvedVerTable = [];
             // put all elements as executing
             for (var index=0; index<horz*vert; index++){
                 this.table[index].status = "executing";
+                solvedTable[index] = false;
             }
             for (var index=0; index<(horz-1)*(vert-1); index++){
                 this.verTable[index].status = "executing";
+                solvedVerTable[index] = false;
             }
             // Reads all values to a dictionary
             values = {};
@@ -74,6 +79,30 @@ function ElementTable(pos,size) {
                 values[dispOutputs[i].name] = dispOutputs[i].value;        
             }
             // Update all elements
+            var x = 0;
+            var y = 0;
+            while(y<vert){
+                x = 0;
+                while(x<horz){
+                    if(!solvedTable[indexFromXY(x,y)]){
+                        var index = indexFromXY(x,y);
+                            if(x==0){ // if in the beginning of a line
+                            this.table[index].inputValue = 1; // the input Value is 1
+                            this.table[index].varValue = values[this.table[index].name];
+                            this.table[index].solve();
+                            solvedTable[index] = true;
+                        } else {
+                            this.table[index].inputValue = this.table[index-1].outputValue; // the input Value is 1
+                            this.table[index].varValue = values[this.table[index].name];
+                            this.table[index].solve();
+                            solvedTable[index] = true;
+                        }
+                    }
+                    x++;
+                }
+                y++
+            }
+    
             for (var index=0; index<horz*vert; index++){
                 this.table[index].varValue = values[this.table[index].name];
             }

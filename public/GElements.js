@@ -22,6 +22,11 @@ function GElement(name, pos) {
     this.shape = function() {
         
     }
+
+    // Each element may solve itself, defining its output value in function of its inputValue and varValue
+    this.solve = function(){
+        this.outputValue = 0; // a generic empty element has always a 0 at the output
+    }
     
     // Consider that the mouse is over a shape if it is not near its horizontal borders
     this.mouseIsOver = function() {
@@ -49,7 +54,7 @@ function GElement(name, pos) {
         } else if (this.status == "preview") {
             this.actualColor = (colorPreview); // light gray
         } else if (this.status === "executing") {
-            this.actualColor = (this.inputValue==1?colorHigh:colorLow); // red or blue
+            this.actualColor = (this.outputValue==1?colorHigh:colorLow); // red or blue
         }
         strokeWeight(0.03);
         translate(this.pos.x*colSize,this.pos.y*linSize); // Move to the position
@@ -91,6 +96,9 @@ function HorLine(pos) {
     this.shape = function() {
         line(0, 0.5, 1.0, 0.5);
     }
+    this.solve = function(){
+        this.outputValue = this.inputValue; // same output as the input
+    }
 }
 
 function VerLine(pos) {
@@ -112,6 +120,9 @@ function ContactNO(name, pos) {
         line(0.3, 0.2, 0.3, 0.8);
         line(0.7, 0.2, 0.7, 0.8);
     }
+    this.solve = function(){
+        this.outputValue = this.inputValue && this.varValue; // 
+    }
 }
 
 function ContactNC(name, pos) {
@@ -124,10 +135,14 @@ function ContactNC(name, pos) {
         line(0.7, 0.2, 0.7, 0.8);
         line(0.35, 0.75, 0.65, 0.25);
     }
+    this.solve = function(){
+        this.outputValue = this.inputValue && !(this.varValue); // 
+    }
 }
 
 function ContactRise(name, pos) {
     GElement.call(this,name,pos);
+    this.oldVarValue;
     
     this.shape = function() {
         line(0, 0.5, 0.3, 0.5);
@@ -138,10 +153,16 @@ function ContactRise(name, pos) {
         line(0.5, 0.7, 0.5, 0.3);
         line(0.5, 0.3, 0.6, 0.3);
     }
+    this.solve = function(){
+        this.outputValue = this.inputValue && (this.varValue && !this.oldVarValue); //
+        this.oldVarValue = this.varValue; 
+    }
+
 }
 
 function ContactFall(name, pos) {
     GElement.call(this,name,pos);
+    this.oldVarValue;
     
     this.shape = function() {
         line(0, 0.5, 0.3, 0.5);
@@ -151,6 +172,10 @@ function ContactFall(name, pos) {
         line(0.4, 0.3, 0.5, 0.3);
         line(0.5, 0.7, 0.5, 0.3);
         line(0.5, 0.7, 0.6, 0.7);
+    }
+    this.solve = function(){
+        this.outputValue = this.inputValue && (!this.varValue && this.oldVarValue); //
+        this.oldVarValue = this.varValue; 
     }
 }
 
@@ -165,6 +190,9 @@ function CoilNO(name, pos) {
         arc(0.65, 0.5, 0.8, 0.8,PI-QUARTER_PI, PI+QUARTER_PI);
         arc(0.35, 0.5, 0.8, 0.8,TWO_PI-QUARTER_PI, TWO_PI+QUARTER_PI);
     }
+    this.solve = function(){
+        values[this.name]  = this.inputValue; //
+    }
 }
 
 function CoilNC(name, pos) {
@@ -178,6 +206,9 @@ function CoilNC(name, pos) {
         arc(0.65, 0.5, 0.8, 0.8,PI-QUARTER_PI, PI+QUARTER_PI);
         arc(0.35, 0.5, 0.8, 0.8,TWO_PI-QUARTER_PI, TWO_PI+QUARTER_PI);
         line(0.4, 0.7, 0.6, 0.3);
+    }
+    this.solve = function(){
+        values[this.name]  = !this.inputValue; //
     }
 }
 
@@ -197,6 +228,11 @@ function CoilSet(name, pos) {
         fill(this.actualColor);
         text('S',0.5,0.5);
     }
+    this.solve = function(){
+        if(this.inputValue == 1){
+            values[this.name] = 1; //
+        }
+    }
 }
 
 function CoilReset(name, pos) {
@@ -214,6 +250,11 @@ function CoilReset(name, pos) {
         noStroke();
         fill(this.actualColor);
         text('R',0.5,0.5);
+    }
+    this.solve = function(){
+        if(this.inputValue == 1){
+            values[this.name]  = 0; //
+        }
     }
 }
 
