@@ -18,6 +18,17 @@ var inputs = ["a", "b", "c", "d"];
 var memories = ["x", "y", "z"];
 var outputs = ["q","coiso", "valvula"];
 
+var buttonInputs = [];
+var dispMemories = [];
+var dispOutputs = [];
+
+
+function choose(choices) {
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
+  }
+
+
 function resize(width,height) {
 //    if (width < 200) {
 //        horz = floor(width/20);
@@ -29,8 +40,8 @@ function resize(width,height) {
 //    } else {
 //        vert = 7;
 //    }
-    colSize = floor(0.9*width / (1.5*horz));
-    linSize = floor(0.9*height / (1.1*vert));
+    colSize = floor(0.9*width / (1.8*horz));
+    linSize = floor(0.9*height / (1,1*vert));
     if (colSize < linSize) {
         linSize = colSize;
 //        vert = floor(height/linSize);
@@ -82,6 +93,27 @@ function setup() {
     buttonSimulate.position(colSize*13, linSize*8);
     buttonSimulate.mousePressed(simulate);
 
+    //varList = createSelect('Variable')
+    
+    var bInputHorPos = 15;
+    var bInputVerPos = 2;
+    for(var i = 0; i< inputs.length;i++){
+        buttonInputs[i] = new Bit(inputs[i],createVector(bInputHorPos,bInputVerPos),"input");
+        bInputVerPos++;
+    }
+    var bInputHorPos = 16.5;
+    var bInputVerPos = 2;
+    for(var i = 0; i< memories.length;i++){
+        dispMemories[i] = new Bit(memories[i],createVector(bInputHorPos,bInputVerPos),"memory");
+        bInputVerPos ++;
+    }
+    var bInputHorPos = 18;
+    var bInputVerPos = 2;
+    for(var i = 0; i< outputs.length;i++){
+        dispOutputs[i] = new Bit(outputs[i],createVector(bInputHorPos,bInputVerPos),"output");
+        bInputVerPos ++;
+    }
+
     // Sempre que mudar o arquivo, carrega o novo
     document.getElementById('inputFile').addEventListener('change', handleFileSelect, false);
 }
@@ -92,6 +124,26 @@ function draw() {
     
     toolBar.update();
     toolBar.draw();
+    push();
+    scale(colSize,linSize); // Scale to the actual element size
+    noStroke();
+    fill(0);
+    textSize(0.3); 
+    textAlign(CENTER,BOTTOM);
+        
+    text("Inputs",15,1);
+    text("Memories",16.5,1);
+    text("Outputs",18,1);
+    pop();
+    for(var i = 0; i< inputs.length;i++){
+        buttonInputs[i].draw();
+    }
+    for(var i = 0; i< outputs.length;i++){
+        dispOutputs[i].draw();
+    }
+    for(var i = 0; i< memories.length;i++){
+        dispMemories[i].draw();
+    }
 }
 
 function mousePressed() {
@@ -100,6 +152,11 @@ function mousePressed() {
     } else {
         toolBar.select();
         varList.remove();
+        for(var i = 0; i< inputs.length;i++){
+            if(buttonInputs[i].mouseIsOver()){
+                buttonInputs[i].toggle();
+            }
+        }
     }
 }
 

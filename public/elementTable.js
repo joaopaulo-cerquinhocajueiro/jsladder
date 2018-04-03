@@ -54,14 +54,39 @@ function ElementTable(pos,size) {
     }
     
     this.update = function() {
-        if (this.simulating){
+        if (this.simulating){ // If simulating
+            // put all elements as executing
             for (var index=0; index<horz*vert; index++){
-                this.table[index].status = "high";
+                this.table[index].status = "executing";
             }
             for (var index=0; index<(horz-1)*(vert-1); index++){
-                this.verTable[index].status = "high";
+                this.verTable[index].status = "executing";
             }
-        } else {
+            // Reads all values to a dictionary
+            values = {};
+            for(var i=0; i< inputs.length; i++){
+                values[buttonInputs[i].name] = buttonInputs[i].value;        
+            }
+            for(var i=0; i< memories.length; i++){
+                values[dispMemories[i].name] = dispMemories[i].value;        
+            }
+            for(var i=0; i< outputs.length; i++){
+                values[dispOutputs[i].name] = dispOutputs[i].value;        
+            }
+            // Update all elements
+            for (var index=0; index<horz*vert; index++){
+                this.table[index].varValue = values[this.table[index].name];
+            }
+
+            // Set new values to memory and outputs
+            for(var i=0; i< memories.length; i++){
+                dispMemories[i].value = values[dispMemories[i].name];        
+            }
+            for(var i=0; i< outputs.length; i++){
+                dispOutputs[i].value = values[dispOutputs[i].name];        
+            }
+        } else { // If not simulating,
+            // put all elements as offline
             for (var index=0; index<horz*vert; index++){
                 this.table[index].status = "offline";
             }
@@ -86,14 +111,14 @@ function ElementTable(pos,size) {
                 if (toolBar.selectedShape == "HorLine"){
                     elementTable.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
                 } else {
-                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("I0",loc.add(elementTable.pos));
+                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape](choose(inputs.concat(outputs).concat(memories)),loc.add(elementTable.pos));
                 }
                 
             }
         } else if( coils.indexOf(toolBar.selectedShape) > -1 && this.overWhat() == "coil") {
             var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
             if (loc.x == horz-1) {
-                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("I0",loc.add(elementTable.pos));
+                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape](choose(outputs.concat(memories)),loc.add(elementTable.pos));
             }
         } else if (toolBar.selectedShape == "Eraser") {
             if (this.overWhat() == "vertical") {
@@ -103,7 +128,8 @@ function ElementTable(pos,size) {
                 var loc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
                 elementTable.table[loc.x+loc.y*horz] = new GElement("",loc.add(elementTable.pos));
             }
-        } else {
+        } else if(toolBar.selectedShape == "Hand"){
+            console.log("varList");
             if(!varListExist){
                 varList.position(mouseX-25,mouseY-5);
                 varList.show();
