@@ -117,31 +117,32 @@ function ElementTable(pos,size) {
                 //Solve the intermediary vertical lines
                 if(x<horz-1){ // If it's not the last one
                     y = 0;
+                    var ys = [];
                     while(y<vert-1){ // check for each vertical line
                         var index = x+y*(horz-1);
-                        var ys = [y];
+                        ys = [y];
                         if((y>0)&&(this.verTable[index-horz+1].constructor.name=="VerLine")){
                             // if there is a vertical line up, this value was already calculated
                             this.verTable[index].outputValue = this.verTable[index-horz+1].outputValue;
                         } else if(this.verTable[index].constructor.name=="VerLine"){ // if a line starts here
-                            ys.push[y+1];
+                            console.log(ys,y+1);
+                            ys.push(y+1);
                             console.log(ys);
                             var newY = y+1;
                             if(newY<vert-1){ // if not at the end of the matrix
                                 while(this.verTable[x+newY*(horz-1)].constructor.name=="VerLine"){ // if the line continues
                                     newY++;
-                                    ys.push[newY];
+                                    ys.push(newY);
                                     if(newY>=vert-1){
                                         break;
                                     }
                                 }
                             }
                             var value = 0;
-                            ys.forEach(function(thisY){
-                                console.log(x,thisY,value,this.table[thisY*horz+x]);
-                                value = value + this.table[thisY*horz+x].outputValue;
-                                //console.log(x,thisY,value);
-                            });
+                            for(var i = 0; i<ys.length;i++){
+                                console.log(x,ys[i],value,this.table[ys[i]*horz+x]);
+                                value = value + this.table[ys[i]*horz+x].outputValue;
+                            }
                             this.verTable[index].outputValue = value>0?1:0;
                     
                         }
