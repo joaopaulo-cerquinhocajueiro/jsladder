@@ -23,7 +23,7 @@ var dispMemories = [];
 var dispOutputs = [];
 
 function indexFromXY(x,y){
-    return y*horz+x
+    return y*horz+x;
 }
 
 function choose(choices) {
@@ -190,9 +190,9 @@ function handleFileSelect(evt) { // always when selecting a new file
       elementTable.writeJson(codeObject);
       var horTableRead = codeObject.horizontal;
       var verTableRead = codeObject.vertical;
-      var span = document.createElement('span');
-      span.innerHTML = ['<br>',horTableRead[0],'<br>',verTableRead[0]].join('');
-      document.getElementById('fileDescription').insertBefore(span, null);
+    //   var span = document.createElement('span');
+    //   span.innerHTML = ['<br>',horTableRead[0],'<br>',verTableRead[0]].join('');
+    //   document.getElementById('fileDescription').insertBefore(span, null);
     };
   })(f);
 

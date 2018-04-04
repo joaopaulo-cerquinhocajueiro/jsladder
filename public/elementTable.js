@@ -55,17 +55,12 @@ function ElementTable(pos,size) {
     
     this.update = function() {
         if (this.simulating){ // If simulating
-            // Define a table of solved or not
-            var solvedTable = [];
-            var solvedVerTable = [];
             // put all elements as executing
             for (var index=0; index<horz*vert; index++){
                 this.table[index].status = "executing";
-                solvedTable[index] = false;
             }
             for (var index=0; index<(horz-1)*(vert-1); index++){
                 this.verTable[index].status = "executing";
-                solvedVerTable[index] = false;
             }
             // Reads all values to a dictionary
             values = {};
@@ -79,30 +74,84 @@ function ElementTable(pos,size) {
                 values[dispOutputs[i].name] = dispOutputs[i].value;        
             }
             // Update all elements
-            var x = 0;
-            var y = 0;
-            while(y<vert){
-                x = 0;
-                while(x<horz){
-                    if(!solvedTable[indexFromXY(x,y)]){
-                        var index = indexFromXY(x,y);
-                            if(x==0){ // if in the beginning of a line
-                            this.table[index].inputValue = 1; // the input Value is 1
-                            this.table[index].varValue = values[this.table[index].name];
-                            this.table[index].solve();
-                            solvedTable[index] = true;
-                        } else {
-                            this.table[index].inputValue = this.table[index-1].outputValue; // the input Value is 1
-                            this.table[index].varValue = values[this.table[index].name];
-                            this.table[index].solve();
-                            solvedTable[index] = true;
-                        }
-                    }
-                    x++;
+//            console.log(horz);
+            for(var x=0;x<horz;x++){ // for each column
+                //console.log(x)
+                y = 0; //For the first line
+                var index = indexFromXY(x,y);
+                if(x==0){ // if in the beginning of a line
+                    this.table[index].inputValue = 1; // the input Value is 1
+                } else if(this.verTable[y*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a vertical line down
+                    this.table[index].inputValue = this.verTable[y*(horz-1)+x-1].outputValue;
+                } else { // if there is no vertical line
+                    this.table[index].inputValue = this.table[index-1].outputValue;
                 }
-                y++
+                this.table[index].varValue = values[this.table[index].name];
+                this.table[index].solve();
+                for(y=1;y<vert-1;y++){ // for the middle lines
+                    var index = indexFromXY(x,y);
+                    if(x==0){ // if in the beginning of a line
+                        this.table[index].inputValue = 1; // the input Value is 1
+                    } else if(this.verTable[y*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a vertical line down
+                        this.table[index].inputValue = this.verTable[y*(horz-1)+x-1].outputValue;
+                    } else if(this.verTable[(y-1)*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a line up
+                        this.table[index].inputValue = this.verTable[(y-1)*(horz-1)+x-1].outputValue;
+                    } else { // if there is no vertical line
+                        this.table[index].inputValue = this.table[index-1].outputValue;
+                    }
+                    this.table[index].varValue = values[this.table[index].name];
+                    this.table[index].solve();
+                }
+//                console.log(x,y,horz);
+                y = vert-1; //For the last line
+                var index = indexFromXY(x,y);
+                if(x==0){ // if in the beginning of a line
+                    this.table[index].inputValue = 1; // the input Value is 1
+                } else if(this.verTable[(y-1)*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a vertical line up
+                    this.table[index].inputValue = this.verTable[(y-1)*(horz-1)+x-1].outputValue;
+                } else { // if there is no vertical line
+                    this.table[index].inputValue = this.table[index-1].outputValue;
+                }
+                this.table[index].varValue = values[this.table[index].name];
+                this.table[index].solve();
+                //Solve the intermediary vertical lines
+                if(x<horz-1){ // If it's not the last one
+                    y = 0;
+                    while(y<vert-1){ // check for each vertical line
+                        var index = x+y*(horz-1);
+                        var ys = [y];
+                        if((y>0)&&(this.verTable[index-horz+1].constructor.name=="VerLine")){
+                            // if there is a vertical line up, this value was already calculated
+                            this.verTable[index].outputValue = this.verTable[index-horz+1].outputValue;
+                        } else if(this.verTable[index].constructor.name=="VerLine"){ // if a line starts here
+                            ys.push[y+1];
+                            console.log(ys);
+                            var newY = y+1;
+                            if(newY<vert-1){ // if not at the end of the matrix
+                                while(this.verTable[x+newY*(horz-1)].constructor.name=="VerLine"){ // if the line continues
+                                    newY++;
+                                    ys.push[newY];
+                                    if(newY>=vert-1){
+                                        break;
+                                    }
+                                }
+                            }
+                            var value = 0;
+                            ys.forEach(function(thisY){
+                                console.log(x,thisY,value,this.table[thisY*horz+x]);
+                                value = value + this.table[thisY*horz+x].outputValue;
+                                //console.log(x,thisY,value);
+                            });
+                            this.verTable[index].outputValue = value>0?1:0;
+                    
+                        }
+                        y++;
+                    }
+                }
+
             }
-    
+
+            // update the display for variables that may have changed
             for (var index=0; index<horz*vert; index++){
                 this.table[index].varValue = values[this.table[index].name];
             }
@@ -254,7 +303,7 @@ function ElementTable(pos,size) {
         }
         overlay.status = "preview";
         overlay.draw();
-        text(this.lastVarListPos,this.pos.x+colSize*horz/2,this.pos.y+linSize*vert+10);
+        //text(this.lastVarListPos,this.pos.x+colSize*horz/2,this.pos.y+linSize*vert+10);
     }
 
     this.eraseAll = function() {
