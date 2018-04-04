@@ -10,9 +10,10 @@ var verTable = [];
 
 var toolBar;
 var elementTable;
-var buttonErase, buttonSave, buttonSimulate,varList;
+var buttonErase, buttonSave, buttonSimulate,varList,coilList;
 var varListExist=false;
-var lastVarListPos;
+var coilListExist=false;
+//var lastVarListPos;
 
 var inputs = ["a", "b", "c", "d"];
 var memories = ["x", "y", "z"];
@@ -96,7 +97,7 @@ function setup() {
     buttonSimulate.position(colSize*13, linSize*8);
     buttonSimulate.mousePressed(simulate);
 
-    //varList = createSelect('Variable')
+    //varList = createSelect();
     
     var bInputHorPos = 15;
     var bInputVerPos = 2;
@@ -154,7 +155,9 @@ function mousePressed() {
         elementTable.clicked();
     } else {
         toolBar.select();
-        varList.remove();
+        //varList.remove();
+        varList.hide();
+        coilList.hide();
         for(var i = 0; i< inputs.length;i++){
             if(buttonInputs[i].mouseIsOver()){
                 buttonInputs[i].toggle();

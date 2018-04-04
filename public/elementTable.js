@@ -8,6 +8,7 @@ function ElementTable(pos,size) {
     var coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
     this.selectVariable = false;
     this.simulating = false;
+    this.selectionLoc;
 
     var index = 0;
     for (var l = 0; l < this.size.y ; l++){
@@ -23,27 +24,49 @@ function ElementTable(pos,size) {
             this.verTable[index++] = new GElement('',createVector(c+0.5,l+0.5).add(pos));
         }
     }
+    this.selectContact = function(){ //Function when selects the variable of a contact
+        var item = varList.value();
+        console.log(item)
+        elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
+    }
+    this.selectCoil = function(){ //Function when selects the variable of a coil
+        var item = coilList.value();
+        console.log(item)
+        elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
+    }
+    // Creates the dropdown list of variables for a contact
     varList = createSelect();
     varList.position(0, 0);
     varList.hide();
+    varList.changed(this.selectContact);
+    //Creates the dropdown list of variables for a coil
+    coilList = createSelect();
+    coilList.position(0, 0);
+    coilList.hide();
+    coilList.changed(this.selectCoil);
+    //Populate the lists
     for(var i=0; i< inputs.length; i++){
         varList.option(inputs[i]);        
     }
     for(var i=0; i< outputs.length; i++){
         varList.option(outputs[i]);        
+        coilList.option(outputs[i]);        
     }
     for(var i=0; i< memories.length; i++){
         varList.option(memories[i]);        
+        coilList.option(memories[i]);        
     }
-    this.lastVarListPos = createVector(0,0);
-//    console.log(verTable);
+    // when take the mouse out of a dropdown, it vanishes
     varList.mouseOut(function () {
         varListExist = false;
         varList.hide();
     });
+    coilList.mouseOut(function () {
+        coilListExist = false;
+        coilList.hide();
+    });
 
-
-
+    
     
     this.mouseIsOver = function(){
         return ((mouseX>this.pos.x)&&(mouseX<this.pos.x+this.size.x*colSize)&&(mouseY>this.pos.y+0.5*linSize)&&(mouseY<this.pos.y+this.size.y*linSize));
@@ -125,9 +148,9 @@ function ElementTable(pos,size) {
                             // if there is a vertical line up, this value was already calculated
                             this.verTable[index].outputValue = this.verTable[index-horz+1].outputValue;
                         } else if(this.verTable[index].constructor.name=="VerLine"){ // if a line starts here
-                            console.log(ys,y+1);
+                            //console.log(ys,y+1);
                             ys.push(y+1);
-                            console.log(ys);
+                            //console.log(ys);
                             var newY = y+1;
                             if(newY<vert-1){ // if not at the end of the matrix
                                 while(this.verTable[x+newY*(horz-1)].constructor.name=="VerLine"){ // if the line continues
@@ -140,7 +163,7 @@ function ElementTable(pos,size) {
                             }
                             var value = 0;
                             for(var i = 0; i<ys.length;i++){
-                                console.log(x,ys[i],value,this.table[ys[i]*horz+x]);
+                                //console.log(x,ys[i],value,this.table[ys[i]*horz+x]);
                                 value = value + this.table[ys[i]*horz+x].outputValue;
                             }
                             this.verTable[index].outputValue = value>0?1:0;
@@ -189,15 +212,25 @@ function ElementTable(pos,size) {
             if (loc.x < horz-1) {
                 if (toolBar.selectedShape == "HorLine"){
                     elementTable.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
-                } else {
-                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape](choose(inputs.concat(outputs).concat(memories)),loc.add(elementTable.pos));
+                } else if(!varListExist){
+                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
+                    selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
+                    varList.position(mouseX-25,mouseY-5);
+                    varList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
+                    varList.show();
+                    varListExist = true;
                 }
                 
             }
         } else if( coils.indexOf(toolBar.selectedShape) > -1 && this.overWhat() == "coil") {
             var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
             if (loc.x == horz-1) {
-                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape](choose(outputs.concat(memories)),loc.add(elementTable.pos));
+                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
+                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
+                coilList.position(mouseX-25,mouseY-5);
+                coilList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
+                coilList.show();
+                coilListExist = true;
             }
         } else if (toolBar.selectedShape == "Eraser") {
             if (this.overWhat() == "vertical") {
@@ -208,12 +241,18 @@ function ElementTable(pos,size) {
                 elementTable.table[loc.x+loc.y*horz] = new GElement("",loc.add(elementTable.pos));
             }
         } else if(toolBar.selectedShape == "Hand"){
-            console.log("varList");
-            if(!varListExist){
+            if(this.overWhat()=="contact" && !varListExist){
+                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
                 varList.position(mouseX-25,mouseY-5);
+                varList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
                 varList.show();
                 varListExist = true;
-                this.lastVarListPos = createVector(mouseX,mouseY);
+            } else if(this.overWhat()=="coil" && !coilListExist){
+                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
+                coilList.position(mouseX-25,mouseY-5);
+                coilList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
+                coilList.show();
+                coilListExist = true;
             }
         }
 
@@ -285,13 +324,13 @@ function ElementTable(pos,size) {
                 if (toolBar.selectedShape == "HorLine"){
                     overlay = new HorLine(loc.add(this.pos));
                 } else {
-                    overlay = new window[toolBar.selectedShape]("I0",loc.add(this.pos));
+                    overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));
                 }
             }
         } else if( coils.indexOf(toolBar.selectedShape) > -1 && whereis == "coil" ) {
             loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
             if (loc.x == horz-1) {
-                overlay = new window[toolBar.selectedShape]("I0",loc.add(this.pos));
+                overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));
             }
         } else if (toolBar.selectedShape == "Eraser" && whereis != "notHere"){
             if (whereis == "vertical") {
