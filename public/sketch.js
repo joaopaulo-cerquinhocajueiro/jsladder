@@ -10,9 +10,11 @@ var verTable = [];
 
 var toolBar;
 var elementTable;
-var buttonErase, buttonSave, buttonSimulate,varList,coilList;
+var buttonErase, buttonSave, buttonSimulate,varList,coilList, timeInput;
 var varListExist=false;
 var coilListExist=false;
+var timeInputExist=false;
+var d = new Date();
 //var lastVarListPos;
 
 var inputs = ["a", "b", "c", "d"];
@@ -86,15 +88,15 @@ function setup() {
     elementTable = new ElementTable(createVector(0.3,0.3),createVector(horz,vert));
 
     buttonErase = createButton('Erase all');
-    buttonErase.position(colSize*12, linSize*8);
+    buttonErase.position(colSize*12, linSize*9);
     buttonErase.mousePressed(eraseAll);
 
     buttonSave = createButton('Save code');
-    buttonSave.position(colSize*12, linSize*8.5);
+    buttonSave.position(colSize*12, linSize*9.5);
     buttonSave.mousePressed(saveCode);
 
     buttonSimulate = createButton('Simulate');
-    buttonSimulate.position(colSize*13, linSize*8);
+    buttonSimulate.position(colSize*13, linSize*9);
     buttonSimulate.mousePressed(simulate);
 
     //varList = createSelect();

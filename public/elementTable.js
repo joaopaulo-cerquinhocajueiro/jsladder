@@ -4,8 +4,9 @@ function ElementTable(pos,size) {
     this.grid = true;
     this.table = [];
     this.verTable = [];
-    var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine"];
+    var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine","ContactTON","ContactTOF","ContactTP"];
     var coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
+    var timers = ["ContactTON","ContactTOF","ContactTP"];
     this.selectVariable = false;
     this.simulating = false;
     this.selectionLoc;
@@ -34,6 +35,15 @@ function ElementTable(pos,size) {
         console.log(item)
         elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
     }
+    this.selectTime = function(){ //Function when selects the time of a timer
+        var item = parseInt(timeInput.value());
+        if (item < 0)
+            item = 0;
+        if (item > 1000)
+            item = 1000;
+        console.log(item)
+        elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
+    }
     // Creates the dropdown list of variables for a contact
     varList = createSelect();
     varList.position(0, 0);
@@ -56,6 +66,14 @@ function ElementTable(pos,size) {
         varList.option(memories[i]);        
         coilList.option(memories[i]);        
     }
+    //Creates the input for a timer
+    timeInput = createInput();
+    timeInput.attribute('type','number');
+//    timeInput.attribute('min','0');
+//    timeInput.attribute('max','1000');
+    timeInput.position(0, 0);
+    timeInput.hide();
+    timeInput.changed(this.selectTime);
     // when take the mouse out of a dropdown, it vanishes
     varList.mouseOut(function () {
         varListExist = false;
@@ -64,6 +82,10 @@ function ElementTable(pos,size) {
     coilList.mouseOut(function () {
         coilListExist = false;
         coilList.hide();
+    });
+    timeInput.mouseOut(function(){
+        timeInputExist = false;
+        timeInput.hide(); 
     });
 
     
@@ -212,6 +234,14 @@ function ElementTable(pos,size) {
             if (loc.x < horz-1) {
                 if (toolBar.selectedShape == "HorLine"){
                     elementTable.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
+                } else if((timers.indexOf(toolBar.selectedShape) > -1) && !(timeInputExist) ){ // if timer
+                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
+                    selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
+                    timeInput.position(mouseX-25,mouseY-5);
+                    timeInput.value('0');
+                    timeInput.show();
+                    //timeInput.focus();
+                    timeInputExist = true;
                 } else if(!varListExist){
                     elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
                     selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
@@ -241,7 +271,14 @@ function ElementTable(pos,size) {
                 elementTable.table[loc.x+loc.y*horz] = new GElement("",loc.add(elementTable.pos));
             }
         } else if(toolBar.selectedShape == "Hand"){
-            if(this.overWhat()=="contact" && !varListExist){
+            if(timers.indexOf(toolBar.selectedShape) > -1){
+                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
+                timeInput.position(mouseX-25,mouseY-5);
+                timeInput.value('0');
+                timeInput.show();
+                timeInput.focus();
+                timeInputExist = true;
+            } else if(this.overWhat()=="contact" && !varListExist){
                 selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
                 varList.position(mouseX-25,mouseY-5);
                 varList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);

@@ -11,7 +11,10 @@ function ToolBar(pos) {
     this.cs = new CoilSet('',p5.Vector.add(this.pos,createVector(1.3,2)));
     this.cr = new CoilReset('',p5.Vector.add(this.pos,createVector(1.3,3)));
     this.eraser = new Eraser(p5.Vector.add(this.pos,createVector(1.3,5)));
-    this.hand = new Hand(p5.Vector.add(this.pos,createVector(0.1,5)))
+    this.hand = new Hand(p5.Vector.add(this.pos,createVector(1.3,6)))
+    this.ton = new ContactTON('',p5.Vector.add(this.pos,createVector(0.1,5)));
+    this.tof = new ContactTOF('',p5.Vector.add(this.pos,createVector(0.1,6)));
+    this.tp = new ContactTP('',p5.Vector.add(this.pos,createVector(0.1,7)));
     this.selectedShape = this.hand;
     
     this.updateGE = function(element) {
@@ -28,6 +31,9 @@ function ToolBar(pos) {
         this.updateGE(this.rise);
         this.updateGE(this.fall);
         this.updateGE(this.hor);
+        this.updateGE(this.ton);
+        this.updateGE(this.tof);
+        this.updateGE(this.tp);
         this.updateGE(this.co);
         this.updateGE(this.cc);
         this.updateGE(this.cs);
@@ -51,6 +57,9 @@ function ToolBar(pos) {
         this.selectGE(this.nc);
         this.selectGE(this.rise);
         this.selectGE(this.fall);
+        this.selectGE(this.ton);
+        this.selectGE(this.tof);
+        this.selectGE(this.tp);
         this.selectGE(this.hor);
         this.selectGE(this.co);
         this.selectGE(this.cc);
@@ -66,12 +75,15 @@ function ToolBar(pos) {
         noFill();
         stroke(0);
         strokeWeight(1);
-        rect(pos.x*colSize,pos.y*linSize,2.4*colSize,6.1*linSize);
+        rect(pos.x*colSize,pos.y*linSize,2.4*colSize,8.1*linSize);
 
         this.no.draw();
         this.nc.draw();
         this.rise.draw();
         this.fall.draw();
+        this.tp.draw();
+        this.tof.draw();
+        this.ton.draw();
 
         this.co.draw();
         this.cc.draw();

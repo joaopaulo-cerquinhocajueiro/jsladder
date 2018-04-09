@@ -11,23 +11,23 @@ function Bit(name,pos,type){
         translate(this.pos.x*colSize,this.pos.y*linSize); // Move to the position
         scale(colSize,linSize); // Scale to the actual element size
         stroke(0);
-        strokeWeight(0.03);
+        strokeWeight(0.01);
         if(this.value == 0){
             fill(0,0,150);
         } else {
             fill(150,0,0);
         }
-        rect(-0.3,-0.3,0.6,0.6,0.1);
+        rect(-0.2,-0.2,0.4,0.4,0.1);
         noStroke();
         fill(0);
         textSize(0.3); 
         textAlign(CENTER,BOTTOM);
-        text(this.name,0,0.6)
+        text(this.name,0,0.5)
         pop();
     }
 
     this.mouseIsOver = function() {
-        if((mouseX >= (this.pos.x-0.3)*colSize) && (mouseX < (this.pos.x+0.3)*colSize) && (mouseY >= (this.pos.y-0.3)*linSize) && (mouseY < (this.pos.y+0.3)*linSize)){
+        if((mouseX >= (this.pos.x-0.2)*colSize) && (mouseX < (this.pos.x+0.2)*colSize) && (mouseY >= (this.pos.y-0.2)*linSize) && (mouseY < (this.pos.y+0.3)*linSize)){
             return Boolean(true);
         } else {
             return Boolean(false);

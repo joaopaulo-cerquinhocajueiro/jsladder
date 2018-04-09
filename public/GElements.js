@@ -179,6 +179,104 @@ function ContactFall(name, pos) {
     }
 }
 
+function ContactTON(name, pos) {
+    GElement.call(this,name,pos);
+    this.oldInputValue;
+    this.isCounting = false;
+    
+    this.shape = function() {
+        //contact
+        line(0, 0.5, 0.3, 0.5);
+        line(0.7, 0.5, 1.0, 0.5);
+        line(0.3, 0.2, 0.3, 0.8);
+        line(0.7, 0.2, 0.7, 0.8);
+        //internal
+        line(0.4, 0.7, 0.5, 0.7);
+        line(0.5, 0.7, 0.5, 0.5);
+        line(0.5, 0.5, 0.6, 0.5);
+        //clock
+        ellipse(0.5,0.3,0.2,0.2);
+        line(0.5,0.3,0.5,0.2);
+        line(0.5,0.3,0.6,0.3);
+    
+    }
+    this.solve = function(){
+        if( this.inputValue &&  !this.oldInputValue){
+            this.isCounting = true;
+            console.log("triggered!",this.isCounting);
+            var that = this;
+            setTimeout(function(){
+                console.log("triggered Again!",this.isCounting, that.isCounting);
+                that.isCounting = false;
+            },this.name*100);
+        }
+        if(this.isCounting) {
+            this.outputValue = 0;
+        } else {
+            this.outputValue = this.inputValue;
+        }
+        this.oldInputValue = this.inputValue; 
+        //console.log(d.getTime());
+    }
+
+}
+
+function ContactTOF(name, pos) {
+    GElement.call(this,name,pos);
+    this.oldVarValue;
+    
+    this.shape = function() {
+        //contact
+        line(0, 0.5, 0.3, 0.5);
+        line(0.7, 0.5, 1.0, 0.5);
+        line(0.3, 0.2, 0.3, 0.8);
+        line(0.7, 0.2, 0.7, 0.8);
+        //internal
+        line(0.6, 0.7, 0.5, 0.7);
+        line(0.5, 0.7, 0.5, 0.5);
+        line(0.5, 0.5, 0.4, 0.5);
+        //clock
+        ellipse(0.5,0.3,0.2,0.2);
+        line(0.5,0.3,0.5,0.2);
+        line(0.5,0.3,0.6,0.3);
+
+    }
+    this.solve = function(){
+        this.outputValue = this.inputValue && (this.varValue && !this.oldVarValue); //
+        this.oldVarValue = this.varValue; 
+    }
+
+}
+
+function ContactTP(name, pos) {
+    GElement.call(this,name,pos);
+    this.oldVarValue;
+    
+    this.shape = function() {
+        //contact
+        line(0, 0.5, 0.3, 0.5);
+        line(0.7, 0.5, 1.0, 0.5);
+        line(0.3, 0.2, 0.3, 0.8);
+        line(0.7, 0.2, 0.7, 0.8);
+        //internal
+        line(0.35, 0.7, 0.45, 0.7);
+        line(0.55, 0.7, 0.65, 0.7);
+        line(0.45, 0.7, 0.45, 0.5);
+        line(0.55, 0.7, 0.55, 0.5);
+        line(0.45, 0.5, 0.55, 0.5);
+        //clock
+        ellipse(0.5,0.3,0.2,0.2);
+        line(0.5,0.3,0.5,0.2);
+        line(0.5,0.3,0.6,0.3);
+
+    }
+    this.solve = function(){
+        this.outputValue = this.inputValue && (this.varValue && !this.oldVarValue); //
+        this.oldVarValue = this.varValue; 
+    }
+
+}
+
 function CoilNO(name, pos) {
     GElement.call(this,name,pos);
     
