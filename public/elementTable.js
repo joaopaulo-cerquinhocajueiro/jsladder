@@ -4,7 +4,7 @@ function ElementTable(pos,size) {
     this.grid = true;
     this.table = [];
     this.verTable = [];
-    var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine","ContactTON","ContactTOF","ContactTP"];
+    var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine"];
     var coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
     var timers = ["ContactTON","ContactTOF","ContactTP"];
     this.selectVariable = false;
@@ -234,14 +234,6 @@ function ElementTable(pos,size) {
             if (loc.x < horz-1) {
                 if (toolBar.selectedShape == "HorLine"){
                     elementTable.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
-                } else if((timers.indexOf(toolBar.selectedShape) > -1) && !(timeInputExist) ){ // if timer
-                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
-                    selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                    timeInput.position(mouseX-25,mouseY-5);
-                    timeInput.value('0');
-                    timeInput.show();
-                    //timeInput.focus();
-                    timeInputExist = true;
                 } else if(!varListExist){
                     elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
                     selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
@@ -251,6 +243,17 @@ function ElementTable(pos,size) {
                     varListExist = true;
                 }
                 
+            }
+        } else if((timers.indexOf(toolBar.selectedShape) > -1) && !(timeInputExist) ){ // if timer
+            var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
+            if (loc.x < horz-1) {
+                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
+                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
+                timeInput.position(mouseX-25,mouseY-5);
+                timeInput.value('0');
+                timeInput.show();
+                //timeInput.focus();
+                timeInputExist = true;
             }
         } else if( coils.indexOf(toolBar.selectedShape) > -1 && this.overWhat() == "coil") {
             var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
@@ -363,6 +366,11 @@ function ElementTable(pos,size) {
                 } else {
                     overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));
                 }
+            }
+        } else if( timers.indexOf(toolBar.selectedShape) > -1  && whereis == "contact") {
+            loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
+            if (loc.x < horz-1) {
+                overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));
             }
         } else if( coils.indexOf(toolBar.selectedShape) > -1 && whereis == "coil" ) {
             loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));

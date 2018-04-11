@@ -88,15 +88,15 @@ function setup() {
     elementTable = new ElementTable(createVector(0.3,0.3),createVector(horz,vert));
 
     buttonErase = createButton('Erase all');
-    buttonErase.position(colSize*12, linSize*9);
+    buttonErase.position(colSize*15, linSize*7);
     buttonErase.mousePressed(eraseAll);
 
     buttonSave = createButton('Save code');
-    buttonSave.position(colSize*12, linSize*9.5);
+    buttonSave.position(colSize*15, linSize*8);
     buttonSave.mousePressed(saveCode);
 
     buttonSimulate = createButton('Simulate');
-    buttonSimulate.position(colSize*13, linSize*9);
+    buttonSimulate.position(colSize*15, linSize*9);
     buttonSimulate.mousePressed(simulate);
 
     //varList = createSelect();
@@ -171,8 +171,9 @@ function mousePressed() {
 function windowResized() {
     canvas.resize(innerWidth,innerHeight);
     resize(innerWidth,innerHeight);
-    buttonErase.position(colSize*12, linSize*8);
-    buttonSave.position(colSize*12, linSize*8.5);
+    buttonErase.position(colSize*15, linSize*7);
+    buttonSave.position(colSize*15, linSize*8);
+    buttonSimulate.position(colSize*15, linSize*9);
 }
 
 function handleFileSelect(evt) { // always when selecting a new file
