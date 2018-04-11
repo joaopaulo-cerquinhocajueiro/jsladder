@@ -229,6 +229,7 @@ function ContactTON(name, pos) {
                 this.isCounting = false;
                 this.timeLength = 0,0;
                 clearInterval(this.intervalId);
+                this.outputValue = this.inputValue;
             } else {
                 this.outputValue = 0;
             }
@@ -292,11 +293,11 @@ function ContactTOF(name, pos) {
                 this.isCounting = false;
                 this.timeLength = 1,0;
                 clearInterval(this.intervalId);   
+                this.outputValue = this.inputValue;
             } else {
                 this.outputValue = 1;
             }
         } else {
-            
             this.outputValue = this.inputValue;
         }
         this.oldInputValue = this.inputValue; 
@@ -307,31 +308,60 @@ function ContactTOF(name, pos) {
 
 function ContactTP(name, pos) {
     GElement.call(this,name,pos);
-    this.oldVarValue;
+    this.oldInputValue;
+    this.isCounting = false;
+    this.timeLength = 0.0; // goes from 0 to 1
+    this.intervalId;
     
     this.shape = function() {
+        //completion bar
+        if (this.status === "executing") {
+            push();
+            stroke(255,0,0);
+            line(0.3,0.5,0.3+this.timeLength*(0.7-0.3),0.5);
+            pop();
+        }
         //contact
         line(0, 0.5, 0.3, 0.5);
         line(0.7, 0.5, 1.0, 0.5);
         line(0.3, 0.2, 0.3, 0.8);
         line(0.7, 0.2, 0.7, 0.8);
         //internal
-        line(0.35, 0.7, 0.45, 0.7);
-        line(0.55, 0.7, 0.65, 0.7);
-        line(0.45, 0.7, 0.45, 0.5);
-        line(0.55, 0.7, 0.55, 0.5);
-        line(0.45, 0.5, 0.55, 0.5);
+        line(0.35, 0.75, 0.45, 0.75);
+        line(0.55, 0.75, 0.65, 0.75);
+        line(0.45, 0.75, 0.45, 0.55);
+        line(0.55, 0.75, 0.55, 0.55);
+        line(0.45, 0.55, 0.55, 0.55);
         //clock
         ellipse(0.5,0.3,0.2,0.2);
         line(0.5,0.3,0.5,0.2);
         line(0.5,0.3,0.6,0.3);
-
     }
+ 
     this.solve = function(){
-        this.outputValue = this.inputValue && (this.varValue && !this.oldVarValue); //
-        this.oldVarValue = this.varValue; 
+        if( this.inputValue &&  !this.oldInputValue && !this.isCounting){
+            this.isCounting = true;
+            //console.log("triggered!",this.isCounting);
+            var that = this;
+            this.intervalId = setInterval(function(){
+                //console.log("triggered Again!",that.timeLength, that.isCounting);
+                that.timeLength += 0.05;
+                if(that.timeLength >= 1.0){
+                    that.isCounting = false;
+                    that.timeLength = 0;
+                    clearInterval(that.intervalId);
+                }
+            },this.name*100/20);
+        }
+        if(this.isCounting) {
+            this.outputValue = 1;
+        } else {
+            this.outputValue = 0;
+        }
+        this.oldInputValue = this.inputValue; 
+        //console.log(d.getTime());
     }
-
+    
 }
 
 function CoilNO(name, pos) {
