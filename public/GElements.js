@@ -183,17 +183,26 @@ function ContactTON(name, pos) {
     GElement.call(this,name,pos);
     this.oldInputValue;
     this.isCounting = false;
+    this.timeLength = 0.0; // goes form 0 to 1
+    this.intervalId;
     
     this.shape = function() {
+        //completion bar
+        if (this.status === "executing") {
+            push();
+            stroke(255,0,0);
+            line(0.3,0.5,0.3+this.timeLength*(0.7-0.3),0.5);
+            pop();
+        }
         //contact
         line(0, 0.5, 0.3, 0.5);
         line(0.7, 0.5, 1.0, 0.5);
         line(0.3, 0.2, 0.3, 0.8);
         line(0.7, 0.2, 0.7, 0.8);
         //internal
-        line(0.4, 0.7, 0.5, 0.7);
-        line(0.5, 0.7, 0.5, 0.5);
-        line(0.5, 0.5, 0.6, 0.5);
+        line(0.4, 0.75, 0.5, 0.75);
+        line(0.5, 0.75, 0.5, 0.55);
+        line(0.5, 0.55, 0.6, 0.55);
         //clock
         ellipse(0.5,0.3,0.2,0.2);
         line(0.5,0.3,0.5,0.2);
@@ -203,15 +212,26 @@ function ContactTON(name, pos) {
     this.solve = function(){
         if( this.inputValue &&  !this.oldInputValue){
             this.isCounting = true;
-            console.log("triggered!",this.isCounting);
+            //console.log("triggered!",this.isCounting);
             var that = this;
-            setTimeout(function(){
-                console.log("triggered Again!",this.isCounting, that.isCounting);
-                that.isCounting = false;
-            },this.name*100);
+            this.intervalId = setInterval(function(){
+                //console.log("triggered Again!",that.timeLength, that.isCounting);
+                that.timeLength += 0.05;
+                if(that.timeLength >= 1.0){
+                    that.isCounting = false;
+                    that.timeLength = 0;
+                    clearInterval(that.intervalId);
+                }
+            },this.name*100/20);
         }
         if(this.isCounting) {
-            this.outputValue = 0;
+            if(this.inputValue == 0){
+                this.isCounting = false;
+                this.timeLength = 0,0;
+                clearInterval(this.intervalId);
+            } else {
+                this.outputValue = 0;
+            }
         } else {
             this.outputValue = this.inputValue;
         }
@@ -223,18 +243,28 @@ function ContactTON(name, pos) {
 
 function ContactTOF(name, pos) {
     GElement.call(this,name,pos);
-    this.oldVarValue;
-    
+    this.oldInputValue;
+    this.isCounting = false;
+    this.timeLength = 1.0; // goes form 0 to 1
+    this.intervalId;
+     
     this.shape = function() {
-        //contact
+       //completion bar
+       if (this.status === "executing") {
+        push();
+        stroke(255,0,0);
+        line(0.3+this.timeLength*(0.7-0.3),0.5,0.7,0.5);
+        pop();
+    }
+    //contact
         line(0, 0.5, 0.3, 0.5);
         line(0.7, 0.5, 1.0, 0.5);
         line(0.3, 0.2, 0.3, 0.8);
         line(0.7, 0.2, 0.7, 0.8);
         //internal
-        line(0.6, 0.7, 0.5, 0.7);
-        line(0.5, 0.7, 0.5, 0.5);
-        line(0.5, 0.5, 0.4, 0.5);
+        line(0.6, 0.75, 0.5, 0.75);
+        line(0.5, 0.75, 0.5, 0.55);
+        line(0.5, 0.55, 0.4, 0.55);
         //clock
         ellipse(0.5,0.3,0.2,0.2);
         line(0.5,0.3,0.5,0.2);
@@ -242,8 +272,35 @@ function ContactTOF(name, pos) {
 
     }
     this.solve = function(){
-        this.outputValue = this.inputValue && (this.varValue && !this.oldVarValue); //
-        this.oldVarValue = this.varValue; 
+        if( !this.inputValue &&  this.oldInputValue){
+            this.isCounting = true;
+            this.timeLength = 0;
+            //console.log("triggered!",this.isCounting);
+            var that = this;
+            this.intervalId = setInterval(function(){
+                //console.log("triggered Again!",that.timeLength, that.isCounting);
+                that.timeLength += 0.05;
+                if(that.timeLength >= 1.0){
+                    that.isCounting = false;
+                    that.timeLength = 1,0;
+                    clearInterval(that.intervalId);
+                }
+            },this.name*100/20);
+        }
+        if(this.isCounting) {
+            if(this.inputValue == 1){
+                this.isCounting = false;
+                this.timeLength = 1,0;
+                clearInterval(this.intervalId);   
+            } else {
+                this.outputValue = 1;
+            }
+        } else {
+            
+            this.outputValue = this.inputValue;
+        }
+        this.oldInputValue = this.inputValue; 
+        //console.log(d.getTime());
     }
 
 }
