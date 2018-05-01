@@ -4,7 +4,7 @@ function ElementTable(pos,size) {
     this.grid = true;
     this.table = [];
     this.verTable = [];
-    var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine"];
+    var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine","DrawLine"];
     var coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
     var timers = ["ContactTON","ContactTOF","ContactTP"];
     this.selectVariable = false;
@@ -226,13 +226,13 @@ function ElementTable(pos,size) {
     }
 
     this.clicked = function() {
-        if (toolBar.selectedShape == "VerLine" && this.overWhat() == "vertical"){
+        if (toolBar.selectedShape == "DrawLine" && this.overWhat() == "vertical"){
             var loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
             this.verTable[loc.x+loc.y*(horz-1)] = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
         } else if( contacts.indexOf(toolBar.selectedShape) > -1 && this.overWhat() == "contact" ) {
             var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
             if (loc.x < horz-1) {
-                if (toolBar.selectedShape == "HorLine"){
+                if (toolBar.selectedShape == "DrawLine"){
                     elementTable.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
                 } else if(!varListExist){
                     elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
@@ -298,6 +298,18 @@ function ElementTable(pos,size) {
 
     }
     
+    this.dragged = function() {
+        if (toolBar.selectedShape == "DrawLine"){
+            if (this.overWhat() == "vertical"){
+                var loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
+                this.verTable[loc.x+loc.y*(horz-1)] = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
+            } else if (this.overWhat() == "contact"){
+                var loc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
+                this.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
+            }
+        }
+    }
+
     this.overWhat = function() {
         var outValue = "notHere";
         if (this.mouseIsOver()) {
@@ -307,7 +319,8 @@ function ElementTable(pos,size) {
                 var inCell = ((mouseX/colSize-this.pos.x)%1.0); // calcula a posição dentro de uma célula
                 if (inCell>0.2 && inCell<0.8)                   // se entre 0.2 e 0.8
                     outValue = "contact";                       // então é contato
-                else if((mouseY>this.pos.y+0.8*linSize) && (mouseY<this.pos.y+linSize*(this.size.y-0.2)) && mouseX/colSize>(this.pos.x+0.5))
+//                else if((mouseY>this.pos.y+1.2*linSize) && (mouseY<this.pos.y+1.8*linSize*(this.size.y-0.8)) && mouseX/colSize>(this.pos.x+0.5))
+                else if((((mouseY/linSize-this.pos.y+0.5)%1.0)>0.3) && (((mouseY/linSize-this.pos.y+0.5)%1.0)<0.7) && mouseX/colSize>(this.pos.x+0.5))
                     outValue = "vertical"
             }
         }
@@ -355,13 +368,13 @@ function ElementTable(pos,size) {
         var overlay = new GElement("",createVector(0,0));
         var whereis = this.overWhat();
         var loc;
-        if (toolBar.selectedShape == "VerLine" && whereis == "vertical"){
+        if (toolBar.selectedShape == "DrawLine" && whereis == "vertical"){
             loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
             overlay = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
         } else if( contacts.indexOf(toolBar.selectedShape) > -1  && whereis == "contact") {
             loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
             if (loc.x < horz-1) {
-                if (toolBar.selectedShape == "HorLine"){
+                if (toolBar.selectedShape == "DrawLine"){
                     overlay = new HorLine(loc.add(this.pos));
                 } else {
                     overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));

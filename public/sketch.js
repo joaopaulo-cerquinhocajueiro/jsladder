@@ -168,6 +168,12 @@ function mousePressed() {
     }
 }
 
+function mouseDragged() {
+    if (elementTable.mouseIsOver()) {
+        elementTable.dragged();
+    }
+}
+
 function windowResized() {
     canvas.resize(innerWidth,innerHeight);
     resize(innerWidth,innerHeight);

@@ -111,6 +111,22 @@ function VerLine(pos) {
     }
 }
 
+function DrawLine(pos) {
+    GElement.call(this,"",pos); // Lines are not associated to variables, so there is no name
+    
+    //this.hBorder = 0.3; //A vertical line has a larger border than a normal shape
+    
+    this.shape = function() {
+        line(0.3,0.8,0.5,0.7);
+        line(0.5,0.7,1.0,0.2);
+        line(0.3,0.8,0.4,0.6);
+        line(0.4,0.6,0.9,0.1);
+        line(0.9,0.1,1.0,0.2);
+        line(0.5,0.7,0.4,0.6);
+        line(0.0, 0.8, 0.3, 0.8);
+    }
+}
+
 function ContactNO(name, pos) {
     GElement.call(this,name,pos);
     
