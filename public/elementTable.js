@@ -307,7 +307,7 @@ function ElementTable(pos,size) {
                 var inCell = ((mouseX/colSize-this.pos.x)%1.0); // calcula a posição dentro de uma célula
                 if (inCell>0.2 && inCell<0.8)                   // se entre 0.2 e 0.8
                     outValue = "contact";                       // então é contato
-                else if((mouseY>this.pos.y+0.8*linSize) && (mouseY<this.pos.y+linSize*(this.size.y-0.2)))
+                else if((mouseY>this.pos.y+0.8*linSize) && (mouseY<this.pos.y+linSize*(this.size.y-0.2)) && mouseX/colSize>(this.pos.x+0.5))
                     outValue = "vertical"
             }
         }

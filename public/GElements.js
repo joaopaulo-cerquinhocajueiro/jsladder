@@ -376,6 +376,7 @@ function CoilNO(name, pos) {
         arc(0.35, 0.5, 0.8, 0.8,TWO_PI-QUARTER_PI, TWO_PI+QUARTER_PI);
     }
     this.solve = function(){
+        this.outputValue  = this.inputValue;
         values[this.name]  = this.inputValue; //
     }
 }
@@ -393,6 +394,7 @@ function CoilNC(name, pos) {
         line(0.4, 0.7, 0.6, 0.3);
     }
     this.solve = function(){
+        this.outputValue  = this.inputValue;
         values[this.name]  = !this.inputValue; //
     }
 }
@@ -417,6 +419,7 @@ function CoilSet(name, pos) {
         if(this.inputValue == 1){
             values[this.name] = 1; //
         }
+        this.outputValue = this.inputValue;
     }
 }
 
@@ -440,6 +443,7 @@ function CoilReset(name, pos) {
         if(this.inputValue == 1){
             values[this.name]  = 0; //
         }
+        this.outputValue = this.inputValue;
     }
 }
 
