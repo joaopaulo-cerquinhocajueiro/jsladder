@@ -1,6 +1,65 @@
 body {padding: 0; margin: 0;}
-      canvas {display:block;}    /* remove scrollbars */
-      canvas:focus {outline:0;} /* remove blue outline around canvas */
-      .fs {position:fixed; bottom:20px; right:20px;}
-      #enter {display:block;}
-      #exit {display:none;}
+.fs {position:fixed; bottom:20px; right:20px;}
+#enter {display:block;}
+#exit {display:none;}
+
+.flex-container {
+      padding: 0;
+      margin: 2;
+      
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      /* height:50px; */
+      -webkit-flex-flow: row wrap;
+      justify-content: space-around;
+      flex-flow: row;
+      align-items: flex-start;
+}
+      
+.flex-item {
+      padding: 5px;
+      margin:1px;
+      margin-top: 1px;
+      
+      line-height: 150px;
+      color: white;
+      font-weight: bold;
+      font-size: 3em;
+      text-align: center;
+}
+#table{
+      flex-basis: 60%;
+      flex-grow:6;
+      flex-shrink: 2;
+      background: tomato;
+      
+}
+#toolbar{
+      flex-basis: 20%;
+      flex-grow:2;
+      flex-shrink:7;
+      background: seashell;
+      
+}
+#io{
+      flex-basis: 20%;
+      flex-grow:2;
+      flex-shrink:7;
+      background: wheat;
+      
+}
+ .line{
+      stroke-width:3;
+      fill:none;
+}
+.text{
+      stroke: none;
+}
+
+/* .output{
+      width:20;
+      fill:none;
+}  */

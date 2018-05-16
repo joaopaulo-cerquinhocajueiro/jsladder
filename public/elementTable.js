@@ -1,6 +1,7 @@
-function ElementTable(pos,size) {
-    this.pos = pos;
-    this.size = size;
+function ElementTable(svg,horz,vert) {
+    this.svg = svg;
+    this.horSize = horz;
+    this.verSize = vert;
     this.grid = true;
     this.table = [];
     this.verTable = [];
@@ -11,18 +12,26 @@ function ElementTable(pos,size) {
     this.simulating = false;
     this.selectionLoc;
 
+    for (var i = 1; i < this.horSize; i++) {
+        this.svg.line(100*i,100,100*i,100*(this.verSize-0.5)).stroke('#000');
+    }
+    for (var i = 0; i <= this.verSize-1; i++) {
+        this.svg.line(0,100*(i+0.5),100*this.horSize,100*(i+0.5)).stroke('#000');
+    }
+
     var index = 0;
-    for (var l = 0; l < this.size.y ; l++){
-        for (var c = 0; c < this.size.x; c++){
-            this.table[index++] = new GElement('',createVector(c,l).add(pos));
+    for (var l = 0; l < this.verSize ; l++){
+        for (var c = 0; c < this.horSize; c++){
+            this.table[index++] = new ContactNO("", c*100, l*100, this.svg);
 //            this.table[index++] = new window[random(contacts)]('',createVector(c,l).add(pos));
+            this.table[index-1].update();
         }
     }
 //    console.log(table);
     index = 0;
-    for (var l = 0; l < this.size.y-1 ; l++){
-        for (var c = 0; c < this.size.x-1; c++){
-            this.verTable[index++] = new GElement('',createVector(c+0.5,l+0.5).add(pos));
+    for (var l = 0; l < this.verSize-1 ; l++){
+        for (var c = 0; c < this.horSize-1; c++){
+            this.verTable[index++] = new GElement('', c, l, this.svg);
         }
     }
     this.selectContact = function(){ //Function when selects the variable of a contact

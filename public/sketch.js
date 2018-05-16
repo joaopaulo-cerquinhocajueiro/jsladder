@@ -1,5 +1,32 @@
 
-var canvas;//, text;
+var width = 800, height = 600;
+
+SVG.on(document, 'DOMContentLoaded', function() {
+    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,800);
+    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,240,800);
+
+    var svgIO = SVG('io');
+
+    toolBar = new ToolBar(svgToolbar);
+    elementTable = new ElementTable(svgTable, 8, 6);
+    io = new IOView(svgIO, inputs, memories, outputs);
+
+    buttonErase = createButton('Erase all');
+    buttonErase.position(colSize*15, linSize*7);
+    buttonErase.mousePressed(eraseAll);
+
+    buttonSave = createButton('Save code');
+    buttonSave.position(colSize*15, linSize*8);
+    buttonSave.mousePressed(saveCode);
+
+    buttonSimulate = createButton('Simulate');
+    buttonSimulate.position(colSize*15, linSize*9);
+    buttonSimulate.mousePressed(simulate);
+})
+//draw.size(width/20,height/20);
+//draw.scale(20)
+
+//var canvas;//, text;
 //var hs1;
 var horz = 10; // 10 columns
 var vert = 8;  // 8 lines
@@ -21,9 +48,9 @@ var inputs = ["a", "b", "c", "d"];
 var memories = ["x", "y", "z"];
 var outputs = ["q","coiso", "valvula"];
 
-var buttonInputs = [];
-var dispMemories = [];
-var dispOutputs = [];
+// var buttonInputs = [];
+// var dispMemories = [];
+// var dispOutputs = [];
 
 function indexFromXY(x,y){
     return y*horz+x;
@@ -79,25 +106,6 @@ function simulate(){
 
 function setup() {
 
-    canvas = createCanvas(innerWidth*0.8, innerHeight*0.8);
-    resize(innerWidth*0.8,innerHeight*0.8);
-    //frameRate(10);
-    //canvas.position(300,50);    
-    canvas.parent('contentor');
-    toolBar = new ToolBar(createVector(horz+1.5,0.3,0));
-    elementTable = new ElementTable(createVector(0.3,0.3),createVector(horz,vert));
-
-    buttonErase = createButton('Erase all');
-    buttonErase.position(colSize*15, linSize*7);
-    buttonErase.mousePressed(eraseAll);
-
-    buttonSave = createButton('Save code');
-    buttonSave.position(colSize*15, linSize*8);
-    buttonSave.mousePressed(saveCode);
-
-    buttonSimulate = createButton('Simulate');
-    buttonSimulate.position(colSize*15, linSize*9);
-    buttonSimulate.mousePressed(simulate);
 
     //varList = createSelect();
     
