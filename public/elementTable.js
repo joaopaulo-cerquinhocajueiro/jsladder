@@ -5,34 +5,125 @@ function ElementTable(svg,horz,vert) {
     this.grid = true;
     this.table = [];
     this.verTable = [];
-    var contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine","DrawLine"];
-    var coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
-    var timers = ["ContactTON","ContactTOF","ContactTP"];
+    this.contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine"];
+    this.coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
+    this.timers = ["ContactTON","ContactTOF","ContactTP"];
+    
+    this.clickFunction = function(element, newType, table, index){
+        var posX = element.posX;
+        var posY = element.posY;
+        var name = element.name;
+        element.shape.clear();
+        element.type = newType;
+        element.draw();
+        element.update();
+    }
     this.selectVariable = false;
-    this.simulating = false;
+    this.simulating = true;
     this.selectionLoc;
 
     for (var i = 1; i < this.horSize; i++) {
-        this.svg.line(100*i,100,100*i,100*(this.verSize-0.5)).stroke('#000');
+        this.svg.line(100*i,50,100*i,100*(this.verSize-0.5)).stroke('darkGray');
     }
     for (var i = 0; i <= this.verSize-1; i++) {
-        this.svg.line(0,100*(i+0.5),100*this.horSize,100*(i+0.5)).stroke('#000');
+        this.svg.line(0,100*(i+0.5),100*this.horSize,100*(i+0.5)).stroke('darkGray');
     }
 
-    var index = 0;
-    for (var l = 0; l < this.verSize ; l++){
-        for (var c = 0; c < this.horSize; c++){
-            this.table[index++] = new ContactNO("", c*100, l*100, this.svg);
-//            this.table[index++] = new window[random(contacts)]('',createVector(c,l).add(pos));
-            this.table[index-1].update();
-        }
-    }
-//    console.log(table);
+    this.svg.line(0,0,0,this.verSize*100).addClass('line').addClass('input').stroke('red')
+    this.svg.line(this.horSize*100,0,this.horSize*100,this.verSize*100).addClass('line').stroke('blue')
+     
     index = 0;
     for (var l = 0; l < this.verSize-1 ; l++){
         for (var c = 0; c < this.horSize-1; c++){
-            this.verTable[index++] = new GElement('', c, l, this.svg);
+            this.verTable[index] = new GElement("", 'Empty', c*100+50, l*100+50, this.svg);
+            this.verTable[index++].update();
         }
+    }
+    var index = 0;
+    for (var l = 0; l < this.verSize ; l++){
+        for (var c = 0; c < this.horSize; c++){
+            this.table[index] = new GElement(" ", 'Empty', c*100, l*100, this.svg);
+//            this.table[index++] = new window[random(contacts)]('',createVector(c,l).add(pos));
+            this.table[index++].update();
+        }
+    }
+//    console.log(table);
+    this.timerDelaySelector = document.createElement('input');
+    document.body.appendChild(this.timerDelaySelector);
+    this.timerDelaySelector.setAttribute('type', 'number');
+    this.timerDelaySelector.setAttribute('value', 30);
+    this.timerDelaySelector.id='timerDelay';
+    this.timerDelaySelector.className += 'selector';
+
+    this.contactSelector = document.createElement('select');
+    document.body.appendChild(this.contactSelector);
+    this.contactSelector.id = 'contactSelector';
+    this.contactSelector.className += 'selector';
+    
+    this.coilSelector = document.createElement('select');
+    document.body.appendChild(this.coilSelector);
+    this.coilSelector.id = 'coilSelector';
+    this.coilSelector.className += 'selector';
+    //Populate the lists
+    for(var i=0; i< inputs.length; i++){
+        var option = document.createElement("option");
+        option.value = option.text = inputs[i];
+        this.contactSelector.add(option);
+    }
+    for(var i=0; i< outputs.length; i++){
+        var option = document.createElement("option");
+        option.value = option.text = outputs[i];
+        this.contactSelector.add(option);
+        var option = document.createElement("option");
+        option.value = option.text = outputs[i];
+        this.coilSelector.add(option);
+    }
+    for(var i=0; i< memories.length; i++){
+        var option = document.createElement("option");
+        option.value = option.text = memories[i];
+        this.contactSelector.add(option);
+        var option = document.createElement("option");
+        option.value = option.text = outputs[i];
+        this.coilSelector.add(option);
+    }
+    var generalElement;
+    var changeLabel = function(e){
+        generalElement.name = e.target.value;
+        generalElement.update();
+        //this.timerDelaySelector.style.display = 'none';
+        e.target.style.display = 'none';
+    }
+
+    var that = this;
+    ['change','mouseout'].forEach(function(evt){
+        that.contactSelector.addEventListener(evt, changeLabel);
+        that.coilSelector.addEventListener(evt, changeLabel);
+        that.timerDelaySelector.addEventListener(evt, changeLabel);
+    });
+
+    this.setLabel = function(element,generalType){
+        generalElement = element;
+        console.log(element.shape.rbox().x,element.shape.rbox().y);
+        var x = element.shape.rbox().x;
+        var y = element.shape.rbox().y;
+        var w = element.shape.rbox().w;
+        switch(generalType){
+            case "contact": element.label.text(that.contactSelector.value);
+                sel = that.contactSelector ;
+            break;
+            case "timer": element.label.text('30');
+                sel = that.timerDelaySelector ;
+            break;
+            case "coil": element.label.text('c');
+                sel = that.coilSelector;
+            break;
+        }
+        sel.style.left = x;
+        sel.style.top = y;
+        sel.style.width = w;
+        sel.style.display = 'block';
+        sel.focus();
+            
     }
     this.selectContact = function(){ //Function when selects the variable of a contact
         var item = varList.value();
@@ -54,58 +145,71 @@ function ElementTable(svg,horz,vert) {
         elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
     }
     // Creates the dropdown list of variables for a contact
-    varList = createSelect();
-    varList.position(0, 0);
-    varList.hide();
-    varList.changed(this.selectContact);
-    //Creates the dropdown list of variables for a coil
-    coilList = createSelect();
-    coilList.position(0, 0);
-    coilList.hide();
-    coilList.changed(this.selectCoil);
-    //Populate the lists
-    for(var i=0; i< inputs.length; i++){
-        varList.option(inputs[i]);        
-    }
-    for(var i=0; i< outputs.length; i++){
-        varList.option(outputs[i]);        
-        coilList.option(outputs[i]);        
-    }
-    for(var i=0; i< memories.length; i++){
-        varList.option(memories[i]);        
-        coilList.option(memories[i]);        
-    }
-    //Creates the input for a timer
-    timeInput = createInput();
-    timeInput.attribute('type','number');
-//    timeInput.attribute('min','0');
-//    timeInput.attribute('max','1000');
-    timeInput.position(0, 0);
-    timeInput.hide();
-    timeInput.changed(this.selectTime);
-    // when take the mouse out of a dropdown, it vanishes
-    varList.mouseOut(function () {
-        varListExist = false;
-        varList.hide();
-    });
-    coilList.mouseOut(function () {
-        coilListExist = false;
-        coilList.hide();
-    });
-    timeInput.mouseOut(function(){
-        timeInputExist = false;
-        timeInput.hide(); 
+    //console.log(this)
+    var that = this;
+    this.table.forEach(function(element,index,origTable){
+        element.update();
+        if((index+1)%that.horSize == 0){ //if on the last column
+            element.shape.mousedown(function(){
+                console.log("Last column")
+                if(toolBar.selectedShape.type == "Eraser"){
+                    that.clickFunction(element,"Empty",origTable,index);
+                } else if(that.coils.indexOf(toolBar.selectedShape.type) > -1){
+                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
+                    that.setLabel(element,"coil");
+                }
+            });    
+        } else {
+            element.shape.mousedown(function(){
+                //console.log("Not last column")
+                if(toolBar.selectedShape.type == "Eraser"){
+                    that.clickFunction(element,"Empty",origTable,index);
+                } else if(toolBar.selectedShape.type == 'DrawLine'){
+                    that.clickFunction(element,'HorLine',origTable,index);
+                } else if(that.contacts.indexOf(toolBar.selectedShape.type) > -1){
+                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
+                    that.setLabel(element,"contact");
+                } else if(that.timers.indexOf(toolBar.selectedShape.type) > -1){
+                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
+                    that.setLabel(element,"timer");
+                }
+            });
+            element.shape.mouseover(function(e){
+                var whichButton = e.buttons === undefined? e.which : e.buttons;
+                if (whichButton == 1){
+                    if(toolBar.selectedShape.type == 'DrawLine'){
+                        that.clickFunction(element,'HorLine',origTable,index);
+                    } else if(toolBar.selectedShape.type == "Eraser"){
+                        that.clickFunction(element,"Empty",origTable,index);
+                    }
+                }
+            });
+        }
     });
 
+    this.verTable.forEach(function(element,index,origTable){
+        element.update();
+        //var that = this;
+        element.shape.mousedown(function(){
+            //that.clickFunction(element,"HorLine",origTable,index)
+            if(toolBar.selectedShape.type == 'DrawLine'){
+                that.clickFunction(element,'VerLine',origTable,index)
+            } else if(toolBar.selectedShape.type == 'Eraser'){
+                that.clickFunction(element,'Empty',origTable,index)
+            }
+        });
+        element.shape.mouseover(function(e){
+            var whichButton = e.buttons === undefined? e.which : e.buttons;
+            if (whichButton == 1){
+                if(toolBar.selectedShape.type == 'DrawLine'){
+                    that.clickFunction(element,'VerLine',origTable,index);
+                } else if(toolBar.selectedShape.type == "Eraser"){
+                    that.clickFunction(element,"Empty",origTable,index);
+                }
+            }
+        });
+    });
     
-    
-    this.mouseIsOver = function(){
-        return ((mouseX>this.pos.x)&&(mouseX<this.pos.x+this.size.x*colSize)&&(mouseY>this.pos.y+0.5*linSize)&&(mouseY<this.pos.y+this.size.y*linSize));
-    }
-    
-    this.updateGE = function(element) {
-
-    }
     
     this.update = function() {
         if (this.simulating){ // If simulating
@@ -230,201 +334,18 @@ function ElementTable(svg,horz,vert) {
 
     }
     
-    this.selectGE = function(element) {
-
-    }
-
-    this.clicked = function() {
-        if (toolBar.selectedShape == "DrawLine" && this.overWhat() == "vertical"){
-            var loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
-            this.verTable[loc.x+loc.y*(horz-1)] = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
-        } else if( contacts.indexOf(toolBar.selectedShape) > -1 && this.overWhat() == "contact" ) {
-            var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
-            if (loc.x < horz-1) {
-                if (toolBar.selectedShape == "DrawLine"){
-                    elementTable.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
-                } else if(!varListExist){
-                    elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
-                    selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                    varList.position(mouseX-25,mouseY-5);
-                    varList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
-                    varList.show();
-                    varListExist = true;
-                }
-                
-            }
-        } else if((timers.indexOf(toolBar.selectedShape) > -1) && !(timeInputExist) ){ // if timer
-            var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
-            if (loc.x < horz-1) {
-                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
-                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                timeInput.position(mouseX-25,mouseY-5);
-                timeInput.value('0');
-                timeInput.show();
-                //timeInput.focus();
-                timeInputExist = true;
-            }
-        } else if( coils.indexOf(toolBar.selectedShape) > -1 && this.overWhat() == "coil") {
-            var loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
-            if (loc.x == horz-1) {
-                elementTable.table[loc.x+loc.y*horz] = new window[toolBar.selectedShape]("",loc.add(elementTable.pos));
-                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                coilList.position(mouseX-25,mouseY-5);
-                coilList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
-                coilList.show();
-                coilListExist = true;
-            }
-        } else if (toolBar.selectedShape == "Eraser") {
-            if (this.overWhat() == "vertical") {
-                var loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
-            this.verTable[loc.x+loc.y*(horz-1)] = new GElement("",loc.add(createVector(0.5,0.5)).add(elementTable.pos));
-            } else {
-                var loc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                elementTable.table[loc.x+loc.y*horz] = new GElement("",loc.add(elementTable.pos));
-            }
-        } else if(toolBar.selectedShape == "Hand"){
-            if(timers.indexOf(toolBar.selectedShape) > -1){
-                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                timeInput.position(mouseX-25,mouseY-5);
-                timeInput.value('0');
-                timeInput.show();
-                timeInput.focus();
-                timeInputExist = true;
-            } else if(this.overWhat()=="contact" && !varListExist){
-                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                varList.position(mouseX-25,mouseY-5);
-                varList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
-                varList.show();
-                varListExist = true;
-            } else if(this.overWhat()=="coil" && !coilListExist){
-                selectionLoc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                coilList.position(mouseX-25,mouseY-5);
-                coilList.value(this.table[selectionLoc.x+selectionLoc.y*horz].name);
-                coilList.show();
-                coilListExist = true;
-            }
-        }
-
-    }
-    
-    this.dragged = function() {
-        if (toolBar.selectedShape == "DrawLine"){
-            if (this.overWhat() == "vertical"){
-                var loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
-                this.verTable[loc.x+loc.y*(horz-1)] = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
-            } else if (this.overWhat() == "contact"){
-                var loc = createVector(floor(mouseX/colSize-this.pos.x), floor(mouseY/linSize-this.pos.y) );
-                this.table[loc.x+loc.y*horz] = new HorLine(loc.add(elementTable.pos));
-            }
-        }
-    }
-
-    this.overWhat = function() {
-        var outValue = "notHere";
-        if (this.mouseIsOver()) {
-            if (mouseX/colSize-this.pos.x > horz-1+0.2) { // Se estiver na coluna final + 0.2
-                outValue = "coil";                        // então é coil
-            } else {
-                var inCell = ((mouseX/colSize-this.pos.x)%1.0); // calcula a posição dentro de uma célula
-                if (inCell>0.2 && inCell<0.8)                   // se entre 0.2 e 0.8
-                    outValue = "contact";                       // então é contato
-//                else if((mouseY>this.pos.y+1.2*linSize) && (mouseY<this.pos.y+1.8*linSize*(this.size.y-0.8)) && mouseX/colSize>(this.pos.x+0.5))
-                else if((((mouseY/linSize-this.pos.y+0.5)%1.0)>0.3) && (((mouseY/linSize-this.pos.y+0.5)%1.0)<0.7) && mouseX/colSize>(this.pos.x+0.5))
-                    outValue = "vertical"
-            }
-        }
-        return outValue;
-    }
-
-    this.draw = function() {
-        this.update();
-        // Draw the grid
-        push();
-        noFill();
-        stroke(235,235,190);
-        strokeWeight(1);
-        translate(this.pos.x*colSize,this.pos.y*linSize); // Move to the position
-
-        for (var i = 1; i < this.size.x; i++) {
-            line(colSize*i,linSize/2,colSize*i,linSize*(this.size.y-0.5));
-        }
-        for (var i = 0; i <= this.size.y-1; i++) {
-            line(0,linSize*(i+0.5),colSize*this.size.x,linSize*(i+0.5));
-        }
-        //draw the power lines
-        strokeWeight(3);
-        if(this.simulating){
-            stroke(150,0,0);
-        } else {
-            stroke(0);
-        }
-        line(0,0,0,linSize*this.size.y);
-        if(this.simulating){
-            stroke(0,0,150);
-        } else {
-            stroke(0);
-        }
-        line(colSize*this.size.x,0,colSize*this.size.x,linSize*this.size.y);
-        pop();
-        
-        // Draw the elements over the grid
-        for (var index=0; index<horz*vert; index++){
-            this.table[index].draw();
-        }
-        for (var index=0; index<(horz-1)*(vert-1); index++){
-            this.verTable[index].draw();
-        }
-        var overlay = new GElement("",createVector(0,0));
-        var whereis = this.overWhat();
-        var loc;
-        if (toolBar.selectedShape == "DrawLine" && whereis == "vertical"){
-            loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
-            overlay = new VerLine(loc.add(createVector(0.5,0.5)).add(elementTable.pos));
-        } else if( contacts.indexOf(toolBar.selectedShape) > -1  && whereis == "contact") {
-            loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
-            if (loc.x < horz-1) {
-                if (toolBar.selectedShape == "DrawLine"){
-                    overlay = new HorLine(loc.add(this.pos));
-                } else {
-                    overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));
-                }
-            }
-        } else if( timers.indexOf(toolBar.selectedShape) > -1  && whereis == "contact") {
-            loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
-            if (loc.x < horz-1) {
-                overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));
-            }
-        } else if( coils.indexOf(toolBar.selectedShape) > -1 && whereis == "coil" ) {
-            loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
-            if (loc.x == horz-1) {
-                overlay = new window[toolBar.selectedShape]("",loc.add(this.pos));
-            }
-        } else if (toolBar.selectedShape == "Eraser" && whereis != "notHere"){
-            if (whereis == "vertical") {
-                loc = createVector(floor(mouseX/colSize-this.pos.x-0.5),floor(mouseY/linSize-this.pos.y-0.5));
-                overlay = new Eraser(loc.add(createVector(0.5,0.5)).add(this.pos));
-            } else {
-                loc = createVector(floor(mouseX/colSize-this.pos.x),floor(mouseY/linSize-this.pos.y));
-                overlay = new Eraser(loc.add(this.pos));
-            }
-        }
-        overlay.status = "preview";
-        overlay.draw();
-        //text(this.lastVarListPos,this.pos.x+colSize*horz/2,this.pos.y+linSize*vert+10);
-    }
-
     this.eraseAll = function() {
         var index = 0;
         for (var l = 0; l < this.size.y ; l++){
             for (var c = 0; c < this.size.x; c++){
-                this.table[index++] = new GElement('',createVector(c,l).add(pos));
+                clickFunction(this.table[index], "Empty", this.table, index++);
             }
         }
     //    console.log(table);
         index = 0;
         for (var l = 0; l < this.size.y-1 ; l++){
             for (var c = 0; c < this.size.x-1; c++){
-                this.verTable[index++] = new GElement('',createVector(c+0.5,l+0.5).add(pos));
+                clickFunction(this.verTable[index], "Empty", this.table, index++);
             }
     }
         

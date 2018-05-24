@@ -2,26 +2,26 @@
 var width = 800, height = 600;
 
 SVG.on(document, 'DOMContentLoaded', function() {
-    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,800);
     var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,240,800);
+    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,800);
 
     var svgIO = SVG('io');
 
     toolBar = new ToolBar(svgToolbar);
     elementTable = new ElementTable(svgTable, 8, 6);
-    io = new IOView(svgIO, inputs, memories, outputs);
+//    io = new IOView(svgIO, inputs, memories, outputs);
 
-    buttonErase = createButton('Erase all');
-    buttonErase.position(colSize*15, linSize*7);
-    buttonErase.mousePressed(eraseAll);
+    // buttonErase = createButton('Erase all');
+    // buttonErase.position(colSize*15, linSize*7);
+    // buttonErase.mousePressed(eraseAll);
 
-    buttonSave = createButton('Save code');
-    buttonSave.position(colSize*15, linSize*8);
-    buttonSave.mousePressed(saveCode);
+    // buttonSave = createButton('Save code');
+    // buttonSave.position(colSize*15, linSize*8);
+    // buttonSave.mousePressed(saveCode);
 
-    buttonSimulate = createButton('Simulate');
-    buttonSimulate.position(colSize*15, linSize*9);
-    buttonSimulate.mousePressed(simulate);
+    // buttonSimulate = createButton('Simulate');
+    // buttonSimulate.position(colSize*15, linSize*9);
+    // buttonSimulate.mousePressed(simulate);
 })
 //draw.size(width/20,height/20);
 //draw.scale(20)

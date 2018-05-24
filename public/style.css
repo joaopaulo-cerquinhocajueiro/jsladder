@@ -34,7 +34,7 @@ body {padding: 0; margin: 0;}
       flex-basis: 60%;
       flex-grow:6;
       flex-shrink: 2;
-      background: tomato;
+      background: thistle;
       
 }
 #toolbar{
@@ -57,6 +57,18 @@ body {padding: 0; margin: 0;}
 }
 .text{
       stroke: none;
+}
+
+.selector {
+      position: absolute;
+      /*background-color: #202020;*/
+      color: #000;
+      top: 25px;
+      left: 25px;
+      padding: 2px;
+      width: 50px;
+      display:none;
+      /*z-index:13;*/
 }
 
 /* .output{
