@@ -1,7 +1,8 @@
-function ElementTable(svg,horz,vert) {
+function ElementTable(svg,horz,vert,ioElements) {
     this.svg = svg;
     this.horSize = horz;
     this.verSize = vert;
+    this.ioElements = ioElements;
     this.grid = true;
     this.table = [];
     this.verTable = [];
@@ -19,7 +20,7 @@ function ElementTable(svg,horz,vert) {
         element.update();
     }
     this.selectVariable = false;
-    this.simulating = true;
+    this.simulating = false;
     this.selectionLoc;
 
     for (var i = 1; i < this.horSize; i++) {
@@ -64,28 +65,20 @@ function ElementTable(svg,horz,vert) {
     document.body.appendChild(this.coilSelector);
     this.coilSelector.id = 'coilSelector';
     this.coilSelector.className += 'selector';
+
     //Populate the lists
-    for(var i=0; i< inputs.length; i++){
+    var that = this;
+    this.ioElements.forEach(element =>{
         var option = document.createElement("option");
-        option.value = option.text = inputs[i];
-        this.contactSelector.add(option);
-    }
-    for(var i=0; i< outputs.length; i++){
-        var option = document.createElement("option");
-        option.value = option.text = outputs[i];
-        this.contactSelector.add(option);
-        var option = document.createElement("option");
-        option.value = option.text = outputs[i];
-        this.coilSelector.add(option);
-    }
-    for(var i=0; i< memories.length; i++){
-        var option = document.createElement("option");
-        option.value = option.text = memories[i];
-        this.contactSelector.add(option);
-        var option = document.createElement("option");
-        option.value = option.text = outputs[i];
-        this.coilSelector.add(option);
-    }
+        option.value = option.text = element.name;
+        that.contactSelector.add(option);
+        if (element.type !='input'){
+            var option = document.createElement("option");
+            option.value = option.text = element.name;
+            that.coilSelector.add(option);
+        }
+    });
+
     var generalElement;
     var changeLabel = function(e){
         generalElement.name = e.target.value;
@@ -103,7 +96,7 @@ function ElementTable(svg,horz,vert) {
 
     this.setLabel = function(element,generalType){
         generalElement = element;
-        console.log(element.shape.rbox().x,element.shape.rbox().y);
+        //console.log(element.shape.rbox().x,element.shape.rbox().y);
         var x = element.shape.rbox().x;
         var y = element.shape.rbox().y;
         var w = element.shape.rbox().w;
@@ -153,6 +146,7 @@ function ElementTable(svg,horz,vert) {
             element.shape.mousedown(function(){
                 console.log("Last column")
                 if(toolBar.selectedShape.type == "Eraser"){
+                    element.name = "";
                     that.clickFunction(element,"Empty",origTable,index);
                 } else if(that.coils.indexOf(toolBar.selectedShape.type) > -1){
                     that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
@@ -163,8 +157,10 @@ function ElementTable(svg,horz,vert) {
             element.shape.mousedown(function(){
                 //console.log("Not last column")
                 if(toolBar.selectedShape.type == "Eraser"){
+                    element.name = "";
                     that.clickFunction(element,"Empty",origTable,index);
                 } else if(toolBar.selectedShape.type == 'DrawLine'){
+                    element.name = "";
                     that.clickFunction(element,'HorLine',origTable,index);
                 } else if(that.contacts.indexOf(toolBar.selectedShape.type) > -1){
                     that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
@@ -178,8 +174,10 @@ function ElementTable(svg,horz,vert) {
                 var whichButton = e.buttons === undefined? e.which : e.buttons;
                 if (whichButton == 1){
                     if(toolBar.selectedShape.type == 'DrawLine'){
+                        element.name = "";
                         that.clickFunction(element,'HorLine',origTable,index);
                     } else if(toolBar.selectedShape.type == "Eraser"){
+                        element.name = "";
                         that.clickFunction(element,"Empty",origTable,index);
                     }
                 }
@@ -212,66 +210,68 @@ function ElementTable(svg,horz,vert) {
     
     
     this.update = function() {
-        if (this.simulating){ // If simulating
+        if (that.simulating){ // If simulating
+            // console.log("simulating");
             // put all elements as executing
             for (var index=0; index<horz*vert; index++){
-                this.table[index].status = "executing";
+                that.table[index].status = "executing";
+                that.table[index].update();
             }
             for (var index=0; index<(horz-1)*(vert-1); index++){
-                this.verTable[index].status = "executing";
+                that.verTable[index].status = "executing";
+                that.verTable[index].update();
             }
             // Reads all values to a dictionary
             values = {};
-            for(var i=0; i< inputs.length; i++){
-                values[buttonInputs[i].name] = buttonInputs[i].value;        
-            }
-            for(var i=0; i< memories.length; i++){
-                values[dispMemories[i].name] = dispMemories[i].value;        
-            }
-            for(var i=0; i< outputs.length; i++){
-                values[dispOutputs[i].name] = dispOutputs[i].value;        
-            }
+            that.ioElements.forEach(element =>{
+                values[element.name] = element.value;
+            });
             // Update all elements
 //            console.log(horz);
             for(var x=0;x<horz;x++){ // for each column
                 //console.log(x)
-                y = 0; //For the first line
+                var y = 0; //For the first line
                 var index = indexFromXY(x,y);
                 if(x==0){ // if in the beginning of a line
-                    this.table[index].inputValue = 1; // the input Value is 1
-                } else if(this.verTable[y*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a vertical line down
-                    this.table[index].inputValue = this.verTable[y*(horz-1)+x-1].outputValue;
+                    // console.log(x,y,index,that.table[index].inputValue)
+                    that.table[index].inputValue = 1; // the input Value is 1
+                } else if(that.verTable[y*(horz-1)+x-1].type=="VerLine"){ // if there is a vertical line down
+                    that.table[index].inputValue = that.verTable[y*(horz-1)+x-1].outputValue;
                 } else { // if there is no vertical line
-                    this.table[index].inputValue = this.table[index-1].outputValue;
+                    that.table[index].inputValue = that.table[index-1].outputValue;
                 }
-                this.table[index].varValue = values[this.table[index].name];
-                this.table[index].solve();
+                that.table[index].varValue = values[that.table[index].name];
+                // console.log("Calling solve")
+                that.table[index].solve();
                 for(y=1;y<vert-1;y++){ // for the middle lines
                     var index = indexFromXY(x,y);
                     if(x==0){ // if in the beginning of a line
-                        this.table[index].inputValue = 1; // the input Value is 1
-                    } else if(this.verTable[y*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a vertical line down
-                        this.table[index].inputValue = this.verTable[y*(horz-1)+x-1].outputValue;
-                    } else if(this.verTable[(y-1)*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a line up
-                        this.table[index].inputValue = this.verTable[(y-1)*(horz-1)+x-1].outputValue;
+                        // console.log(x,y,index,that.table[index].inputValue)
+                        that.table[index].inputValue = 1; // the input Value is 1
+                    } else if(that.verTable[y*(horz-1)+x-1].type=="VerLine"){ // if there is a vertical line down
+                        that.table[index].inputValue = that.verTable[y*(horz-1)+x-1].outputValue;
+                    } else if(that.verTable[(y-1)*(horz-1)+x-1].type=="VerLine"){ // if there is a line up
+                        that.table[index].inputValue = that.verTable[(y-1)*(horz-1)+x-1].outputValue;
                     } else { // if there is no vertical line
-                        this.table[index].inputValue = this.table[index-1].outputValue;
+                        that.table[index].inputValue = that.table[index-1].outputValue;
                     }
-                    this.table[index].varValue = values[this.table[index].name];
-                    this.table[index].solve();
+                    that.table[index].varValue = values[that.table[index].name];
+                    // console.log("Calling solve",that.table[index].type,x,y)
+                    that.table[index].solve();
                 }
 //                console.log(x,y,horz);
                 y = vert-1; //For the last line
                 var index = indexFromXY(x,y);
                 if(x==0){ // if in the beginning of a line
-                    this.table[index].inputValue = 1; // the input Value is 1
-                } else if(this.verTable[(y-1)*(horz-1)+x-1].constructor.name=="VerLine"){ // if there is a vertical line up
-                    this.table[index].inputValue = this.verTable[(y-1)*(horz-1)+x-1].outputValue;
+                    that.table[index].inputValue = 1; // the input Value is 1
+                } else if(that.verTable[(y-1)*(horz-1)+x-1].type=="VerLine"){ // if there is a vertical line up
+                    that.table[index].inputValue = that.verTable[(y-1)*(horz-1)+x-1].outputValue;
                 } else { // if there is no vertical line
-                    this.table[index].inputValue = this.table[index-1].outputValue;
+                    that.table[index].inputValue = that.table[index-1].outputValue;
                 }
-                this.table[index].varValue = values[this.table[index].name];
-                this.table[index].solve();
+                that.table[index].varValue = values[that.table[index].name];
+                // console.log("Calling solve",that.table[index].type,x,y)
+                that.table[index].solve();
                 //Solve the intermediary vertical lines
                 if(x<horz-1){ // If it's not the last one
                     y = 0;
@@ -279,16 +279,16 @@ function ElementTable(svg,horz,vert) {
                     while(y<vert-1){ // check for each vertical line
                         var index = x+y*(horz-1);
                         ys = [y];
-                        if((y>0)&&(this.verTable[index-horz+1].constructor.name=="VerLine")){
+                        if((y>0)&&(that.verTable[index-horz+1].type=="VerLine")){
                             // if there is a vertical line up, this value was already calculated
-                            this.verTable[index].outputValue = this.verTable[index-horz+1].outputValue;
-                        } else if(this.verTable[index].constructor.name=="VerLine"){ // if a line starts here
+                            that.verTable[index].outputValue = that.verTable[index-horz+1].outputValue;
+                        } else if(that.verTable[index].type=="VerLine"){ // if a line starts here
                             //console.log(ys,y+1);
                             ys.push(y+1);
                             //console.log(ys);
                             var newY = y+1;
                             if(newY<vert-1){ // if not at the end of the matrix
-                                while(this.verTable[x+newY*(horz-1)].constructor.name=="VerLine"){ // if the line continues
+                                while(that.verTable[x+newY*(horz-1)].type=="VerLine"){ // if the line continues
                                     newY++;
                                     ys.push(newY);
                                     if(newY>=vert-1){
@@ -298,10 +298,10 @@ function ElementTable(svg,horz,vert) {
                             }
                             var value = 0;
                             for(var i = 0; i<ys.length;i++){
-                                //console.log(x,ys[i],value,this.table[ys[i]*horz+x]);
-                                value = value + this.table[ys[i]*horz+x].outputValue;
+                                //console.log(x,ys[i],value,that.table[ys[i]*horz+x]);
+                                value = value + that.table[ys[i]*horz+x].outputValue;
                             }
-                            this.verTable[index].outputValue = value>0?1:0;
+                            that.verTable[index].outputValue = value>0?1:0;
                     
                         }
                         y++;
@@ -311,41 +311,47 @@ function ElementTable(svg,horz,vert) {
             }
 
             // update the display for variables that may have changed
-            for (var index=0; index<horz*vert; index++){
-                this.table[index].varValue = values[this.table[index].name];
-            }
-
-            // Set new values to memory and outputs
-            for(var i=0; i< memories.length; i++){
-                dispMemories[i].value = values[dispMemories[i].name];        
-            }
-            for(var i=0; i< outputs.length; i++){
-                dispOutputs[i].value = values[dispOutputs[i].name];        
-            }
+            that.ioElements.forEach(element =>{
+                if(element.type != 'input'){
+                    element.value = values[element.name];
+                    element.update();
+                }
+            });
+            
         } else { // If not simulating,
+            //console.log("not simulating");
+            //console.log(that)
             // put all elements as offline
             for (var index=0; index<horz*vert; index++){
-                this.table[index].status = "offline";
+                that.table[index].status = "offline";
+                that.table[index].update();
             }
             for (var index=0; index<(horz-1)*(vert-1); index++){
-                this.verTable[index].status = "offline";
+                that.verTable[index].status = "offline";
+                that.table[index].update();
             }
+            //clearInterval(that.intervalId)
         }
 
     }
     
+    //console.log("Got to the simulation part")
+    var that = this;
+    this.intervalId = window.setInterval(this.update,10);
+
+
     this.eraseAll = function() {
         var index = 0;
         for (var l = 0; l < this.size.y ; l++){
             for (var c = 0; c < this.size.x; c++){
-                clickFunction(this.table[index], "Empty", this.table, index++);
+                clickFunction(that.table[index], "Empty", that.table, index++);
             }
         }
     //    console.log(table);
         index = 0;
         for (var l = 0; l < this.size.y-1 ; l++){
             for (var c = 0; c < this.size.x-1; c++){
-                clickFunction(this.verTable[index], "Empty", this.table, index++);
+                clickFunction(that.verTable[index], "Empty", that.table, index++);
             }
     }
         

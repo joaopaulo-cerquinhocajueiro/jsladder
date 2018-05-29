@@ -41,6 +41,7 @@ function GElement(name, type, posX, posY, svg) {
             break;
     }
     this.solve = function(){
+        // console.log("Solving",this.type)
         switch (String(this.type)){
             case "HorLine":
                 this.outputValue = this.inputValue; // same output as the input
@@ -59,11 +60,13 @@ function GElement(name, type, posX, posY, svg) {
                 this.outputValue = this.inputValue && (!this.varValue && this.oldVarValue); //
                 this.oldVarValue = this.varValue; 
             break;
+        // update the timers completion bar
             case "ContactTON":
                 if( this.inputValue &&  !this.oldInputValue){
                     this.isCounting = true;
-                    //console.log("triggered!",this.isCounting);
+                    console.log("antes",that);
                     var that = this;
+                    console.log("depois",that);
                     this.intervalId = setInterval(function(){
                         //console.log("triggered Again!",that.timeLength, that.isCounting);
                         that.timeLength += 0.05;
@@ -71,14 +74,18 @@ function GElement(name, type, posX, posY, svg) {
                             that.isCounting = false;
                             that.timeLength = 0.0;
                             clearInterval(that.intervalId);
+                            that.update();
                         }
-                    }, this.name*100/50);
+                        that.completionBar.attr('x2',30+that.timeLength*(70-30));
+                    }, that.name*5);
                 }
                 if(this.isCounting) {
                     if(this.inputValue == 0){
                         this.isCounting = false;
                         this.timeLength = 0,0;
                         clearInterval(this.intervalId);
+                        that.update();
+                        console.log(that.name);
                         this.outputValue = this.inputValue;
                     } else {
                         this.outputValue = 0;
@@ -102,7 +109,8 @@ function GElement(name, type, posX, posY, svg) {
                             that.timeLength = 1.0;
                             clearInterval(that.intervalId);
                         }
-                    },this.name*100/50);
+                        that.completionBar.attr('x1',30+that.timeLength*(70-30));
+                    },this.name*5);
                 }
                 if(this.isCounting) {
                     if(this.inputValue == 1){
@@ -121,10 +129,13 @@ function GElement(name, type, posX, posY, svg) {
             break;
 
             case "ContactTP":
+                console.log("isCounting",this.isCounting);
                 if( this.inputValue &&  !this.oldInputValue && !this.isCounting){
                     this.isCounting = true;
                     //console.log("triggered!",this.isCounting);
+                    console.log(that,"antes");
                     var that = this;
+                    console.log(that,"depois");
                     this.intervalId = setInterval(function(){
                         //console.log("triggered Again!",that.timeLength, that.isCounting);
                         that.timeLength += 0.05;
@@ -132,7 +143,9 @@ function GElement(name, type, posX, posY, svg) {
                             that.isCounting = false;
                             that.timeLength = 0;
                             clearInterval(that.intervalId);
+                            that.completionBar.replace(that.shape.line(30,50,30+that.timeLength*(70-30),50).addClass("input"));
                         }
+                        that.completionBar.attr('x2',30+that.timeLength*(70-30));
                     },this.name*100/50);
                 }
                 if(this.isCounting) {
@@ -172,10 +185,30 @@ function GElement(name, type, posX, posY, svg) {
     // Each element has its own shape, defined in a square with size 100.
     this.shape = this.svg.group();
     this.draw = function(){
+        switch (String(this.type)){
+            case "ContactRise":
+            case "ContactFall":
+                this.oldVarValue;
+                break;
+            case "ContactTON":
+            case "ContactTP":
+                this.oldInputValue;
+                this.isCounting = false;
+                this.timeLength = 0.0; // goes form 0 to 1
+                this.intervalId;
+                break;
+            case "ContactTOF":
+                this.oldInputValue;
+                this.isCounting = false;
+                this.timeLength = 1.0; // goes form 0 to 1
+                this.intervalId;
+                break;
+        }
+
         if(this.type == "VerLine"){
-            this.shape.rect(20,100).fill({opacity:0.0, color:"#880000"}).move(40,0);
+            this.shape.rect(20,80).fill({opacity:0.01, color:"#880000"}).move(40,10);
         } else {
-            this.shape.rect(80,100).fill({opacity:0.0, color:"#880000"}).move(10,0);
+            this.shape.rect(80,80).fill({opacity:0.01, color:"#880000"}).move(10,10);
         }
         switch (String(this.type)){
             case "HorLine":
@@ -189,7 +222,6 @@ function GElement(name, type, posX, posY, svg) {
             case "Eraser":
                 this.shape.line(25, 25, 75, 75).addClass("line");
                 this.shape.line(75, 25, 25, 75).addClass("line");
-                console.log("Eraser selected");
             break;
             
             case "Hand":
@@ -209,43 +241,43 @@ function GElement(name, type, posX, posY, svg) {
             break;
             
             case "ContactNO":
-                this.shape.line( 0, 50,  30, 50).addClass("line");
-                this.shape.line(70, 50, 100, 50).addClass("line");
-                this.shape.line(30, 20,  30, 80).addClass("line");
-                this.shape.line(70, 20,  70, 80).addClass("line");
+                this.shape.line( 0, 50,  30, 50).addClass("line").addClass("input");
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
+                this.shape.line(30, 20,  30, 80).addClass("line").addClass("input");
+                this.shape.line(70, 20,  70, 80).addClass("line").addClass("output");
             break;
             
             case "ContactNC":
-                this.shape.line(0, 50, 30, 50).addClass("line");
-                this.shape.line(70, 50, 100, 50).addClass("line");
-                this.shape.line(30, 20, 30, 80).addClass("line");
-                this.shape.line(70, 20, 70, 80).addClass("line");
-                this.shape.line(35, 75, 65, 25).addClass("line");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                this.shape.line(35, 75, 65, 25).addClass("line").addClass("output");
             break;
             
             case "ContactRise":
-                this.shape.line(0, 50, 30, 50).addClass("line");
-                this.shape.line(70, 50, 100, 50).addClass("line");
-                this.shape.line(30, 20, 30, 80).addClass("line");
-                this.shape.line(70, 20, 70, 80).addClass("line");
-                this.shape.line(40, 70, 50, 70).addClass("line");
-                this.shape.line(50, 70, 50, 30).addClass("line");
-                this.shape.line(50, 30, 60, 30).addClass("line");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                this.shape.line(40, 70, 50, 70).addClass("line").addClass("output");
+                this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
+                this.shape.line(50, 30, 60, 30).addClass("line").addClass("output");
             break;
 
             case "ContactFall":
-                this.shape.line(0, 50, 30, 50).addClass("line");
-                this.shape.line(70, 50, 100, 50).addClass("line");
-                this.shape.line(30, 20, 30, 80).addClass("line");
-                this.shape.line(70, 20, 70, 80).addClass("line");
-                this.shape.line(40, 30, 50, 30).addClass("line");
-                this.shape.line(50, 70, 50, 30).addClass("line");
-                this.shape.line(50, 70, 60, 70).addClass("line");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
+                this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
+                this.shape.line(50, 70, 60, 70).addClass("line").addClass("output");
             break;
             
             case "ContactTON":
                 //completion bar
-                this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("input");
+                this.completionBar = this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("input");
                 //contact
                 this.shape.line(0, 50, 30, 50).addClass("input").addClass("line");
                 this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
@@ -263,7 +295,7 @@ function GElement(name, type, posX, posY, svg) {
             
             case "ContactTOF":
                 //completion bar
-                this.shape.line(30+this.timeLength*(70-30),50,70,50).addClass("output");
+                this.completionBar = this.shape.line(30+this.timeLength*(70-30),50,70,50).addClass("output");
                 //contact
                 this.shape.line(0, 50, 30, 50).addClass("input").addClass("line");
                 this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
@@ -281,7 +313,7 @@ function GElement(name, type, posX, posY, svg) {
 
             case "ContactTP":
                 //completion bar
-                this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("output");
+                this.completionBar = this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("output");
                 //contact
                 this.shape.line(0, 50, 30, 50).addClass("intput").addClass("line");
                 this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
@@ -339,11 +371,11 @@ function GElement(name, type, posX, posY, svg) {
             break;
         }
         // this.shape.line(35, 15, 35, 35).addClass("output");
-        this.label = this.shape.text(this.name).move(50,-30).font({
+        this.label = this.shape.text(this.name).font({
             family:   'Helvetica'
         , size:     20
         , anchor:   'middle'
-        }).stroke({width:0}).addClass("variable").addClass("text");
+        }).stroke({width:0}).move(50,-10).addClass("variable").addClass("text");
         // this.shape.stroke({ width: 2, color: '#0f0f0f'});
         //this.shape.scale(1/50);
         this.shape.move(this.posX, this.posY);

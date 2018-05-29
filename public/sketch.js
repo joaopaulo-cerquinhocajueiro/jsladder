@@ -1,48 +1,25 @@
 
 var width = 800, height = 600;
+var horz = 8, vert = 6;
 
 SVG.on(document, 'DOMContentLoaded', function() {
-    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,240,800);
-    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,800);
-
-    var svgIO = SVG('io');
+    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,240,600);
+    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,600);
+    var svgIO = SVG('io').size('100%', '100%').viewbox(0,0,200,600);;
 
     toolBar = new ToolBar(svgToolbar);
-    elementTable = new ElementTable(svgTable, 8, 6);
-//    io = new IOView(svgIO, inputs, memories, outputs);
+    io = new IOView(svgIO, inputs, memories, outputs);
+    elementTable = new ElementTable(svgTable, horz, vert, io.coisos);
 
-    // buttonErase = createButton('Erase all');
-    // buttonErase.position(colSize*15, linSize*7);
-    // buttonErase.mousePressed(eraseAll);
+    buttonErase = document.getElementById('eraseButton');
+    buttonErase.addEventListener('click',eraseAll);
 
-    // buttonSave = createButton('Save code');
-    // buttonSave.position(colSize*15, linSize*8);
-    // buttonSave.mousePressed(saveCode);
+    buttonSave = document.getElementById('saveButton');
+    buttonSave.addEventListener('click',saveCode);
 
-    // buttonSimulate = createButton('Simulate');
-    // buttonSimulate.position(colSize*15, linSize*9);
-    // buttonSimulate.mousePressed(simulate);
+    buttonSimulate = document.getElementById('simulateButton');
+    buttonSimulate.addEventListener('click',simulate);
 })
-//draw.size(width/20,height/20);
-//draw.scale(20)
-
-//var canvas;//, text;
-//var hs1;
-var horz = 10; // 10 columns
-var vert = 8;  // 8 lines
-var colSize, linSize;
-
-var table = [];
-var verTable = [];
-
-var toolBar;
-var elementTable;
-var buttonErase, buttonSave, buttonSimulate,varList,coilList, timeInput;
-var varListExist=false;
-var coilListExist=false;
-var timeInputExist=false;
-var d = new Date();
-//var lastVarListPos;
 
 var inputs = ["a", "b", "c", "d"];
 var memories = ["x", "y", "z"];
@@ -99,8 +76,16 @@ function saveCode(){
  //   console.log(elementTable.json())
 }
 
-function simulate(){
+function simulate(e){
     elementTable.simulating = ! elementTable.simulating;
+    var simButton = e.target;
+    if(elementTable.simulating){
+        simButton.style.backgroundColor = "#4C50AF";
+        simButton.innerHTML = "Stop simulation";
+    } else {
+        simButton.style.backgroundColor = "#4CAF50";
+        simButton.innerHTML = "Simulate";
+    }
     //console.log(elementTable.simulating);
 }
 
