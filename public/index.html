@@ -15,15 +15,15 @@
 </head>
 
 <body>
-  <div id='contentor' class='flex-container'>
+<div id='menu' class='flex-item' class='flex-container'>
+  <button type="button" class="button" id="eraseButton" class='flex-item'>Erase all</button>
+  <button type="button" class="button" id="saveButton" class='flex-item'>Save project</button>
+  <button type="button" class="button" id="simulateButton" class='flex-item'>Simulate</button>
+  <input type="file" id="inputFile" name="inputFile" class="button"/>
+</div>
+<div id='contentor' class='flex-container'>
     <div id='table' class='flex-item'></div>
-    <div id='toolbarBig' class='flex-item' class='flex-container'>
-      <div id='toolbar' class='flex-item'>  
-      </div>
-      <button type="button" class="button" id="eraseButton" class='flex-item'>Erase all</button>
-      <button type="button" class="button" id="saveButton" class='flex-item'>Save project</button>
-      <button type="button" class="button" id="simulateButton" class='flex-item'>Simulate</button>
-      <input type="file" id="inputFile" name="inputFile" />
+    <div id='toolbar' class='flex-item'>  
     </div>
     <div id='io' class='flex-item'></div>
   </div>

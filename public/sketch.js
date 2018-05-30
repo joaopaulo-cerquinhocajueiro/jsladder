@@ -19,7 +19,11 @@ SVG.on(document, 'DOMContentLoaded', function() {
 
     buttonSimulate = document.getElementById('simulateButton');
     buttonSimulate.addEventListener('click',simulate);
-})
+
+    // Sempre que mudar o arquivo, carrega o novo
+    inputFile = document.getElementById('inputFile');
+    inputFile.addEventListener('change', handleFileSelect, false);
+});
 
 var inputs = ["a", "b", "c", "d"];
 var memories = ["x", "y", "z"];
@@ -89,91 +93,89 @@ function simulate(e){
     //console.log(elementTable.simulating);
 }
 
-function setup() {
+// function setup() {
 
 
-    //varList = createSelect();
+//     //varList = createSelect();
     
-    var bInputHorPos = 15;
-    var bInputVerPos = 2;
-    for(var i = 0; i< inputs.length;i++){
-        buttonInputs[i] = new Bit(inputs[i],createVector(bInputHorPos,bInputVerPos),"input");
-        bInputVerPos++;
-    }
-    var bInputHorPos = 16.5;
-    var bInputVerPos = 2;
-    for(var i = 0; i< memories.length;i++){
-        dispMemories[i] = new Bit(memories[i],createVector(bInputHorPos,bInputVerPos),"memory");
-        bInputVerPos ++;
-    }
-    var bInputHorPos = 18;
-    var bInputVerPos = 2;
-    for(var i = 0; i< outputs.length;i++){
-        dispOutputs[i] = new Bit(outputs[i],createVector(bInputHorPos,bInputVerPos),"output");
-        bInputVerPos ++;
-    }
+//     var bInputHorPos = 15;
+//     var bInputVerPos = 2;
+//     for(var i = 0; i< inputs.length;i++){
+//         buttonInputs[i] = new Bit(inputs[i],createVector(bInputHorPos,bInputVerPos),"input");
+//         bInputVerPos++;
+//     }
+//     var bInputHorPos = 16.5;
+//     var bInputVerPos = 2;
+//     for(var i = 0; i< memories.length;i++){
+//         dispMemories[i] = new Bit(memories[i],createVector(bInputHorPos,bInputVerPos),"memory");
+//         bInputVerPos ++;
+//     }
+//     var bInputHorPos = 18;
+//     var bInputVerPos = 2;
+//     for(var i = 0; i< outputs.length;i++){
+//         dispOutputs[i] = new Bit(outputs[i],createVector(bInputHorPos,bInputVerPos),"output");
+//         bInputVerPos ++;
+//     }
 
-    // Sempre que mudar o arquivo, carrega o novo
-    document.getElementById('inputFile').addEventListener('change', handleFileSelect, false);
-}
+// }
 
-function draw() {
-    background(255,255,220);
-    elementTable.draw();
+// function draw() {
+//     background(255,255,220);
+//     elementTable.draw();
     
-    toolBar.update();
-    toolBar.draw();
-    push();
-    scale(colSize,linSize); // Scale to the actual element size
-    noStroke();
-    fill(0);
-    textSize(0.3); 
-    textAlign(CENTER,BOTTOM);
+//     toolBar.update();
+//     toolBar.draw();
+//     push();
+//     scale(colSize,linSize); // Scale to the actual element size
+//     noStroke();
+//     fill(0);
+//     textSize(0.3); 
+//     textAlign(CENTER,BOTTOM);
         
-    text("Inputs",15,1);
-    text("Memories",16.5,1);
-    text("Outputs",18,1);
-    pop();
-    for(var i = 0; i< inputs.length;i++){
-        buttonInputs[i].draw();
-    }
-    for(var i = 0; i< outputs.length;i++){
-        dispOutputs[i].draw();
-    }
-    for(var i = 0; i< memories.length;i++){
-        dispMemories[i].draw();
-    }
-}
+//     text("Inputs",15,1);
+//     text("Memories",16.5,1);
+//     text("Outputs",18,1);
+//     pop();
+//     for(var i = 0; i< inputs.length;i++){
+//         buttonInputs[i].draw();
+//     }
+//     for(var i = 0; i< outputs.length;i++){
+//         dispOutputs[i].draw();
+//     }
+//     for(var i = 0; i< memories.length;i++){
+//         dispMemories[i].draw();
+//     }
+// }
 
-function mousePressed() {
-    if (elementTable.mouseIsOver()) {
-        elementTable.clicked();
-    } else {
-        toolBar.select();
-        //varList.remove();
-        varList.hide();
-        coilList.hide();
-        for(var i = 0; i< inputs.length;i++){
-            if(buttonInputs[i].mouseIsOver()){
-                buttonInputs[i].toggle();
-            }
-        }
-    }
-}
+// function mousePressed() {
+//     if (elementTable.mouseIsOver()) {
+//         elementTable.clicked();
+//     } else {
+//         toolBar.select();
+//         //varList.remove();
+//         varList.hide();
+//         coilList.hide();
+//         for(var i = 0; i< inputs.length;i++){
+//             if(buttonInputs[i].mouseIsOver()){
+//                 buttonInputs[i].toggle();
+//             }
+//         }
+//     }
+// }
 
-function mouseDragged() {
-    if (elementTable.mouseIsOver()) {
-        elementTable.dragged();
-    }
-}
+// function mouseDragged() {
+//     if (elementTable.mouseIsOver()) {
+//         elementTable.dragged();
+//     }
+// }
 
-function windowResized() {
-    canvas.resize(innerWidth,innerHeight);
-    resize(innerWidth,innerHeight);
-    buttonErase.position(colSize*15, linSize*7);
-    buttonSave.position(colSize*15, linSize*8);
-    buttonSimulate.position(colSize*15, linSize*9);
-}
+// function windowResized() {
+//     canvas.resize(innerWidth,innerHeight);
+//     resize(innerWidth,innerHeight);
+//     buttonErase.position(colSize*15, linSize*7);
+//     buttonSave.position(colSize*15, linSize*8);
+//     buttonSimulate.position(colSize*15, linSize*9);
+// }
 
 function handleFileSelect(evt) { // always when selecting a new file
   var files = evt.target.files; // get the array with the file (there is only one)
@@ -195,6 +197,8 @@ function handleFileSelect(evt) { // always when selecting a new file
       elementTable.writeJson(codeObject);
       var horTableRead = codeObject.horizontal;
       var verTableRead = codeObject.vertical;
+      io.writeJson(codeObject);
+      elementTable.ioElements = io.coisos;
     //   var span = document.createElement('span');
     //   span.innerHTML = ['<br>',horTableRead[0],'<br>',verTableRead[0]].join('');
     //   document.getElementById('fileDescription').insertBefore(span, null);

@@ -1,0 +1,60 @@
+var jsonObject = {
+  "horizontal": [
+    [
+      {
+        "type": "ContactNO",
+        "name": "a"
+      },
+      {
+        "type": "ContactNO",
+        "name": "q"
+      },
+      {
+        "type": "ContactRise",
+        "name": "b"
+      },
+      {
+        "type": "CoilReset",
+        "name": "q"
+      }
+    ],
+    [
+      "Empty",
+      {
+        "type": "ContactNC",
+        "name": "q"
+      },
+      {
+        "type": "ContactRise",
+        "name": "b"
+      },
+      {
+        "type": "CoilSet",
+        "name": "q"
+      }
+    ]
+  ],
+  "vertical": [
+    [
+      "VerLine",
+      "Empty",
+      "Empty"
+    ]
+  ],
+  "horSize": 4,
+  "verSize": 2,
+  "variables": [
+    {
+      "type": "input",
+      "name": "a"
+    },
+    {
+      "type": "input",
+      "name": "b"
+    },
+    {
+      "type": "output",
+      "name": "q"
+    }
+  ]
+}

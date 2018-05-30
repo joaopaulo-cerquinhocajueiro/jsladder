@@ -65,4 +65,11 @@ function Bit(name,posX,posY,type,svg){
             this.display.fill(this.value?'red':'blue');
         }
     }
+
+    this.json = function(){
+        var returnValue = {};
+        returnValue['type'] = this.type;
+        returnValue['name'] = this.name;
+        return returnValue;
+    }
 }

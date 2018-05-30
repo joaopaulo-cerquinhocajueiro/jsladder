@@ -24,7 +24,7 @@ body {padding: 0; margin: 0;}
       margin:1px;
       margin-top: 1px;
       
-      line-height: 60px;
+      /* line-height: 60px; */
       color: white;
       font-weight: bold;
       font-size: 3em;
@@ -39,16 +39,17 @@ body {padding: 0; margin: 0;}
       background: thistle;
       
 }
-#toolbarBig{
-      width: 20%;
-      flex-basis: 20%;
+#menu{
+      flex-basis: 10%;
       flex-grow:2;
       flex-shrink:7;
-      background: seashell;
-      
+      justify-content: start;
+      background: #9CFFA0      
 }
 #toolbar{
+      width: 20%;
       height: 80%;
+      background: seashell;
 }
 #io{
       width: 20%;
