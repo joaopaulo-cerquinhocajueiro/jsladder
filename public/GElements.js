@@ -326,6 +326,43 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(50,30,60,30).addClass("output").addClass("line");
             break;
             
+            case "ContactZero":
+                //completion bar
+                //this.completionBar = this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("output").addClass("line");
+                //contact
+                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line");
+                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
+                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line");
+                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line");
+                //internal
+                this.shape.line(50, 75, 35, 60).addClass("output").addClass("line");
+                this.shape.path('M 50 20 C 50 75, 20 75, 40 80').addClass("output").addClass("line");
+                //clock
+                //this.shape.circle(20).move(40,20).addClass("output").addClass("line");
+                //this.shape.line(50,30,50,20).addClass("output").addClass("line");
+                //this.shape.line(50,30,60,30).addClass("output").addClass("line");
+            break;
+            
+            case "ContactDone":
+                //completion bar
+                this.completionBar = this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("output").addClass("line");
+                //contact
+                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line");
+                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
+                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line");
+                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line");
+                //internal
+                this.shape.line(35, 75, 45, 75).addClass("output").addClass("line");
+                this.shape.line(55, 75, 65, 75).addClass("output").addClass("line");
+                this.shape.line(45, 75, 45, 55).addClass("output").addClass("line");
+                this.shape.line(55, 75, 55, 55).addClass("output").addClass("line");
+                this.shape.line(45, 55, 55, 55).addClass("output").addClass("line");
+                //clock
+                this.shape.circle(20).move(40,20).addClass("output").addClass("line");
+                this.shape.line(50,30,50,20).addClass("output").addClass("line");
+                this.shape.line(50,30,60,30).addClass("output").addClass("line");
+            break;
+            
             case "CoilNO":
                 this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");

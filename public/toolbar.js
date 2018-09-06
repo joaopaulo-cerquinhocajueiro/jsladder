@@ -12,6 +12,12 @@ function ToolBar(svg) {
                      new GElement('', 'CoilReset',  130, 240, this.svg),
                      new GElement('', 'Eraser',     130, 400, this.svg),
                      new GElement('', 'Hand',       130, 480, this.svg),
+                     new GElement('', 'CoilUp',     250,   0, this.svg),
+                     new GElement('', 'CoilDown',   250,  80, this.svg),
+                     new GElement('', 'CoilTR',     250, 160, this.svg),
+                     new GElement('', 'CoilTS',     250, 240, this.svg),
+                     new GElement('', 'ContactDone',250, 320, this.svg),
+                     new GElement('', 'ContactZero',250, 400, this.svg),
                      new GElement('', 'ContactTON',  10, 320, this.svg),
                      new GElement('', 'ContactTOF',  10, 400, this.svg),
                      new GElement('', 'ContactTP',   10, 480, this.svg)]

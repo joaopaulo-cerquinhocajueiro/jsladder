@@ -3,7 +3,7 @@ var width = 800, height = 600;
 var horz = 8, vert = 6;
 
 SVG.on(document, 'DOMContentLoaded', function() {
-    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,240,600);
+    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,600);
     var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,600);
     var svgIO = SVG('io').size('100%', '100%').viewbox(0,0,200,600);;
 
