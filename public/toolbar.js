@@ -14,7 +14,14 @@ function ToolBar(svg) {
                      new GElement('', 'Hand',       130, 480, this.svg),
                      new GElement('', 'ContactTON',  10, 320, this.svg),
                      new GElement('', 'ContactTOF',  10, 400, this.svg),
-                     new GElement('', 'ContactTP',   10, 480, this.svg)]
+                     new GElement('', 'ContactTP',   10, 480, this.svg),
+                     new GElement('', 'CoilUp',     250,   0, this.svg),
+                     new GElement('', 'CoilDn',     250,  80, this.svg),
+                     new GElement('', 'CoilTSet',   250, 160, this.svg),
+                     new GElement('', 'CoilTReset', 250, 240, this.svg),
+                     new GElement('', 'Contact0', 250, 320, this.svg),
+                     new GElement('', 'ContactDone', 250, 400, this.svg)]//,
+                     //new GElement('', 'Contact',  250, 480, this.svg)]
     this.selectedShape = this.elements[10]; // Hand
     this.selectedShape.status = "selected"
 //    this.svg.line(0,0,50,50).stroke({width:4})

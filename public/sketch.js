@@ -1,14 +1,14 @@
 
-var width = 800, height = 600;
+var width = 800, height = 400;
 var horz = 8, vert = 6;
 
 SVG.on(document, 'DOMContentLoaded', function() {
-    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,240,600);
-    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,600);
-    var svgIO = SVG('io').size('100%', '100%').viewbox(0,0,200,600);;
+    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
+    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,700);
+    var svgIO = SVG('io').size('100%', '100%').viewbox(0,0,350,700);
 
     toolBar = new ToolBar(svgToolbar);
-    io = new IOView(svgIO, inputs, memories, outputs);
+    io = new IOView(svgIO, inputs, memories, outputs, counters);
     elementTable = new ElementTable(svgTable, horz, vert, io.coisos);
 
     buttonErase = document.getElementById('eraseButton');
@@ -28,6 +28,7 @@ SVG.on(document, 'DOMContentLoaded', function() {
 var inputs = ["a", "b", "c", "d"];
 var memories = ["x", "y", "z"];
 var outputs = ["q","coiso", "valvula"];
+var counters = ["c0", "c1", "c2", "c3"];
 
 // var buttonInputs = [];
 // var dispMemories = [];

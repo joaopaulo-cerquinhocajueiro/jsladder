@@ -1,12 +1,15 @@
-function IOView(svg, inputs, memories, outputs){
+function IOView(svg, inputs, memories, outputs, counters){
     this.svg = svg;
     this.inputs = inputs;
     this.outputs = outputs;
     this.memories = memories;
+    this.counters = counters;
+
+    distanceY = 50;
 
     this.coisos = [];
 
-    this.create = function(inputs, memories, outputs){
+    this.create = function(inputs, memories, outputs,counters){
         this.coisos = [];
         this.svg.clear();
         posY = 0;
@@ -15,10 +18,10 @@ function IOView(svg, inputs, memories, outputs){
         , size:     20
         , anchor:   'middle'
         });
-            posY+=70;
+            posY+=distanceY+20;
         inputs.forEach(input => {
             this.coisos.push(new Bit(input,10,posY,"input",this.svg));
-            posY +=70;
+            posY +=distanceY;
         });
         
         posY = 0;
@@ -27,11 +30,11 @@ function IOView(svg, inputs, memories, outputs){
         , size:     20
         , anchor:   'middle'
         });
-        posY+=70;
+        posY+=distanceY+20;
         
         memories.forEach(memory => {
             this.coisos.push(new Bit(memory,85,posY,"memory",this.svg));
-            posY +=70;
+            posY +=distanceY;
         });
         
         posY = 0;
@@ -40,25 +43,41 @@ function IOView(svg, inputs, memories, outputs){
         , size:     20
         , anchor:   'middle'
         });
-        posY+=70;
+        posY+=distanceY+20;
         
         outputs.forEach(output => {
             this.coisos.push(new Bit(output,160,posY,"output",this.svg));
-            posY +=70;
+            posY +=distanceY;
+        });
+
+        posY = 0;
+        this.svg.text('counters').move(280,posY).font({
+            family:   'Helvetica'
+        , size:     20
+        , anchor:   'middle'
+        });
+        posY+=distanceY+20;
+        counters.forEach(counter => {
+            this.coisos.push(new Value(counter,260,posY,"counter",this.svg));
+            posY +=distanceY*1.5;
         });
 
         this.coisos.forEach(item => {
             item.draw();
         });
+
+
+
     }
 
-    this.create(this.inputs,this.memories,this.outputs);
+    this.create(this.inputs,this.memories,this.outputs,this.counters);
 
     this.writeJson = function(codeObject){
         var variablesRead = codeObject.variables;
         var inputs = [];
         var memories = [];
         var outputs = [];
+        var counters = [];
         variablesRead.forEach(variable =>{
             switch(variable.type){
             case 'input': inputs.push(variable.name);
@@ -67,8 +86,10 @@ function IOView(svg, inputs, memories, outputs){
                 break;
             case 'output': outputs.push(variable.name);
                 break;
+                case 'counter': counters.push(variable.name);
+                break;
             }
         });
-        this.create(inputs,memories,outputs);
+        this.create(inputs,memories,outputs,counters);
     }
 }

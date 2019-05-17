@@ -326,6 +326,47 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(50,30,60,30).addClass("output").addClass("line");
             break;
             
+            case "Contact0":
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(50, 70, 60, 70).addClass("line").addClass("output");
+                this.shape.text('Z',50,50).font({
+                    family:   'Helvetica'
+                , size:     30
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,35);
+                this.shape.text('cnt',50,25).font({
+                    family:   'Helvetica'
+                , size:     17
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,60);
+            break;
+            
+            case "ContactDone":
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(50, 70, 60, 70).addClass("line").addClass("output");
+                this.shape.text('DN',50,50).font({
+                    family:   'Helvetica'
+                , size:     25
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,35);
+                this.shape.text('cnt',50,25).font({
+                    family:   'Helvetica'
+                , size:     17
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,60);
+            break;
+            
             case "CoilNO":
                 this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
@@ -350,7 +391,7 @@ function GElement(name, type, posX, posY, svg) {
                     family:   'Helvetica'
                 , size:     30
                 , anchor:   'middle'
-                }).addClass("input").addClass("text").move(50,35);;
+                }).addClass("input").addClass("text").move(50,35);
             break;
             
             case "CoilReset":
@@ -363,6 +404,72 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     30
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,35);
+            break;
+
+            case "CoilUp":
+                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
+                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
+                //internal
+                this.shape.line(60, 40, 50, 40).addClass("output").addClass("line");
+                this.shape.line(50, 40, 50, 60).addClass("output").addClass("line");
+                this.shape.line(50, 60, 40, 60).addClass("output").addClass("line");
+                this.shape.text('cnt',50,25).font({
+                    family:   'Helvetica'
+                , size:     17
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,60);
+            break;
+
+            case "CoilDn":
+                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
+                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
+                //internal
+                this.shape.line(60, 60, 50, 60).addClass("output").addClass("line");
+                this.shape.line(50, 40, 50, 60).addClass("output").addClass("line");
+                this.shape.line(50, 40, 40, 40).addClass("output").addClass("line");
+                this.shape.text('cnt',50,25).font({
+                    family:   'Helvetica'
+                , size:     17
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,60);
+            break;
+
+            case "CoilTSet":
+                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
+                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line");
+                this.shape.text('S',50,50).font({
+                    family:   'Helvetica'
+                , size:     30
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,35);
+                this.shape.text('cnt',50,25).font({
+                    family:   'Helvetica'
+                , size:     17
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,60);
+            break;
+            
+            case "CoilTReset":
+                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
+                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line");
+                this.shape.text('R').font({
+                    family:   'Helvetica'
+                , size:     30
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,35);
+                this.shape.text('cnt',50,25).font({
+                    family:   'Helvetica'
+                , size:     17
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,60);
             break;
         }
         // this.shape.line(35, 15, 35, 35).addClass("output");

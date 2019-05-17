@@ -16,9 +16,9 @@ function Bit(name,posX,posY,type,svg){
         } else {
             this.drawOutput()
         }
-        this.label = this.shape.text(this.name).move(20,-50).font({
-            family:   'Helvetica'
-        , size:     20
+        this.label = this.shape.text(this.name).move(20,-45).font({
+            family:   'Lucida'
+        , size:     15
         , anchor:   'middle'
         }).stroke({width:0}).addClass("variable").addClass("text");
         this.shape.move(this.posX, this.posY);
@@ -28,17 +28,17 @@ function Bit(name,posX,posY,type,svg){
     var that = this;
 
     this.drawOutput = function(){
-        that.display = that.shape.rect(40,40).radius(15).stroke('black').fill(that.value?'red':'blue');
+        that.display = that.shape.rect(40,20).radius(10).stroke('black').fill(that.value?'red':'blue');
     }
 
     this.drawInput = function(){
-        that.shape.rect(40,40).radius(15).fill('white').stroke('black');
-        that.toggle = that.shape.rect(30,40).radius(15)
+        that.shape.rect(40,20).radius(5).fill('white').stroke('black');
+        that.toggle = that.shape.rect(25,20).radius(5)
 
         if(that.value == 0){
             that.toggle.move(0,0).fill('blue');
         } else {
-            that.toggle.move(10,0).fill('red');
+            that.toggle.move(15,0).fill('red');
         }
 //        rect(pos,-0.2,0.3,0.4,0.15);
     }
@@ -49,7 +49,7 @@ function Bit(name,posX,posY,type,svg){
             if(that.value == 0){
                 that.toggle.move(0,0).fill('blue');
             } else {
-                that.toggle.move(10,0).fill('red');
+                that.toggle.move(15,0).fill('red');
             }
         });
     }
