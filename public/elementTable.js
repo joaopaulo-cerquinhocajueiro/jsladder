@@ -9,6 +9,8 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.contacts = ["ContactNO", "ContactNC","ContactRise","ContactFall","HorLine"];
     this.coils = ["CoilNO", "CoilNC","CoilSet","CoilReset"];
     this.timers = ["ContactTON","ContactTOF","ContactTP"];
+    this.counterCoils = ["CoilUp", "CoilDn", "CoilTSet", "CoilTReset"];
+    this.counterContacts = ["Contact0", "ContactDone"];
     
     this.clickFunction = function(element, newType, table, index){
         var posX = element.posX;
@@ -67,16 +69,28 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.coilSelector.id = 'coilSelector';
     this.coilSelector.className += 'selector';
 
+    this.counterSelector = document.createElement('select');
+    document.body.appendChild(this.counterSelector);
+    this.counterSelector.id = 'counterSelector';
+    this.counterSelector.className += 'selector';
+
     //Populate the lists
     var that = this;
     this.ioElements.forEach(element =>{
-        var option = document.createElement("option");
-        option.value = option.text = element.name;
-        that.contactSelector.add(option);
-        if (element.type !='input'){
+        if(element.type == 'input'|| element.type == 'output' || element.type == 'memory'){
             var option = document.createElement("option");
             option.value = option.text = element.name;
-            that.coilSelector.add(option);
+            that.contactSelector.add(option);
+            if (element.type !='input'){
+                var option = document.createElement("option");
+                option.value = option.text = element.name;
+                that.coilSelector.add(option);
+            }    
+        } else if(element.type == 'counter'){
+            var option = document.createElement("option");
+            option.value = option.text = element.name;
+            that.counterSelector.add(option);
+            
         }
     });
 
@@ -92,6 +106,7 @@ function ElementTable(svg,horz,vert,ioElements) {
     ['change','mouseout'].forEach(function(evt){
         that.contactSelector.addEventListener(evt, changeLabel);
         that.coilSelector.addEventListener(evt, changeLabel);
+        that.counterSelector.addEventListener(evt, changeLabel);
         that.timerDelaySelector.addEventListener(evt, changeLabel);
     });
 
@@ -110,6 +125,10 @@ function ElementTable(svg,horz,vert,ioElements) {
             break;
             case "coil": element.label.tspan(that.coilSelector.value);
                 sel = that.coilSelector;
+            break;
+            case "counterCoil":
+            case "counterContact": element.label.tspan(that.counterSelector.value);
+                sel = that.counterSelector;
             break;
         }
         sel.style.left = x;
@@ -137,6 +156,11 @@ function ElementTable(svg,horz,vert,ioElements) {
             item = 1000;
         elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
     }
+    this.selectCounter = function(){ //Function when selects the variable of a counter
+        var item = counterList.value();
+        console.log(item)
+        elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
+    }
     // Creates the dropdown list of variables for a contact
     //console.log(this)
     var that = this;
@@ -150,6 +174,9 @@ function ElementTable(svg,horz,vert,ioElements) {
                 } else if(that.coils.indexOf(toolBar.selectedShape.type) > -1){
                     that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                     that.setLabel(element,"coil");
+                } else if(that.counterCoils.indexOf(toolBar.selectedShape.type) > -1){
+                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
+                    that.setLabel(element,"counterCoil");
                 }
             });    
         } else {
@@ -167,6 +194,9 @@ function ElementTable(svg,horz,vert,ioElements) {
                 } else if(that.timers.indexOf(toolBar.selectedShape.type) > -1){
                     that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                     that.setLabel(element,"timer");
+                } else if(that.counterContacts.indexOf(toolBar.selectedShape.type) > -1){
+                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
+                    that.setLabel(element,"counterContact");
                 }
             });
             element.shape.mouseover(function(e){
@@ -227,7 +257,16 @@ function ElementTable(svg,horz,vert,ioElements) {
             that.ioElements.forEach(element =>{
                 values[element.name] = element.value;
             });
-            console.log(values);
+            //console.log(values);
+            // Reads all counter setPoints to a dictionary
+            setPoints = {};
+            that.ioElements.forEach(element =>{
+                if(element.type == 'counter'){
+                    setPoints[element.name] = element.setPoint;
+                }
+            });
+            // console.log(setPoints);
+
             // Update all elements
 //            console.log(horz);
             for(var x=0;x<horz;x++){ // for each column
@@ -243,6 +282,10 @@ function ElementTable(svg,horz,vert,ioElements) {
                 }
                 // Update the variable value
                 that.table[index].varValue = values[that.table[index].name];
+                // if is a counter contact, has to get also the setPoint
+                if(that.counterContacts.indexOf(that.table[index].type)>-1){
+                    that.table[index].sp = setPoints[that.table[index].name];
+                }
                 // and call solve on the element
                 that.table[index].solve();
                 for(y=1;y<vert-1;y++){ // for the middle lines
@@ -257,6 +300,10 @@ function ElementTable(svg,horz,vert,ioElements) {
                         that.table[index].inputValue = that.table[index-1].outputValue;
                     }
                     that.table[index].varValue = values[that.table[index].name];
+                    // if is a counter contact, has to get also the setPoint
+                    if(that.counterContacts.indexOf(that.table[index].type)>-1){
+                        that.table[index].sp = setPoints[that.table[index].name];
+                    }
                     // and call solve on the element
                     that.table[index].solve();
                 }
@@ -270,6 +317,10 @@ function ElementTable(svg,horz,vert,ioElements) {
                     that.table[index].inputValue = that.table[index-1].outputValue;
                 }
                 that.table[index].varValue = values[that.table[index].name];
+                // if is a counter contact, has to get also the setPoint
+                if(that.counterContacts.indexOf(that.table[index].type)>-1){
+                    that.table[index].sp = setPoints[that.table[index].name];
+                }
                 // and call solve on the element
                 that.table[index].solve();
 
@@ -318,6 +369,7 @@ function ElementTable(svg,horz,vert,ioElements) {
             that.ioElements.forEach(element =>{
                 if(element.type != 'input'){
                     element.value = values[element.name];
+                    console.log("updated "+element.name + ": "+element.value);
                     element.update();
                 }
             });

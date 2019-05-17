@@ -24,6 +24,8 @@ function GElement(name, type, posX, posY, svg) {
     switch (String(this.type)){
         case "ContactRise":
         case "ContactFall":
+        case "CoilUp":
+        case "CoilDn":
             this.oldVarValue;
             break;
         case "ContactTON":
@@ -38,6 +40,9 @@ function GElement(name, type, posX, posY, svg) {
             this.isCounting = false;
             this.timeLength = 1.0; // goes form 0 to 1
             this.intervalId;
+            break;
+        case "ContactDN":
+            this.sp=-1;
             break;
     }
     this.solve = function(){
@@ -92,7 +97,7 @@ function GElement(name, type, posX, posY, svg) {
                     this.outputValue = this.inputValue;
                 }
                 this.oldInputValue = this.inputValue; 
-            break;
+                break;
             case "ContactTOF":
                 if( !this.inputValue &&  this.oldInputValue){
                     this.isCounting = true;
@@ -124,7 +129,7 @@ function GElement(name, type, posX, posY, svg) {
                 }
                 this.oldInputValue = this.inputValue; 
                     //console.log(d.getTime());
-            break;
+                break;
 
             case "ContactTP":
                 if( this.inputValue &&  !this.oldInputValue && !this.isCounting){
@@ -150,6 +155,22 @@ function GElement(name, type, posX, posY, svg) {
                 }
                 this.oldInputValue = this.inputValue; 
             break;
+
+            case "Contact0":
+                if(this.inputValue && this.varValue==0){
+                    this.outputValue = 1;
+                } else {
+                    this.outputValue = 0;
+                }
+            break;
+
+            case "ContactDone":
+                if(this.inputValue && this.varValue==this.sp){
+                    this.outputValue = 1;
+                } else {
+                    this.outputValue = 0;
+                }
+            break;
             
             case "CoilNO":
                 this.outputValue  = this.inputValue;
@@ -174,6 +195,37 @@ function GElement(name, type, posX, posY, svg) {
                 }
                 this.outputValue = this.inputValue;
             break;
+
+            case "CoilUp":
+                this.outputValue = this.inputValue && !this.oldVarValue; //
+                this.oldVarValue = this.inputValue;
+                if(this.outputValue){
+                    values[this.name]++;
+                }
+                break;
+
+            case "CoilDn":
+                this.outputValue = this.inputValue && !this.oldVarValue; //
+                this.oldVarValue = this.inputValue;
+                if(this.outputValue){
+                    values[this.name]--;
+                }
+                break;
+
+            case "CoilTSet":
+                this.outputValue  = this.inputValue;
+                if(this.outputValue){
+                    values[this.name] = setPoints[this.name]; //
+                }
+                break;
+
+            case "CoilTReset":
+                this.outputValue  = this.inputValue;
+                if(this.outputValue){
+                    values[this.name] = 0; //
+                }
+                break;
+
         }
     }
 

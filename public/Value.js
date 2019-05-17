@@ -6,8 +6,8 @@ function Value(name,posX,posY,type,svg){
     this.posY = posY;
     this.type = type;
     this.svg = svg;
-    this.value = 0;
-    this.setPoint = 0;
+    this.value = 2;
+    this.setPoint = 2;
     this.shape = this.svg.group();
     this.toggle = null;
 
@@ -38,9 +38,26 @@ function Value(name,posX,posY,type,svg){
         , size:     15
         , anchor:   'middle'
         }).stroke({width:0}).addClass("text");
+
+        that.spDisp = that.shape.text(that.setPoint.toString()).move(20,-8).font({
+            family:   'Lucida'
+        , size:     15
+        , anchor:   'middle'
+        }).stroke({width:0}).addClass("text");
+        
+        that.valDisp = that.shape.text(that.value.toString()).move(20,-28).font({
+            family:   'Lucida'
+        , size:     15
+        , anchor:   'middle'
+        }).stroke({width:0}).addClass("text");
+        
     }
 
     this.update = function(){
+        that.spDisp.plain(that.setPoint.toString());
+        that.spDisp.move(20,22);
+        that.valDisp.plain(that.value.toString());
+        that.valDisp.move(20,2);
     }
 
     this.json = function(){
