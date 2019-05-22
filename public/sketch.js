@@ -25,9 +25,9 @@ SVG.on(document, 'DOMContentLoaded', function() {
     inputFile.addEventListener('change', handleFileSelect, false);
 });
 
-var inputs = ["a", "b", "c", "d"];
+var inputs = ["chave1", "chave2", "nivel", "temperatura"];
 var memories = ["x", "y", "z"];
-var outputs = ["q","coiso", "valvula"];
+var outputs = ["treco","coiso", "troço", "cacareco"];
 var counters = ["c0", "c1", "c2", "c3"];
 
 // var buttonInputs = [];

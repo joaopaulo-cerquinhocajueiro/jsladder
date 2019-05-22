@@ -13,9 +13,9 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.counterContacts = ["Contact0", "ContactDone"];
     
     this.clickFunction = function(element, newType, table, index){
-        var posX = element.posX;
-        var posY = element.posY;
-        var name = element.name;
+        // var posX = element.posX;
+        // var posY = element.posY;
+        // var name = element.name;
         element.shape.clear();
         element.type = newType;
         element.draw();
@@ -32,8 +32,8 @@ function ElementTable(svg,horz,vert,ioElements) {
         this.svg.line(0,100*(i+0.5),100*this.horSize,100*(i+0.5)).stroke('darkGray');
     }
 
-    this.svg.line(0,0,0,this.verSize*100).addClass('line').addClass('input').stroke('red')
-    this.svg.line(this.horSize*100,0,this.horSize*100,this.verSize*100).addClass('line').stroke('blue')
+    this.phaseLine = this.svg.line(0,0,0,this.verSize*100).stroke({width:10,color:'black'});
+    this.groundLine = this.svg.line(this.horSize*100,0,this.horSize*100,this.verSize*100).stroke({width:10,color:'black'});
      
     index = 0;
     for (var l = 0; l < this.verSize-1 ; l++){
@@ -242,6 +242,8 @@ function ElementTable(svg,horz,vert,ioElements) {
     
     this.update = function() {
         if (that.simulating){ // If simulating
+            that.phaseLine.stroke('red');
+            that.groundLine.stroke('blue');
             // console.log("simulating");
             // put all elements as executing
             for (var index=0; index<horz*vert; index++){
@@ -369,12 +371,14 @@ function ElementTable(svg,horz,vert,ioElements) {
             that.ioElements.forEach(element =>{
                 if(element.type != 'input'){
                     element.value = values[element.name];
-                    console.log("updated "+element.name + ": "+element.value);
+                    // console.log("updated "+element.name + ": "+element.value);
                     element.update();
                 }
             });
             
         } else { // If not simulating,
+            that.phaseLine.stroke('black');
+            that.groundLine.stroke('black');
             // put all elements as offline
             for (var index=0; index<horz*vert; index++){
                 // If it is a timer, return to zero
