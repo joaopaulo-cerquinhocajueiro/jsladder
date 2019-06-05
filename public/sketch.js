@@ -17,6 +17,9 @@ SVG.on(document, 'DOMContentLoaded', function() {
     buttonSave = document.getElementById('saveButton');
     buttonSave.addEventListener('click',saveCode);
 
+    buttonExport = document.getElementById('exportButton');
+    buttonExport.addEventListener('click',exportCode);
+
     buttonSimulate = document.getElementById('simulateButton');
     buttonSimulate.addEventListener('click',simulate);
 
@@ -27,7 +30,7 @@ SVG.on(document, 'DOMContentLoaded', function() {
 
 var inputs = ["chave1", "chave2", "nivel", "temperatura"];
 var memories = ["x", "y", "z"];
-var outputs = ["treco","coiso", "troço", "cacareco"];
+var outputs = ["treco","coiso", "troco", "cacareco"];
 var counters = ["c0", "c1", "c2", "c3"];
 
 // var buttonInputs = [];
@@ -79,6 +82,15 @@ function saveCode(){
     var blob = new Blob([elementTable.json()], {type: "text/json;charset=utf-8"});
     saveAs(blob, filename+".json");
  //   console.log(elementTable.json())
+}
+
+function exportCode(){
+  var filename = "teste";
+  jsld2ard(elementTable.json(),code=>{
+    var blob = new Blob([code], {type: "text/text;charset=utf-8"});
+    saveAs(blob, filename+".ino");
+  });
+//   console.log(elementTable.json())
 }
 
 function simulate(e){
