@@ -3,6 +3,11 @@
 function codeRepr(element){
     var text;
     switch (element.type) {
+        case "ContactTON":
+        case "ContactTOF":
+        case "ContactTP":
+            text = element.type + "(timer" + element.tIdx + ", node" + element.i + ")";
+            break; 
         case "ContactNO":
         case "ContactNC":
         case "CoilNO":
@@ -117,14 +122,12 @@ function jsld2ard(jsonFile,callback) {
     });
     // console.log(inOuts,contacts,coils);
 
-    codeText += "// Nodes\n"
+    codeText += "\n// Nodes\n"
     inOuts.forEach(node =>{
         codeText += "Node node" + node.number + ";\n";
     });
 
-    sequence = makeSequence(inOuts,contacts,coils);
-
-    codeText += '\n';
+    codeText += '\n// Variables\n';
     actual_JSON['variables'].forEach(variable => {
         switch (variable.type) {
             case 'input': // define como input
@@ -143,6 +146,31 @@ function jsld2ard(jsonFile,callback) {
                 break;
         }
     });
+
+    codeText += '\n// Timers\n';
+    timerCounter = 0;
+    for(var i = 0;i<contacts.length;i++){
+        var contact = contacts[i];
+        if (contact.type == "ContactTON" || contact.type == "ContactTOF" || contact.type == "ContactTP"){
+            var type;
+            switch(contact.type){
+                case "ContactTON": type = 0;
+                break;
+                case "ContactTOF": type = 1;
+                break;
+                case "ContactTP": type = 2;
+                break;
+
+            }
+            contact.tIdx = timerCounter;
+            contacts[i].tIdx = timerCounter++;
+            codeText += "Timer timer" + contact.tIdx + "(" + type + ", " + contact.name*1000 + ");\n"
+        } 
+    }
+//    console.log(contacts);
+
+    sequence = makeSequence(inOuts,contacts,coils);
+
     codeText += '\nvoid setup(){\n';
     codeText += '\n\tnode0.write(HIGH); // Node 0 is the phase - it is always HIGH\n\n'
     actual_JSON['variables'].forEach(variable => {
