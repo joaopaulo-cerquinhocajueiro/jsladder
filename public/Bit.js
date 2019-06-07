@@ -22,7 +22,29 @@ function Bit(name,posX,posY,type,svg){
         , anchor:   'middle'
         }).stroke({width:0}).addClass("variable").addClass("text");
         this.shape.move(this.posX, this.posY);
-        
+        this.label.dblclick(event =>{
+            var boundingRect = event.target.getBoundingClientRect();
+            sel = document.createElement('input');
+            document.body.appendChild(sel);
+            sel.setAttribute('type', 'text');
+            console.log(event);
+            sel.setAttribute('value', event.target.innerHTML);
+            sel.id='label';
+            sel.className += 'selector';
+            sel.style.left = boundingRect.x;
+            sel.style.top = boundingRect.y;
+            sel.style.width = 50;
+            sel.style.display = 'block';
+            sel.focus();        // that.setPoint = 0;
+            sel.select();
+            sel.addEventListener("mouseout",event =>{
+                that.name = event.target.value;
+                console.log(that)
+                that.update();
+            //this.timerDelaySelector.style.display = 'none';
+                event.target.style.display = 'none';
+            });
+        });
     }
 
     var that = this;
@@ -33,18 +55,8 @@ function Bit(name,posX,posY,type,svg){
 
     this.drawInput = function(){
         that.shape.rect(40,20).radius(5).fill('white').stroke('black');
-        that.toggle = that.shape.rect(25,20).radius(5)
-
-        if(that.value == 0){
-            that.toggle.move(0,0).fill('blue');
-        } else {
-            that.toggle.move(15,0).fill('red');
-        }
-//        rect(pos,-0.2,0.3,0.4,0.15);
-    }
-
-    if(this.type == 'input'){
-        this.shape.click(function(){
+        that.toggle = that.shape.rect(25,20).radius(5);
+        that.toggle.click(function(){
             that.value = 1-that.value;
             if(that.value == 0){
                 that.toggle.move(0,0).fill('blue');
@@ -52,6 +64,13 @@ function Bit(name,posX,posY,type,svg){
                 that.toggle.move(15,0).fill('red');
             }
         });
+        console.log(that);
+        if(that.value == 0){
+            that.toggle.move(0,0).fill('blue');
+        } else {
+            that.toggle.move(15,0).fill('red');
+        }
+//        rect(pos,-0.2,0.3,0.4,0.15);
     }
 
     this.update = function(){
@@ -64,6 +83,7 @@ function Bit(name,posX,posY,type,svg){
         } else {
             this.display.fill(this.value?'red':'blue');
         }
+        this.label.plain(this.name).move(20,-17);
     }
 
     this.json = function(){
