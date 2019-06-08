@@ -41,6 +41,72 @@ function indexFromXY(x,y){
     return y*horz+x;
 }
 
+function renameInTable(elementTable,oldName,newName){
+  for(var i=0; i<elementTable.table.length; i++){
+    if(elementTable.table[i].name == oldName){
+      elementTable.table[i].name = newName;
+    }
+  }
+  for(var i=0; i<elementTable.contactSelector.options.length; i++){
+    if(elementTable.contactSelector.options[i].text == oldName){
+      elementTable.contactSelector.options[i].text = newName;
+      elementTable.contactSelector.options[i].value = newName;
+    }
+  }
+  for(var i=0; i<elementTable.coilSelector.options.length; i++){
+    if(elementTable.coilSelector.options[i].text == oldName){
+      elementTable.coilSelector.options[i].text = newName;
+      elementTable.coilSelector.options[i].value = newName;
+    }
+  }
+  for(var i=0; i<elementTable.counterSelector.options.length; i++){
+    if(elementTable.counterSelector.options[i].text == oldName){
+      elementTable.counterSelector.options[i].text = newName;
+      elementTable.counterSelector.options[i].value = newName;
+    }
+  }
+  
+}
+
+function renameInView(ioView,oldName,newName){
+  var index = ioView.inputs.findIndex(name =>{
+    return name == oldName;
+  });
+  if (index > -1){
+    inputs[index] = newName;
+  }
+  var index = ioView.memories.findIndex(name =>{
+    return name == oldName;
+  });
+  if (index > -1){
+    memories[index] = newName;
+  }
+  var index = ioView.outputs.findIndex(name =>{
+    return name == oldName;
+  });
+  if (index > -1){
+    outputs[index] = newName;
+  }
+  var index = ioView.counters.findIndex(name =>{
+    return name == oldName;
+  });
+  if (index > -1){
+    ioView.counters[index] = newName;
+  }
+  
+}
+
+function isNewName(ioList,name){
+  return ioList.filter(element =>{
+    return element.name == name;
+  }).length == 0;
+}
+
+function changeElementName(oldName,newName){
+  renameInView(io,oldName,newName);
+  renameInTable(elementTable,oldName,newName);
+}
+
 function choose(choices) {
     var index = Math.floor(Math.random() * choices.length);
     return choices[index];

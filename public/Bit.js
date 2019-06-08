@@ -38,11 +38,15 @@ function Bit(name,posX,posY,type,svg){
             sel.focus();        // that.setPoint = 0;
             sel.select();
             sel.addEventListener("mouseout",event =>{
-                that.name = event.target.value;
-                console.log(that)
-                that.update();
-            //this.timerDelaySelector.style.display = 'none';
-                event.target.style.display = 'none';
+                if(isNewName(elementTable.ioElements,event.target.value)){
+                    changeElementName(that.name,event.target.value);
+                    that.name = event.target.value;
+                    // console.log(that)
+                    that.update();
+                //this.timerDelaySelector.style.display = 'none';
+                    // event.target.style.display = 'none';    
+                }
+                event.target.parentNode.removeChild(event.target);
             });
         });
     }
