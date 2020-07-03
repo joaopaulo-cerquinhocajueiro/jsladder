@@ -12,7 +12,7 @@ body {padding: 0; margin: 0;}
       display: -ms-flexbox;
       display: -webkit-flex;
       display: flex;
-      /* height:50px; */
+      height:90%;
       -webkit-flex-flow: row wrap;
       justify-content: space-around;
       flex-flow: row;
@@ -32,7 +32,7 @@ body {padding: 0; margin: 0;}
 }
 #table{
       width:50%;
-      height:70%;
+      height:100%;
       background: lavender;
       
 }
@@ -41,7 +41,8 @@ body {padding: 0; margin: 0;}
       flex-grow:2;
       flex-shrink:7;
       justify-content: start;
-      background: #9CFFA0      
+      background: #9CFFA0;      
+      height:10%;
 }
 
 #contentor{
@@ -55,12 +56,12 @@ body {padding: 0; margin: 0;}
 
 #toolbar{
       width: 20%;
-      height: 70%;
+      height: 100%;
       background: seashell;
 }
 #io{
       width: 30%;
-      height:70%;
+      height:100%;
       background: wheat;
       
 }
