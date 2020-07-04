@@ -52,13 +52,13 @@ function Value(name,posX,posY,type,svg){
 
     this.drawCounter = function(){
         that.valBox = that.shape.rect(50,20).radius(2).fill('white').stroke('black');
-        that.shape.text("S").move(55,-10).font({
+        that.shape.text("S").move(55,17).font({
             family:   'Lucida'
         , size:     15
         , anchor:   'middle'
         }).stroke({width:0}).addClass("text");
         that.spBox = that.shape.rect(50,20).radius(2).fill('white').stroke('black').move(0,20);
-        that.shape.text("V").move(55,-30).font({
+        that.shape.text("V").move(55,-3).font({
             family:   'Lucida'
         , size:     15
         , anchor:   'middle'
