@@ -1,6 +1,6 @@
 
 var width = 800, height = 400;
-var horz = 8, vert = 6;
+var horz = 9, vert = 7;
 
 SVG.on(document, 'DOMContentLoaded', function() {
     var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
@@ -161,13 +161,19 @@ function exportCode(){
 
 function simulate(e){
     elementTable.simulating = ! elementTable.simulating;
+    var ioDiv = document.getElementById("io");
+    var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
     if(elementTable.simulating){
         simButton.style.backgroundColor = "#4C50AF";
         simButton.innerHTML = "Stop simulation";
+        ioDiv.style.display = 'flex';
+        toolbarDiv.style.display = 'none';
     } else {
         simButton.style.backgroundColor = "#4CAF50";
         simButton.innerHTML = "Simulate";
+        ioDiv.style.display = 'none';
+        toolbarDiv.style.display = 'flex';
     }
     //console.log(elementTable.simulating);
 }

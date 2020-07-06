@@ -16,7 +16,7 @@ function Bit(name,posX,posY,type,svg){
         } else {
             this.drawOutput()
         }
-        this.label = this.shape.text(this.name).move(20,-45).font({
+        this.label = this.shape.text(this.name).move(20,-22).font({
             family:   'Lucida'
         , size:     15
         , anchor:   'middle'
