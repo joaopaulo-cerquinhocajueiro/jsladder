@@ -1,0 +1,273 @@
+/*body {padding: 0; margin: 0;}*/
+.fs {position:fixed; bottom:20px; right:20px;}
+#enter {display:block;}
+#exit {display:none;}
+
+/* Reset das configuracoes de margem do HTML*/
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*Muda a cor do background e o tipo de fonte do corpo da pagina*/
+body
+{
+  background:#7ba87d;
+  color: rgb(0, 97, 8);
+  font-family: 'Roboto', sans-serif;
+  height: 100vh;
+  font-size: 12;
+}
+
+
+/*Retira o underline de links*/
+a
+{
+  color: #002c47;
+  text-decoration: none;
+}
+
+/*Adiciona o underline nos links quando passar o mouse por cima deles*/
+a:hover
+{
+  text-decoration: underline;
+}
+
+
+.titulo-header
+{
+  height: 5vh;
+}
+
+
+/*Muda a cor do menu do topo da pagina*/
+.menuN
+{
+  background-color: rgb(0, 97, 8);
+  position: fixed;
+  width: 100vw;
+  min-width: 700px;
+  top: 0;
+  z-index: 1;
+}
+
+
+/*transforma a lista de linhas em colunas*/
+.menuN ul
+{
+  display: flex;
+  justify-content: space-between;
+  padding-right: 1em;
+  padding-left: 0.5em;
+}
+
+/*Tira os pontos da lista do "menu"*/
+.menuN li
+{
+  list-style: none;
+}
+
+
+.programacao,
+.simulacao, 
+.contato
+{
+  padding: 2em;
+  min-height: 100vh;
+}
+
+.container
+{
+  min-width: 700px;
+}
+
+
+@media (min-width: 1000px)
+{
+  .container
+  {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.programacao,
+.simulacao, 
+.contato
+  {
+    padding: 2em;
+    min-height: 50vh;  
+  }
+}
+
+.programacao h2,
+.simulacao h2, 
+.contato h2
+{
+  font-size: 2em;
+  margin-bottom: 2em;
+  line-height: 2em;
+}
+
+
+/*Modifica a exibicao dos links dos menu nav*/
+.menuN .button
+{
+  border: none;
+  padding: 10px 10px;
+  display: block;
+  text-align: center;
+  background-color: rgb(0, 97, 8);
+  color:  whitesmoke ;
+  transition: background-color 100ms, color 100ms;
+}
+
+.menuN .button:hover
+{
+  background-color: whitesmoke ;
+  color: #00c510;
+}
+
+/*Modifica a exibicao dos links dos menu nav*/
+.menuN a
+{
+  border: none;
+  padding: 10px 10px;
+  font-size: 1.4em;
+  display: block;
+  text-align: center;
+  background-color: rgb(0, 97, 8);
+  color:  whitesmoke ;
+  transition: background-color 100ms, color 100ms;
+}
+
+.menuN a:hover
+{
+  background-color: whitesmoke ;
+  color: #00c510;
+}
+
+input{
+    margin: 0 0;
+    padding: 0px 0px;
+    font-size: .8em;
+}
+
+.flex-container {
+      padding: 0;
+      margin: 2;
+      
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      /* height:50px; */
+      -webkit-flex-flow: row wrap;
+      justify-content: space-around;
+      flex-flow: row;
+      align-items: flex-start;
+}
+      
+.flex-item {
+      padding: 1px;
+      margin:1px;
+      margin-top: 1px;
+      
+      /* line-height: 60px; */
+      color: white;
+      font-weight: bold;
+      font-size: 3em;
+      text-align: center;
+}
+
+#contentor{
+      flex-basis: 10%;
+      flex-grow:2;
+      flex-shrink:7;
+      justify-content: start;
+      height: 100vh;
+      background: #9CFFA0      
+}
+
+#table{
+      width:50wh;
+      height:100vh;
+      background: lavender;
+      
+}
+
+#toolbar{
+      width: 20wh;
+      height: 100vh;
+      background: seashell;
+}
+#io{
+      width: 30wh;
+      height:100vh;
+      background: wheat;
+      
+}
+
+@media (min-width: 1000px)
+{
+      #table,
+      #toolbar,
+      #io,
+      #contentor
+      {
+            height:50vh;   
+      }
+}
+
+.line{
+      stroke-width:3;
+      fill:none;
+}
+.text{
+      stroke: none;
+}
+
+.selector {
+      position: absolute;
+      /*background-color: #202020;*/
+      color: #000;
+      top: 25px;
+      left: 25px;
+      padding: 2px;
+      width: 50px;
+      display:none;
+      /*z-index:13;*/
+}
+
+
+/*Estilo da Secao Contato*/
+
+/*
+.contato .icons
+{
+  text-align: center;
+}
+*/
+
+.contato .img-icon
+{
+  color: rgb(0, 97, 8);
+  font-size: 4em;
+}
+
+.contato a
+{
+  color: rgb(0, 97, 8);
+  font-size: 4em;
+  transition: text-shadow 100ms;
+}
+
+.contato a:active,
+.contato a:hover
+{
+  text-decoration: none;
+  text-shadow: 0px 0px 10px rgba(10, 10, 10, 0.9);
+}

@@ -1,34 +1,66 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSLadder</title>
   <script language="javascript" type="text/javascript" src="libraries/svg.min.js"></script>
-  <script language="javascript" type="text/javascript" src="GElements.js"></script>
-  <script language="javascript" type="text/javascript" src="Bit.js"></script>
-  <script language="javascript" type="text/javascript" src="Value.js"></script>
-  <script language="javascript" type="text/javascript" src="ioview.js"></script>
-  <script language="javascript" type="text/javascript" src="toolbar.js"></script>
-  <script language="javascript" type="text/javascript" src="elementTable.js"></script>
-  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/GElements.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/Bit.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/Value.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/ioview.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/toolbar.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/elementTable.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/sketch.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/jsld2ard.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/FileSaver.min.js"></script>
   <!-- this line removes any default padding and style. you might only need one of these values set. -->
-  <link rel="stylesheet" type="text/css" href="style.css">    
+  <link rel="stylesheet" type="text/css" href="css/style.css">    
+  <!--Testes feitos por Neto-->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/78624cd837.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+  <!--Fim dos Testes feitos por Neto-->
  </style>
 </head>
 
 <body>
-<div id='menu' class='flex-item' class='flex-container'>
-  <button type="button" class="button" id="eraseButton" class='flex-item'>Erase all</button>
-  <button type="button" class="button" id="saveButton" class='flex-item'>Save project</button>
-  <button type="button" class="button" id="exportButton" class='flex-item'>Export arduino</button>
-  <button type="button" class="button" id="simulateButton" class='flex-item'>Simulate</button>
-  <input type="file" id="inputFile" name="inputFile" class="button"/>
-</div>
-<div id='contentor' class='flex-container'>
-    <div id='table' class='flex-item'></div>
-    <div id='toolbar' class='flex-item'></div>
-    <div id='io' class='flex-item'></div>
-  </div>
+  <header id="home">
+    <nav class = 'menuN'>  
+        <ul class = 'container'>
+          <li><a href ="#home"><i class="fas fa-home"></i></a></li>
+          <li><button type="button" class="button" id="saveButton">Save project</button></li>
+          <li><button type="button" class="button" id="simulateButton">Simulate</button></li>
+          <li><input  type="file" class="button" id="inputFile" name="inputFile"/></li>
+          <li><button type="button" class="button" id="exportButton">Export arduino</button></li>
+          <li><button type="button" class="button" id="eraseButton">Erase all</button></li>
+        </ul>
+    </nav>
+    <div class="titulo-header"> 
+
+    </div>
+  </header>  
+  <section class="programacao container" id="programacao">
+    <h2>Programação</h2>
+    <div id='contentor' class='flex-container'>
+      <div id='table' class='flex-item'></div>
+      <div id='toolbar' class='flex-item'></div>
+      <div id='io' class='flex-item'></div>
+    </div>
+  </section>
+  <section class="simulacao container" id="simulacao">
+  <h2>Simulação</h2>
+  </section>
+  <section class="contato container" id="contato">
+    <h2>Sobre</h2>
+    <div class="grid icons">
+        <a target="_blank" href="https://github.com/joaopaulo-cerquinhocajueiro/jsladder">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:joserodrigues.oliveiraneto@ufpe.br">
+            <i class="fas fa-envelope"></i>
+        </a>
+    </div>
+</section>
   <!--input type="number" id="timerDelay" name="timerDelay"/-->
   <!--input type="number" id="timerDelay" name="timerDelay" value="30"/-->
   <!--<output id="fileDescription"></output>-->
