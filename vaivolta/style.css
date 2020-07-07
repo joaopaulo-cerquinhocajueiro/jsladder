@@ -19,6 +19,22 @@ body {padding: 0; margin: 0;}
       align-items: flex-start;
 }
       
+.top-container {
+      padding: 2;
+      
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      height:10%;
+      -webkit-flex-flow: row wrap;
+      justify-content: space-around;
+      flex-flow: row;
+      align-items: flex-start;
+      background: #DCFCD0;      
+}
+
 .flex-item {
       padding: 1px;
       margin:1px;
@@ -37,12 +53,12 @@ body {padding: 0; margin: 0;}
       
 }
 #menu{
-      flex-basis: 10%;
+      flex-basis: 100%;
       flex-grow:2;
       flex-shrink:7;
       justify-content: start;
-      background: #9CFFA0;      
-      height:10%;
+      /* background: #9CFFA0;       */
+      height:100%;
 }
 
 #contentor{
