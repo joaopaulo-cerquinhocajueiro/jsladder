@@ -7,8 +7,30 @@ function VaiEVolta(svg, memories, counters){
 
     distanceY = 50;
 
-    this.fdcEsq = {"type":"input","name":"fdcEsq","value":0,"draw":function(){},"update":function(){}};
-    this.fdcDir = {"type":"input","name":"fdcDir","value":0,"draw":function(){},"update":function(){}};
+    this.fdcDir = {"type":"input",
+                   "name":"fdcDir",
+                   "value":0,
+                   "shape":this.svg,
+                   "draw":function(){
+                    //    console.log("Should draw line");
+                       this.line = this.shape.line(520, 450, 520, 550).addClass("line").stroke(this.value?"red":"blue");
+                   },
+                   "update":function(){
+                        this.line.stroke(this.value?'red':'blue');
+                   }
+                };
+    this.fdcEsq = {"type":"input",
+                   "name":"fdcEsq",
+                   "value":0,
+                   "shape":this.svg,
+                   "draw":function(){
+                    //    console.log("Should draw line");
+                       this.line = this.shape.line(20, 450, 20, 550).addClass("line").stroke(this.value?"red":"blue");
+                   },
+                   "update":function(){
+                        this.line.stroke(this.value?'red':'blue');
+                   }
+                };
     this.motorEsq = {"type":"output","name":"motorEsq","value":0,"draw":function(){},"update":function(){}};
     this.motorDir = {"type":"output","name":"motorDir","value":0,"draw":function(){},"update":function(){}};
     this.alarme = {"type":"output","name":"Alarme","value":0,"draw":function(){},"update":function(){}};
@@ -61,15 +83,22 @@ function VaiEVolta(svg, memories, counters){
         // Desenho da simulação
         // this.carrinho = this.svg.group().rect(40,20).radius(10).stroke('black').fill('none').move(100,500);
         this.carrinho = this.svg.image('carro.png',100,50).move(100,500);
+        this.svg.image("muro.jpeg",50,50).move(-40,500);
+        this.svg.image("muro.jpeg",50,50).move(600,500);
+        //  console.log(this.fdcEsq);
+        // this.fdcEsq.draw();
         that = this
         this.intervaloSimul = setInterval(function(){
             if (this.elementTable.simulating){
-                console.log("simulando");
-                if (that.motorDir.value == 1){
+                if (that.motorDir.value == 1 && that.carrinho.bbox().x<500){
                     that.carrinho.dx(5);
-                } else if(that.motorEsq.value == 1){
+                } else if(that.motorEsq.value == 1 && that.carrinho.bbox().x>0){
                     that.carrinho.dx(-5);
                 }
+                that.fdcEsq.value = that.carrinho.bbox().x<20 && that.carrinho.bbox().x>-80;
+                that.fdcDir.value = that.carrinho.bbox().x>420 && that.carrinho.bbox().x<520;
+                that.fdcEsq.update();
+                that.fdcDir.update();
             }
         },100);
     }

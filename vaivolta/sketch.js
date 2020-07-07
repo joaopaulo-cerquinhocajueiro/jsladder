@@ -1,11 +1,11 @@
 
-var width = 800, height = 400;
+var width = 800, height = 700;
 var horz = 9, vert = 7;
 
 SVG.on(document, 'DOMContentLoaded', function() {
     var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
     var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,700);
-    var svgSim = SVG('sim').size('100%', '100%').viewbox(0,0,350,700);
+    var svgSim = SVG('sim').size('100%', '100%').viewbox(0,0,600,700);
 
     toolBar = new ToolBar(svgToolbar);
     // io = new IOView(svgIO, inputs, memories, outputs, counters);
@@ -102,7 +102,7 @@ function isNewName(ioList,name){
 }
 
 function changeElementName(oldName,newName){
-  renameInView(io,oldName,newName);
+  renameInView(sim,oldName,newName);
   renameInTable(elementTable,oldName,newName);
 }
 
@@ -123,8 +123,8 @@ function resize(width,height) {
 //    } else {
 //        vert = 7;
 //    }
-    colSize = floor(0.9*width / (1.8*horz));
-    linSize = floor(0.9*height / (1,1*vert));
+    colSize = floor(0.9*width / (2.0*horz));
+    linSize = floor(0.9*height / (1.8*vert));
     if (colSize < linSize) {
         linSize = colSize;
 //        vert = floor(height/linSize);
@@ -160,6 +160,7 @@ function exportCode(){
 
 function simulate(e){
     elementTable.simulating = ! elementTable.simulating;
+    var tableDiv = document.getElementById("table");
     var simDiv = document.getElementById("sim");
     var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
@@ -167,12 +168,17 @@ function simulate(e){
         simButton.style.backgroundColor = "#4C50AF";
         simButton.innerHTML = "Stop simulation";
         simDiv.style.display = 'flex';
+        simDiv.style.width = '60%';
+        tableDiv.style.width = '40%';
+
         toolbarDiv.style.display = 'none';
     } else {
         simButton.style.backgroundColor = "#4CAF50";
         simButton.innerHTML = "Simulate";
         simDiv.style.display = 'none';
         toolbarDiv.style.display = 'flex';
+        toolbarDiv.style.width = '30%';
+        tableDiv.style.width = '70%';
     }
     //console.log(elementTable.simulating);
 }
