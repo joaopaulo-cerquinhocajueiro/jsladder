@@ -1,0 +1,37 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="../public/libraries/svg.min.js"></script>
+  <script language="javascript" type="text/javascript" src="../public/GElements.js"></script>
+  <script language="javascript" type="text/javascript" src="../public/Bit.js"></script>
+  <script language="javascript" type="text/javascript" src="../public/Value.js"></script>
+  <script language="javascript" type="text/javascript" src="vaiEVolta.js"></script>
+  <script language="javascript" type="text/javascript" src="../public/toolbar.js"></script>
+  <script language="javascript" type="text/javascript" src="../public/elementTable.js"></script>
+  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+  <script language="javascript" type="text/javascript" src="../public/libraries/jsld2ard.js"></script>
+  <script language="javascript" type="text/javascript" src="../public/libraries/FileSaver.min.js"></script>
+  <!-- this line removes any default padding and style. you might only need one of these values set. -->
+  <link rel="stylesheet" type="text/css" href="style.css">    
+ </style>
+</head>
+
+<body>
+<div id='menu' class='flex-item' class='flex-container'>
+  <button type="button" class="button" id="eraseButton" class='flex-item'>Erase all</button>
+  <button type="button" class="button" id="saveButton" class='flex-item'>Save project</button>
+  <button type="button" class="button" id="exportButton" class='flex-item'>Export arduino</button>
+  <button type="button" class="button" id="simulateButton" class='flex-item'>Simulate</button>
+  <input type="file" id="inputFile" name="inputFile" class="button"/>
+</div>
+<div id='contentor' class='flex-container'>
+    <div id='table' class='flex-item'></div>
+    <div id='toolbar' class='flex-item'></div>
+    <div id='sim' class='flex-item'></div>
+  </div>
+  <!--input type="number" id="timerDelay" name="timerDelay"/-->
+  <!--input type="number" id="timerDelay" name="timerDelay" value="30"/-->
+  <!--<output id="fileDescription"></output>-->
+
+</body>
+</html>
