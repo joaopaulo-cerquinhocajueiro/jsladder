@@ -162,15 +162,21 @@ function ElementTable(svg,horz,vert,ioElements) {
         elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
     }
     // Creates the dropdown list of variables for a contact
-    //console.log(this)
     var that = this;
     this.table.forEach(function(element,index,origTable){
         element.update();
         if((index+1)%that.horSize == 0){ //if on the last column
             element.shape.mousedown(function(){
+                // If using the eraser
                 if(toolBar.selectedShape.type == "Eraser"){
                     element.name = "";
-                    that.clickFunction(element,"Empty",origTable,index);
+                    that.clickFunction(element,"Empty",origTable,index); // add an empty element
+                } else if(toolBar.selectedShape.type == "Hand"){ // If using the Hand
+                    if(that.coils.indexOf(element.type) > -1){ // If the clicked element is a coil
+                        that.setLabel(element,"coil");
+                    } else if(that.counterCoils.indexOf(element.type) > -1){ // If the clicked element is a coil
+                        that.setLabel(element,"counterCoil");
+                    }
                 } else if(that.coils.indexOf(toolBar.selectedShape.type) > -1){
                     that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                     that.setLabel(element,"coil");
@@ -185,6 +191,14 @@ function ElementTable(svg,horz,vert,ioElements) {
                 if(toolBar.selectedShape.type == "Eraser"){
                     element.name = "";
                     that.clickFunction(element,"Empty",origTable,index);
+                } else if(toolBar.selectedShape.type == "Hand"){ // If using the Hand
+                    if(that.contacts.indexOf(element.type) > -1){ // If the clicked element is a coil
+                        that.setLabel(element,"contact");
+                    } else if(that.counterContacts.indexOf(element.type) > -1){ // If the clicked element is a coil
+                        that.setLabel(element,"counterContact");
+                    } else if(that.timers.indexOf(element.type) > -1){ // If the clicked element is a coil
+                        that.setLabel(element,"timer");
+                    }
                 } else if(toolBar.selectedShape.type == 'DrawLine'){
                     element.name = "";
                     that.clickFunction(element,'HorLine',origTable,index);
@@ -200,11 +214,15 @@ function ElementTable(svg,horz,vert,ioElements) {
                 }
             });
             element.shape.mouseover(function(e){
+                // Determina se tem um botão do mouse apertado e se sim, qual é
                 var whichButton = e.buttons === undefined? e.which : e.buttons;
+                // Se for o botão 1 (esquerdo)
                 if (whichButton == 1){
+                    // Se estiver com a ferramenta de desenhar, continua o traço
                     if(toolBar.selectedShape.type == 'DrawLine'){
                         element.name = "";
                         that.clickFunction(element,'HorLine',origTable,index);
+                    // Se estiver com a ferramenta de apagar, continua apagando
                     } else if(toolBar.selectedShape.type == "Eraser"){
                         element.name = "";
                         that.clickFunction(element,"Empty",origTable,index);
