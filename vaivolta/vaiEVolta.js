@@ -83,8 +83,8 @@ function VaiEVolta(svg, memories, counters){
         // Desenho da simulação
         // this.carrinho = this.svg.group().rect(40,20).radius(10).stroke('black').fill('none').move(100,500);
         this.carrinho = this.svg.image('carro.png',100,50).move(100,500);
-        this.svg.image("muro.jpeg",50,50).move(-40,500);
-        this.svg.image("muro.jpeg",50,50).move(600,500);
+        this.svg.image("muro.png",50,50).move(-40,500);
+        this.svg.image("muro.png",50,50).move(600,500);
         //  console.log(this.fdcEsq);
         // this.fdcEsq.draw();
         that = this
