@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSLadder</title>
+  <title>ladder.js</title>
   <script language="javascript" type="text/javascript" src="libraries/svg.min.js"></script>
   <script language="javascript" type="text/javascript" src="scripts/GElements.js"></script>
   <script language="javascript" type="text/javascript" src="scripts/Bit.js"></script>
@@ -11,6 +11,7 @@
   <script language="javascript" type="text/javascript" src="scripts/toolbar.js"></script>
   <script language="javascript" type="text/javascript" src="scripts/elementTable.js"></script>
   <script language="javascript" type="text/javascript" src="scripts/sketch.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/topnav.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/jsld2ard.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/FileSaver.min.js"></script>
   <!-- this line removes any default padding and style. you might only need one of these values set. -->
@@ -19,6 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/78624cd837.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!--Fim dos Testes feitos por Neto-->
  </style>
 </head>
@@ -26,21 +28,26 @@
 <body>
   <header id="home">
     <nav class = 'menuN'>  
-        <ul class = 'container'>
-          <li><a href ="#home"><i class="fas fa-home"></i></a></li>
-          <li><button type="button" class="button" id="saveButton">Save project</button></li>
-          <li><button type="button" class="button" id="simulateButton">Simulate</button></li>
-          <li><input  type="file" class="button" id="inputFile" name="inputFile"/></li>
-          <li><button type="button" class="button" id="exportButton">Export arduino</button></li>
-          <li><button type="button" class="button" id="eraseButton">Erase all</button></li>
-        </ul>
-    </nav>
-    <div class="titulo-header"> 
-
-    </div>
+      <ul class = 'container'>
+        <li><a href ="#home"><i class="fas fa-home"></i></a></li>
+        <li>
+          <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Load project</button>
+            <div id="myDropdown" class="dropdown-content">
+              <input  type="file" class="button" id="inputFile" name="inputFile"/>
+            </div>
+          </div>
+          </li>
+        <li><button type="button" class="button" id="saveButton">Save project</button></li>
+        <li><button type="button" class="button" id="simulateButton">Simulate</button></li>
+        <!--<li><button type="button" class="button" id="exportButton">Export arduino</button></li>-->
+        <li><button type="button" class="button" id="eraseButton">Erase all</button></li>
+      </ul>
+  </nav>
+  <section class="titulo-header"></section>
   </header>  
   <section class="programacao container" id="programacao">
-    <h2>Programação</h2>
+    <h2>Ladder.js</h2>
     <div id='contentor' class='flex-container'>
       <div id='table' class='flex-item'></div>
       <div id='toolbar' class='flex-item'></div>
@@ -48,10 +55,8 @@
     </div>
   </section>
   <section class="simulacao container" id="simulacao">
-  <h2>Simulação</h2>
-  </section>
   <section class="contato container" id="contato">
-    <h2>Sobre</h2>
+    <h2>About:
     <div class="grid icons">
         <a target="_blank" href="https://github.com/joaopaulo-cerquinhocajueiro/jsladder">
             <i class="fab fa-github"></i>
@@ -60,6 +65,7 @@
             <i class="fas fa-envelope"></i>
         </a>
     </div>
+    </h2>
 </section>
   <!--input type="number" id="timerDelay" name="timerDelay"/-->
   <!--input type="number" id="timerDelay" name="timerDelay" value="30"/-->
