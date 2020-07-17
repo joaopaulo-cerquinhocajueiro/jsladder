@@ -166,6 +166,25 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.table.forEach(function(element,index,origTable){
         element.update();
         if((index+1)%that.horSize == 0){ //if on the last column
+
+            element.shape.mouseout(function(e){
+                if(toolBar.selectedShape.type == 'Eraser' ||
+                   toolBar.selectedShape.type == 'Hand' || 
+                   that.counterCoils.indexOf(toolBar.selectedShape.type) > -1 ||
+                   that.coils.indexOf(toolBar.selectedShape.type) > -1){
+                        element.box.attr('fill-opacity',0.0);
+                }
+            });
+
+            element.shape.mouseover(function(e){
+                if(toolBar.selectedShape.type == 'Eraser' ||
+                   toolBar.selectedShape.type == 'Hand' || 
+                   that.counterCoils.indexOf(toolBar.selectedShape.type) > -1 ||
+                   that.coils.indexOf(toolBar.selectedShape.type) > -1){
+                        element.box.attr('fill-opacity',0.2);
+                }
+            });
+
             element.shape.mousedown(function(){
                 // If using the eraser
                 if(toolBar.selectedShape.type == "Eraser"){
@@ -187,7 +206,6 @@ function ElementTable(svg,horz,vert,ioElements) {
             });    
         } else {
             element.shape.mousedown(function(){
-                //console.log("Not last column")
                 if(toolBar.selectedShape.type == "Eraser"){
                     element.name = "";
                     that.clickFunction(element,"Empty",origTable,index);
@@ -213,7 +231,27 @@ function ElementTable(svg,horz,vert,ioElements) {
                     that.setLabel(element,"counterContact");
                 }
             });
+
+            element.shape.mouseout(function(e){
+                if(toolBar.selectedShape.type == 'DrawLine' ||
+                   toolBar.selectedShape.type == 'Eraser' ||
+                   toolBar.selectedShape.type == 'Hand' || 
+                   that.counterContacts.indexOf(toolBar.selectedShape.type) > -1 ||
+                   that.timers.indexOf(toolBar.selectedShape.type) > -1 || 
+                   that.contacts.indexOf(toolBar.selectedShape.type) > -1){
+                        element.box.attr('fill-opacity',0.0);
+                }
+            });
+
             element.shape.mouseover(function(e){
+                if(toolBar.selectedShape.type == 'DrawLine' || 
+                   toolBar.selectedShape.type == 'Eraser' ||
+                   toolBar.selectedShape.type == 'Hand' || 
+                   that.counterContacts.indexOf(toolBar.selectedShape.type) > -1 || 
+                   that.timers.indexOf(toolBar.selectedShape.type) > -1 || 
+                   that.contacts.indexOf(toolBar.selectedShape.type) > -1){
+                        element.box.attr('fill-opacity',0.2);
+                }
                 // Determina se tem um botão do mouse apertado e se sim, qual é
                 var whichButton = e.buttons === undefined? e.which : e.buttons;
                 // Se for o botão 1 (esquerdo)
@@ -237,7 +275,21 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.verTable.forEach(function(element,index,origTable){
         element.update();
         //var that = this;
-        element.shape.mousedown(function(){
+        element.shape.mouseout(function(e){
+            if(toolBar.selectedShape.type == 'DrawLine' ||
+               toolBar.selectedShape.type == 'Eraser'){
+                    element.box.attr('fill-opacity',0.0);
+            }
+        });
+
+        element.shape.mouseover(function(e){
+            if(toolBar.selectedShape.type == 'DrawLine' || 
+               toolBar.selectedShape.type == 'Eraser'){
+                    element.box.attr('fill-opacity',0.2);
+            }
+        });
+
+    element.shape.mousedown(function(){
             //that.clickFunction(element,"HorLine",origTable,index)
             if(toolBar.selectedShape.type == 'DrawLine'){
                 that.clickFunction(element,'VerLine',origTable,index)

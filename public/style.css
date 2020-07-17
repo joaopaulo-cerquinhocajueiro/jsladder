@@ -36,6 +36,11 @@ body {padding: 0; margin: 0;}
       background: lavender;
       
 }
+
+/* .element:hover{
+      fill-opacity:30%;
+} */
+
 #menu{
       flex-basis: 10%;
       flex-grow:2;

@@ -253,9 +253,9 @@ function GElement(name, type, posX, posY, svg) {
         }
 
         if(this.type == "VerLine"){
-            this.shape.rect(20,60).fill({opacity:0.0, color:"#880000"}).move(40,20);
+            this.box=this.shape.rect(20,60).class("element").fill({opacity:0.0, color:"#880000"}).move(40,20);
         } else {
-            this.shape.rect(80,60).fill({opacity:0.0, color:"#880000"}).move(10,20);
+            this.box=this.shape.rect(80,60).addClass("element").fill({opacity:0.0, color:"#880000"}).move(10,20);
         }
         switch (String(this.type)){
             case "HorLine":
