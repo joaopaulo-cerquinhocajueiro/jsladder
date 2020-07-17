@@ -25,7 +25,13 @@
   <input type="file" id="inputFile" name="inputFile" class="button"/>
 </div>
 <div id='contentor' class='flex-container'>
-    <div id='table' class='flex-item'></div>
+    <div id='tables' class='table-container'>
+      <div id='tableTabs' class="tab">
+        <button class="tablinks" onclick="openTable(event,1)">1</button>
+        <button class="tablinks" onclick="addTable(event)">+</button>
+      </div>
+      <div id='table' class='flex-item'></div>
+</div>
     <div id='toolbar' class='flex-item'></div>
     <div id='io' class='flex-item'></div>
   </div>

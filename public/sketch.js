@@ -198,3 +198,18 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.readAsText(f);
 }
 
+// Tab control
+function openTable(event,table){
+  console.log("Abre tabela "+table);
+}
+
+function addTable(event){
+  var tableTabs = document.getElementById("tableTabs");
+  var tableTabsLength = tableTabs.children.length;
+  var newButton = document.createElement("button");
+  newButton.className += "tablinks";
+  newButton.innerHTML = tableTabsLength;
+  newButton.onclick = (event => {openTable(event,tableTabsLength)});
+  console.log(tableTabs.lastChild);
+  tableTabs.insertBefore(newButton,tableTabs.lastChild.previousSibling);
+}
