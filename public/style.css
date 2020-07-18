@@ -136,21 +136,22 @@ body {padding: 0; margin: 0;}
       background-color: #acfdfe;
       float: left;
       border: 1px solid #ccc;
+      border-radius: 10px 10px 0px 0px;
       outline: none;
       cursor: pointer;
-      padding: 14px 16px;
-      transition: 0.3s;
+      padding: 4px 16px;
+      transition: 0.2s;
       font-size: 17px;
     }
     
     /* Change background color of buttons on hover */
     .tab button:hover {
-      background-color: #ddd;
+      background-color: #4aa;
     }
     
     /* Create an active/current tablink class */
-    .tab button.active {
-      background-color: #ccc;
+    button.selected {
+      background-color: #7bb;
     }
     
     /* Style the tab content */

@@ -199,17 +199,24 @@ function handleFileSelect(evt) { // always when selecting a new file
 }
 
 // Tab control
+var selectedTable = 1;
+
 function openTable(event,table){
+  var tableTabs = document.getElementById("tableTabs");
   console.log("Abre tabela "+table);
+  tableTabs.children[selectedTable-1].classList.remove("selected");
+  selectedTable = table;
+  tableTabs.children[selectedTable-1].classList.add("selected");
 }
 
 function addTable(event){
-  var tableTabs = document.getElementById("tableTabs");
   var tableTabsLength = tableTabs.children.length;
   var newButton = document.createElement("button");
-  newButton.className += "tablinks";
+  newButton.className += "selected";
   newButton.innerHTML = tableTabsLength;
   newButton.onclick = (event => {openTable(event,tableTabsLength)});
-  console.log(tableTabs.lastChild);
+  console.log(tableTabs.children);
+  tableTabs.children[selectedTable-1].classList.remove("selected");
+  selectedTable = tableTabsLength;
   tableTabs.insertBefore(newButton,tableTabs.lastChild.previousSibling);
 }
