@@ -11,7 +11,8 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.timers = ["ContactTON","ContactTOF","ContactTP"];
     this.counterCoils = ["CoilUp", "CoilDn", "CoilTSet", "CoilTReset"];
     this.counterContacts = ["Contact0", "ContactDone"];
-    
+    this.visible = false;
+
     this.clickFunction = function(element, newType, table, index){
         // var posX = element.posX;
         // var posY = element.posY;
@@ -541,5 +542,24 @@ function ElementTable(svg,horz,vert,ioElements) {
             }
           }
     
+    }
+
+    this.hide = function(){
+        this.table.forEach(element =>{
+            element.hide();
+        });
+        this.verTable.forEach(element =>{
+            element.hide();
+        });
+    }
+
+    this.show = function(){
+        this.table.forEach(element =>{
+            element.show();
+        });
+        this.verTable.forEach(element =>{
+            element.show();
+        });
+       
     }
 }

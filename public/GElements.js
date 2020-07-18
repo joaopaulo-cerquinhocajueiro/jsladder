@@ -253,7 +253,7 @@ function GElement(name, type, posX, posY, svg) {
         }
 
         if(this.type == "VerLine"){
-            this.box=this.shape.rect(20,60).class("element").fill({opacity:0.0, color:"#880000"}).move(40,20);
+            this.box=this.shape.rect(20,60).addClass("element").fill({opacity:0.0, color:"#880000"}).move(40,20);
         } else {
             this.box=this.shape.rect(80,60).addClass("element").fill({opacity:0.0, color:"#880000"}).move(10,20);
         }
@@ -578,6 +578,13 @@ function GElement(name, type, posX, posY, svg) {
         this.label.text(this.name);
     }
 
+    this.hide = function(){
+        this.shape.hide();
+    }
+
+    this.show = function(){
+        this.shape.show();
+    }
     //json for saving and restoring
     this.json = function(){
         var returnValue;
