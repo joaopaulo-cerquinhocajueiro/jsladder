@@ -493,10 +493,9 @@ function ElementTable(svg,horz,vert,ioElements) {
         
     }
 
-    this.json = function(){
+    this.jsonTable = function(){
         var tableJSON = [];
         var verTableJSON = [];
-        var varJSON = [];
         index=0;
         for (var l = 0; l < this.verSize ; l++){
             tableJSON[l] = [];
@@ -509,13 +508,19 @@ function ElementTable(svg,horz,vert,ioElements) {
             verTableJSON[l] = [];
             for (var c = 0; c < this.horSize-1; c++){
                 verTableJSON[l][c] = this.verTable[index++].json();
-}
+            }
         }
+        return JSON.stringify({"horizontal":tableJSON,"vertical":verTableJSON,"horSize":this.horSize,"verSize":this.verSize},null,2);
+    }
+
+    this.jsonVar = function(){
+        var varJSON = [];
         this.ioElements.forEach(element =>{
             varJSON.push(element.json());
         });
-        return JSON.stringify({"horizontal":tableJSON,"vertical":verTableJSON,"horSize":this.horSize,"verSize":this.verSize, "variables":varJSON},null,2);
+        return JSON.stringify(varJSON,null,2);
     }
+
 
     this.writeJson = function(codeObject){
         var horTableRead = codeObject.horizontal;
@@ -524,7 +529,7 @@ function ElementTable(svg,horz,vert,ioElements) {
         for (var i=0;i<verTableRead.length;i++){
             for (var j=0;j<verTableRead[i].length;j++){
                 //console.log(i,j,verTableRead[i][j]);
-                console.log(this.verTable);
+                // console.log(this.verTable);
                 this.verTable[index].shape.clear();
                 this.verTable[index] = new GElement(' ', verTableRead[i][j], 100*j+50, 100*i+50, this.svg);
                 this.verTable[index++].update();

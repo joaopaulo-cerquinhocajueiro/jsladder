@@ -154,7 +154,10 @@ function eraseAll() {
 
 function saveCode(){
     var filename = "teste";
-    var blob = new Blob([elementTable.json()], {type: "text/json;charset=utf-8"});
+    var codes = "[" + elementTables.map(table => {return table.jsonTable()}).join(", ") + "]";
+    var variables = elementTables[0].jsonVar();
+    // console.log();
+    var blob = new Blob(['{"codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
     saveAs(blob, filename+".json");
  //   console.log(elementTable.json())
 }
@@ -200,9 +203,20 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.onload = (function(theFile) {
     return function(e) {
       var codeObject = JSON.parse(e.target.result);
-      elementTable.writeJson(codeObject);
+      elementTables = [];
+      // console.log(codeObject);
       io.writeJson(codeObject);
-      elementTable.ioElements = io.coisos;
+      console.log(codeObject.codes.length);
+      console.log(tableTabs);
+      for(var i=tableTabs.children.length-2;i>-1;i--){
+        tableTabs.removeChild(tableTabs.children[i]);
+      }
+      console.log(tableTabs);
+      for(var i = 0;i<codeObject.codes.length;i++){
+        addTable(null);
+        elementTable.writeJson(codeObject.codes[i]);
+        elementTable.ioElements = io.coisos;
+      }
     };
   })(f);
 
@@ -233,7 +247,15 @@ function addTable(event){
   newButton.className += "selected";
   newButton.innerHTML = tableTabsLength;
   newButton.onclick = (event => {openTable(event,tableTabsLength)});
-  tableTabs.children[selectedTable-1].classList.remove("selected");
+  try {
+     tableTabs.children[selectedTable-1].classList.remove("selected");
+  } catch (error){
+    if(error instanceof TypeError){
+
+    }else {
+      logMyErrors(error);
+    }
+  }
   selectedTable = tableTabsLength;
   tableTabs.insertBefore(newButton,tableTabs.lastChild.previousSibling);
 }
