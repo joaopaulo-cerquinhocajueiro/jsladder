@@ -19,6 +19,7 @@ function ElementTable(svg,horz,vert,ioElements) {
         element.shape.clear();
         element.type = newType;
         element.draw();
+        element.toolTip = "off";
         element.update();
     }
     this.selectVariable = false;
