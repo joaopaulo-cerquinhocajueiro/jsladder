@@ -594,8 +594,10 @@ function GElement(name, type, posX, posY, svg) {
         // this.shape.stroke({ width: 2, color: '#0f0f0f'});
         //this.shape.scale(1/50);
         this.shape.move(this.posX, this.posY);
+        this.shape.select(".toolTip").hide();
     }    
     this.draw();
+    
     
     // // Consider that the mouse is over a shape if it is not near its horizontal borders
     // this.mouseIsOver = function() {
