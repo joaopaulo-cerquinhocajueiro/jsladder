@@ -68,7 +68,6 @@ function Bit(name,posX,posY,type,svg){
                 that.toggle.move(15,0).fill('red');
             }
         });
-        console.log(that);
         if(that.value == 0){
             that.toggle.move(0,0).fill('blue');
         } else {

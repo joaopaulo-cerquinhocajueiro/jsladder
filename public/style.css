@@ -18,6 +18,22 @@ body {padding: 0; margin: 0;}
       flex-flow: row;
       align-items: flex-start;
 }
+.table-container {
+      padding: 0;
+      margin: 2;
+      
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      height:100%;
+      width:70%;
+      -webkit-flex-flow: column wrap;
+      flex-flow: column;
+      align-items: flex-start;
+      color:#000000;
+}
       
 .flex-item {
       padding: 1px;
@@ -31,7 +47,7 @@ body {padding: 0; margin: 0;}
       text-align: center;
 }
 #table{
-      width:70%;
+      width:100%;
       height:100%;
       background: lavender;
       
@@ -107,3 +123,41 @@ body {padding: 0; margin: 0;}
       width:20;
       fill:none;
 }  */
+
+.tab {
+      display:flex;
+      width:100%;
+      border: 1px solid #ccc;
+      background-color: #efcdab;
+    }
+    
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: #acfdfe;
+      float: left;
+      border: 1px solid #ccc;
+      border-radius: 10px 10px 0px 0px;
+      outline: none;
+      cursor: pointer;
+      padding: 4px 16px;
+      transition: 0.2s;
+      font-size: 17px;
+    }
+    
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #4aa;
+    }
+    
+    /* Create an active/current tablink class */
+    button.selected {
+      background-color: #7bb;
+    }
+    
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }

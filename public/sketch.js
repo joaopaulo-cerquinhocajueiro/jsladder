@@ -2,14 +2,23 @@
 var width = 800, height = 400;
 var horz = 9, vert = 7;
 
+var selectedTable = 1;
+var simulating = false;
+
+var svgToolbar;
+var svgTable;
+var svgIO;
+
 SVG.on(document, 'DOMContentLoaded', function() {
-    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
-    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,700);
-    var svgIO = SVG('io').size('100%', '100%').viewbox(0,0,350,700);
+    svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
+    svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,700);
+    svgIO = SVG('io').size('100%', '100%').viewbox(0,0,350,700);
 
     toolBar = new ToolBar(svgToolbar);
     io = new IOView(svgIO, inputs, memories, outputs, counters);
-    elementTable = new ElementTable(svgTable, horz, vert, io.coisos);
+
+    elementTables = [new ElementTable(svgTable, horz, vert, io.coisos)];
+    elementTable = elementTables[selectedTable-1];
 
     buttonErase = document.getElementById('eraseButton');
     buttonErase.addEventListener('click',eraseAll);
@@ -145,7 +154,10 @@ function eraseAll() {
 
 function saveCode(){
     var filename = "teste";
-    var blob = new Blob([elementTable.json()], {type: "text/json;charset=utf-8"});
+    var codes = "[" + elementTables.map(table => {return table.jsonTable()}).join(", ") + "]";
+    var variables = elementTables[0].jsonVar();
+    // console.log();
+    var blob = new Blob(['{"codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
     saveAs(blob, filename+".json");
  //   console.log(elementTable.json())
 }
@@ -160,11 +172,14 @@ function exportCode(){
 }
 
 function simulate(e){
-    elementTable.simulating = ! elementTable.simulating;
+    simulating = !simulating;
+    elementTables.forEach(elementTable => {
+      elementTable.simulating = simulating;      
+    });
     var ioDiv = document.getElementById("io");
     var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
-    if(elementTable.simulating){
+    if(simulating){
         simButton.style.backgroundColor = "#4C50AF";
         simButton.innerHTML = "Stop simulation";
         ioDiv.style.display = 'flex';
@@ -188,9 +203,20 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.onload = (function(theFile) {
     return function(e) {
       var codeObject = JSON.parse(e.target.result);
-      elementTable.writeJson(codeObject);
+      elementTables = [];
+      // console.log(codeObject);
       io.writeJson(codeObject);
-      elementTable.ioElements = io.coisos;
+      console.log(codeObject.codes.length);
+      console.log(tableTabs);
+      for(var i=tableTabs.children.length-2;i>-1;i--){
+        tableTabs.removeChild(tableTabs.children[i]);
+      }
+      console.log(tableTabs);
+      for(var i = 0;i<codeObject.codes.length;i++){
+        addTable(null);
+        elementTable.writeJson(codeObject.codes[i]);
+        elementTable.ioElements = io.coisos;
+      }
     };
   })(f);
 
@@ -198,3 +224,38 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.readAsText(f);
 }
 
+// Tab control
+
+function openTable(event,table){
+  var tableTabs = document.getElementById("tableTabs");
+  console.log("Abre tabela "+table);
+  tableTabs.children[selectedTable-1].classList.remove("selected");
+  selectedTable = table;
+  elementTable.hide();
+  elementTable = elementTables[selectedTable-1];
+  elementTable.show();
+  tableTabs.children[selectedTable-1].classList.add("selected");
+}
+
+function addTable(event){
+  var tableTabsLength = tableTabs.children.length;
+  var newButton = document.createElement("button");
+  elementTables.push(new ElementTable(svgTable, horz, vert, io.coisos));
+  elementTable.hide();
+  elementTable = elementTables[elementTables.length-1];
+  elementTable.show();
+  newButton.className += "selected";
+  newButton.innerHTML = tableTabsLength;
+  newButton.onclick = (event => {openTable(event,tableTabsLength)});
+  try {
+     tableTabs.children[selectedTable-1].classList.remove("selected");
+  } catch (error){
+    if(error instanceof TypeError){
+
+    }else {
+      logMyErrors(error);
+    }
+  }
+  selectedTable = tableTabsLength;
+  tableTabs.insertBefore(newButton,tableTabs.lastChild.previousSibling);
+}
