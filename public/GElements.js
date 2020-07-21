@@ -650,7 +650,6 @@ function GElement(name, type, posX, posY, svg) {
         this.label.text(this.name);
     }
 
-<<<<<<< HEAD
     
 
     this.toolTip =  function(opacityTip){    
@@ -660,7 +659,6 @@ function GElement(name, type, posX, posY, svg) {
         tip.opacity(0.5);
     }
 
-=======
     this.hide = function(){
         this.shape.hide();
     }
@@ -668,7 +666,6 @@ function GElement(name, type, posX, posY, svg) {
     this.show = function(){
         this.shape.show();
     }
->>>>>>> melhoria7
     //json for saving and restoring
     this.json = function(){
         var returnValue;
