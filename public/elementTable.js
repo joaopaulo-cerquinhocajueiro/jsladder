@@ -29,10 +29,15 @@ function ElementTable(svg,horz,vert,ioElements) {
 
     for (var i = 1; i < this.horSize; i++) {
         this.svg.line(100*i,50,100*i,100*(this.verSize-0.5)).stroke('darkGray');
+        this.svg.text(i.toString()).addClass('tableText').move(100*(i-0.5),-20);
     }
+    this.svg.text(this.horSize.toString()).addClass('tableText').move(100*(this.horSize-0.5),-20);
     for (var i = 0; i <= this.verSize-1; i++) {
         this.svg.line(0,100*(i+0.5),100*this.horSize,100*(i+0.5)).stroke('darkGray');
+        this.svg.text(String.fromCharCode(i+65)).addClass('tableText').move(-25,100*(i+0.4));
     }
+
+    this.coilArea = this.svg.rect(100,100*this.verSize).fill({opacity:0.2,color:'magenta'}).radius(10).move(100*(this.horSize-1),0);
 
     this.phaseLine = this.svg.line(0,0,0,this.verSize*100).stroke({width:10,color:'black'});
     this.groundLine = this.svg.line(this.horSize*100,0,this.horSize*100,this.verSize*100).stroke({width:10,color:'black'});

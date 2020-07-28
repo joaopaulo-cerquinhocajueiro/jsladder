@@ -94,6 +94,15 @@ body {padding: 0; margin: 0;}
       stroke: none;
 }
 
+.tableText{
+
+      font-family:    Helvetica;
+      font-size:      20;
+      vertical-align: middle;
+      text-align:     center;
+      fill:         orange;
+}
+
 .selector {
       position: absolute;
       /*background-color: #202020;*/

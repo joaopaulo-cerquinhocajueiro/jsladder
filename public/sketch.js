@@ -1,6 +1,7 @@
 
-var width = 800, height = 400;
 var horz = 9, vert = 7;
+var width = 100*horz;
+var height = 100*vert;
 
 var selectedTable = 1;
 var simulating = false;
@@ -11,7 +12,7 @@ var svgIO;
 
 SVG.on(document, 'DOMContentLoaded', function() {
     svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
-    svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,700);
+    svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
     svgIO = SVG('io').size('100%', '100%').viewbox(0,0,350,700);
 
     toolBar = new ToolBar(svgToolbar);
