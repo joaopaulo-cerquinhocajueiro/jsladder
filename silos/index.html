@@ -1,21 +1,50 @@
 <!DOCTYPE html>
-<html lang="brn">
+<html lang="br">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>silos</title>
-
+    <script language="javascript" type="text/javascript" src="../public/libraries/svg.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/GElements.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/Bit.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/Value.js"></script>
+    <!-- <script language="javascript" type="text/javascript" src="vaiEVolta.js"></script> -->
+    <script type="text/javascript" src="silos.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/toolbar.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/elementTable.js"></script>
+    <script language="javascript" type="text/javascript" src="sketch.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/libraries/jsld2ard.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/libraries/FileSaver.min.js"></script>
+    <!-- this line removes any default padding and style. you might only need one of these values set. -->
+    <link rel="stylesheet" type="text/css" href="../public/style.css"></style>
+  
   </head>
 
   <body>
-    <object id="silos" type="image/svg+xml" data="silos.svg" width="60%"></object>
+    <div id='menu' class='flex-item' class='flex-container'>
+      <button type="button" class="button" id="eraseButton" class='flex-item'>Erase all</button>
+      <button type="button" class="button" id="saveButton" class='flex-item'>Save project</button>
+<!---      <button type="button" class="button" id="exportButton" class='flex-item'>Export arduino</button>  -->
+      <button type="button" class="button" id="simulateButton" class='flex-item'>Simulate</button>
+      <input type="file" id="inputFile" name="inputFile" class="button"/>
+    </div>
+    <div id='contentor' class='flex-container'>
+      <div id='table' class='flex-item'></div>
+      <div id='toolbar' class='flex-item'></div>
+    </div>
+    <div id='simContentor' class='flex-container'>
+      <div id='sim' class='flex-item'>
+        <object id="silos" type="image/svg+xml" data="./silos.svg" width="60%"></object>
+      </div>
+    </div>
+      
 
 
-    <script type="text/javascript" src="silos.js"></script>
 
-    <input type="button" id="bValve" value="Válvula desligada"></input>
+<!--    <input type="button" id="bValve" value="Válvula desligada"></input>
     <input type="button" id="bSel" value="Esquerda"></input>
+-->
   </body>
 </html>
