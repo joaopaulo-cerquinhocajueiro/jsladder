@@ -9,12 +9,12 @@ class Silo {
         this.h = this.hmax;
         //this.element = svg.contentDocument.getElementById(elementId);
     }
-    setH(newH){
+    setH = (newH)=>{
         this.element.height.baseVal.value = newH;
         this.element.y.baseVal.value = this.y0+this.hmax-newH;
     }
-    increase(amount){
-        console.log(this);
+    increase = (amount)=>{
+        // console.log(this);
         if (this.h>this.hmax-amount){
             this.h = this.hmax;
         } else {
@@ -22,7 +22,8 @@ class Silo {
         }
         this.setH(this.h);
     }
-    decrease(amount){
+    decrease = (amount)=>{
+        console.log(this,"decrease")
         if (this.h < amount){
             this.h = 0;
         } else {
@@ -40,7 +41,7 @@ class Valve {
         this.type = 'output';
         this.name = 'valvula';
     }
-    update(){
+    update = ()=>{
         if (this.value == 1){
             this.element.style.fill = "rgb(0,255,0)";
         } else {
@@ -62,7 +63,7 @@ class Selector {
         this.type = 'output';
         this.name = 'selector';
     }
-    update(){
+    update = ()=>{
         this.left = this.value == 1;
         if (this.left){
             this.selL.style.visibility = "visible";
@@ -97,8 +98,8 @@ class Sensor {
         this.type = 'input';
         this.name = elementId;
     }
-    update(){
-        this.out = ((this.silo.hmax-this.silo.h) >= this.h);
+    update = ()=>{
+        this.out = ((this.silo.hmax-this.silo.h) <= this.h);
         if(this.out){
             this.value = 1;
             this.element.style.fill="rgb(255,0,0)";
@@ -147,29 +148,29 @@ class Silos{
         this.tank3.setH(0);
     }
 
-    simulate(){
+    simulate = ()=>{
         // this.valve.update();
         // this.selector.update();
-        let s = window.sistema;
-        console.log(s);
+        // let s = window.sistema;
+        // console.log(s,this);
     
-        for(var i=0;i<s.sensors.length;i++){
-            s.sensors[i].update();
+        for(var i=0;i<this.sensors.length;i++){
+            this.sensors[i].update();
         }
         
-        if(s.valve.on){
-            s.tank1.decrease(1.0);
-            if (s.tank1.h>0){
-                if(s.selector.left){
-                    s.tank2.increase(1.0);
+        if(this.valve.value==1){
+            this.tank1.decrease(1.0);
+            if (this.tank1.h>0){
+                if(this.selector.left){
+                    this.tank2.increase(1.0);
                 } else {
-                    s.tank3.increase(1.0);
+                    this.tank3.increase(1.0);
                 }    
             }
         }
-        s.tank1.increase(0.6);
-        s.tank2.decrease(0.3);
-        s.tank3.decrease(0.3);
+        this.tank1.increase(0.6);
+        this.tank2.decrease(0.3);
+        this.tank3.decrease(0.3);
     }
 }
 
