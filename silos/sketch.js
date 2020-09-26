@@ -22,6 +22,7 @@ window.addEventListener("load", function() {
     //simSvg.addEventListener("load",function() {
     console.log("Loaded svg",memories,counters);
     sistema = new Silos(simSvg,memories,counters);  
+    sistemaIntervalId = window.setInterval(sistema.simulate,100);
     elementTable = new ElementTable(svgTable, horz, vert, sistema.coisos);
     //},false);
 

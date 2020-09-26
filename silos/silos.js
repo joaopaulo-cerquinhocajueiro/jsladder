@@ -14,6 +14,7 @@ class Silo {
         this.element.y.baseVal.value = this.y0+this.hmax-newH;
     }
     increase(amount){
+        console.log(this);
         if (this.h>this.hmax-amount){
             this.h = this.hmax;
         } else {
@@ -92,12 +93,17 @@ class Sensor {
         this.element = svg.contentDocument.getElementById(elementId);
         this.h = this.element.y.baseVal.value + 0.5*this.element.height.baseVal.value-this.silo.y0;
         this.out = false;
+        this.value = 0;
+        this.type = 'input';
+        this.name = elementId;
     }
     update(){
         this.out = ((this.silo.hmax-this.silo.h) >= this.h);
         if(this.out){
+            this.value = 1;
             this.element.style.fill="rgb(255,0,0)";
         } else {
+            this.value = 0;
             this.element.style.fill="rgb(0,255,0)";
         }
     }
@@ -142,27 +148,32 @@ class Silos{
     }
 
     simulate(){
-        this.valve.update();
-        this.selector.update();
-        for(var i=0;i<this.sensors.length;i++){
-            this.sensors[i].update();
-        }
+        // this.valve.update();
+        // this.selector.update();
+        let s = window.sistema;
+        console.log(s);
     
-        if(this.valve.on){
-            this.tank1.decrease(1.0);
-            if (this.tank1.h>0){
-                if(this.selector.left){
-                    this.tank2.increase(1.0);
+        for(var i=0;i<s.sensors.length;i++){
+            s.sensors[i].update();
+        }
+        
+        if(s.valve.on){
+            s.tank1.decrease(1.0);
+            if (s.tank1.h>0){
+                if(s.selector.left){
+                    s.tank2.increase(1.0);
                 } else {
-                    this.tank3.increase(1.0);
+                    s.tank3.increase(1.0);
                 }    
             }
         }
-        this.tank1.increase(0.6);
-        this.tank2.decrease(0.3);
-        this.tank3.decrease(0.3);
+        s.tank1.increase(0.6);
+        s.tank2.decrease(0.3);
+        s.tank3.decrease(0.3);
     }
 }
+
+//
 
 
 // window.addEventListener("load", function() {
