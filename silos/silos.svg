@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="737.19" height="944.56" version="1.0" viewBox="0 0 799.51 1011.5" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(164.99 70.42)">
+  <g fill="none">
+   <path d="m49.762 516.39a13.078 12.759 0 1 1-26.157 0h13.078z" stroke-width="3pt"/>
+   <path transform="translate(0 -1.276)" d="m33.175 527.24a25.2 26.157 0 1 1-50.4-6e-5l25.2 6e-5z" stroke="#000" stroke-width="3.75"/>
+   <path d="m133.34 412.4c0-1.276-150.56 113.56-150.56 113.56" stroke="#000" stroke-width="4"/>
+  </g>
+  <ellipse cx="33.175" cy="557.22" rx="0" ry=".63797" fill="#f00" fill-opacity=".75" fill-rule="evenodd" stroke-width="3pt"/>
+  <path transform="translate(150.56 -114.2)" d="m33.175 527.24a25.2 26.157 0 1 1-50.4-6e-5l25.2 6e-5z" fill="none" stroke="#000" stroke-width="3.75"/>
+  <path d="m169.4 435.93c0-1.276-150.56 113.56-150.56 113.56" fill="none" stroke="#000" stroke-width="4"/>
+  <path d="m-8.3022 521.84s-7.0872 5.873-7.0197 5.873 0.6075 2.632 0.6075 2.632l45.898-2.497 0.0675-6.818z" fill="#fff" fill-rule="evenodd" stroke-opacity=".98582" stroke-width="1pt"/>
+  <path d="m169.33 433.58-11.92 8.239-36.109-4.207 8.414-20.158 3.155-2.454s4.733-0.176 4.733 0c0 0.175 32.077 18.58 31.727 18.58z" fill="#fff" fill-rule="evenodd" stroke-width="1pt"/>
+  <path d="m182.94 412.4c0-1.276-150.56 113.56-150.56 113.56" fill="none" stroke="#000" stroke-width="4"/>
+ </g>
+ <path id="grainL" d="m198.16 596.38c0 14.439-11.289 26.157-25.198 26.157s-25.198-11.718-25.198-26.157h25.198zm-49.12-0.638 49.12 1.914 150.56-114.2-51.038 0.638z" fill="#8d4f00" fill-rule="evenodd" stroke-width="3.75"/>
+ <g transform="matrix(-1 0 0 1 533.47 70.42)">
+  <g fill="none">
+   <path d="m49.762 516.39a13.078 12.759 0 1 1-26.157 0h13.078z" stroke-width="3pt"/>
+   <path transform="translate(0 -1.276)" d="m33.175 527.24a25.2 26.157 0 1 1-50.4-6e-5l25.2 6e-5z" stroke="#000" stroke-width="3.75"/>
+   <path d="m133.34 412.4c0-1.276-150.56 113.56-150.56 113.56" stroke="#000" stroke-width="4"/>
+  </g>
+  <ellipse cx="33.175" cy="557.22" rx="0" ry=".63797" fill="#f00" fill-opacity=".75" fill-rule="evenodd" stroke-width="3pt"/>
+  <path transform="translate(150.56 -114.2)" d="m33.175 527.24a25.2 26.157 0 1 1-50.4-6e-5l25.2 6e-5z" fill="none" stroke="#000" stroke-width="3.75"/>
+  <path d="m169.4 435.93c0-1.276-150.56 113.56-150.56 113.56" fill="none" stroke="#000" stroke-width="4"/>
+  <path d="m-8.3022 521.84s-7.0872 5.873-7.0197 5.873 0.6075 2.632 0.6075 2.632l45.898-2.497 0.0675-6.818z" fill="#fff" fill-rule="evenodd" stroke-opacity=".98582" stroke-width="1pt"/>
+  <path d="m169.33 433.58-11.92 8.239-36.109-4.207 8.414-20.158 3.155-2.454s4.733-0.176 4.733 0c0 0.175 32.077 18.58 31.727 18.58z" fill="#fff" fill-rule="evenodd" stroke-width="1pt"/>
+  <path d="m182.94 412.4c0-1.276-150.56 113.56-150.56 113.56" fill="none" stroke="#000" stroke-width="4"/>
+ </g>
+ <path id="grainR" d="m501.18 596.38c0 14.439 11.29 26.157 25.2 26.157s25.2-11.718 25.2-26.157h-25.2zm49.124-0.638-49.124 1.914-150.55-114.2 51.034 0.638z" fill="#8d4f00" fill-rule="evenodd" stroke-width="3.75"/>
+ <circle cx="348.86" cy="474.5" r="4.1631" fill-rule="evenodd" stroke-width="3pt"/>
+ <path id="selR" d="m349.03 475.15-28.484-35.934" fill="none" stroke="#000" stroke-width="3.75"/>
+ <path id="selL" d="m348.89 475.15 28.484-35.934" fill="none" stroke="#000" stroke-width="3.75"/>
+ <g transform="translate(164.99 37.228)">
+  <rect id="tank1Fill" transform="translate(0 -70.866)" x="70.866" y="35.433" width="230.31" height="248.03" fill="#8c4f00" fill-rule="evenodd" stroke-width="3pt"/>
+  <path transform="translate(0 -70.866)" d="m70.869 283.48c-1.786-1.786 88.586 106.3 88.586 106.3v35.433h53.15v-35.433l88.582-106.3z" fill="#8c4f00" fill-rule="evenodd" stroke="#000" stroke-width="1pt"/>
+  <rect transform="translate(0 -70.866)" x="70.866" y="35.433" width="230.31" height="248.03" fill="none" stroke="#000" stroke-width="3pt"/>
+ </g>
+ <rect id="tank2fill" x="2" y="633.81" width="230.31" height="248.03" fill="#8c4f00" fill-rule="evenodd" stroke-width="3pt"/>
+ <path d="m1.9984 881.84c-1.7862-1.786 88.589 106.3 88.589 106.3v35.4h53.146v-35.4l88.574-106.3z" fill="#8c4f00" fill-rule="evenodd" stroke="#000" stroke-width="1pt"/>
+ <rect x="2" y="633.81" width="230.31" height="248.03" fill="none" stroke="#000" stroke-width="3pt"/>
+ <rect id="tank3fill" x="480.35" y="633.81" width="230.31" height="248.03" fill="#8c4f00" fill-rule="evenodd" stroke-width="3pt"/>
+ <path d="m480.33 881.84c-1.786-1.786 88.585 106.3 88.585 106.3v35.4h53.15v-35.4l88.582-106.3z" fill="#8c4f00" fill-rule="evenodd" stroke="#000" stroke-width="1pt"/>
+ <rect x="480.35" y="633.81" width="230.31" height="248.03" fill="none" stroke="#000" stroke-width="3pt"/>
+ <g fill="#00f" fill-rule="evenodd">
+  <path id="valve" d="m324.04 431.89c0.274 0 53.619-40.344 53.619-40.344l-53.527 0.321 53.656 40.145z" stroke="#000" stroke-linejoin="round" stroke-width="1.25"/>
+  <g fill-opacity=".75" stroke-width="3pt">
+   <rect id="t2l" x="226.55" y="859.04" width="33.627" height="14.814"/>
+   <rect id="t2h" x="226.55" y="642.74" width="33.627" height="14.814"/>
+   <rect id="t3l" x="703.07" y="859.04" width="33.627" height="14.814"/>
+   <rect id="t3h" x="703.07" y="642.74" width="33.627" height="14.814"/>
+   <rect id="t1l" x="457.12" y="225.34" width="33.627" height="14.814"/>
+  </g>
+ </g>
+ <g fill="none" font-family="Arial" font-size="43.382px" letter-spacing="0px" stroke="#000000" stroke-width="1.0845px" word-spacing="0px">
+  <text x="495.08844" y="249.19591" style="line-height:125%" xml:space="preserve"><tspan x="495.08844" y="249.19591" fill="#000000" stroke="none" stroke-width="1.0845px">tl1</tspan></text>
+  <text x="261.26929" y="882.12799" style="line-height:125%" xml:space="preserve"><tspan x="261.26929" y="882.12799" fill="#000000" stroke="none" stroke-width="1.0845px">tl2</tspan></text>
+  <text x="738.46411" y="882.12799" style="line-height:125%" xml:space="preserve"><tspan x="738.46411" y="882.12799" fill="#000000" stroke="none" stroke-width="1.0845px">tl3</tspan></text>
+  <text x="261.26929" y="665.22125" style="line-height:125%" xml:space="preserve"><tspan x="261.26929" y="665.22125" fill="#000000" stroke="none" stroke-width="1.0845px">th2</tspan></text>
+  <text x="740.63318" y="665.22125" style="line-height:125%" xml:space="preserve"><tspan x="740.63318" y="665.22125" fill="#000000" stroke="none" stroke-width="1.0845px">th3</tspan></text>
+  <text x="387.1203" y="471.97897" style="line-height:125%" xml:space="preserve"><tspan x="387.1203" y="471.97897" fill="#000000" stroke="none" stroke-width="1.0845px">selector</tspan></text>
+  <text x="387.1203" y="426.42856" style="line-height:125%" xml:space="preserve"><tspan x="387.1203" y="426.42856" fill="#000000" stroke="none" stroke-width="1.0845px">valvula</tspan></text>
+ </g>
+</svg>

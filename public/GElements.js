@@ -5,6 +5,7 @@ function GElement(name, type, posX, posY, svg) {
     this.posX  = posX;
     this.posY  = posY;
     this.type = type;
+    this.toolTip = "off" ;
     this.svg = svg
     // The status of a graphical element may be "offline", "selected", "preview" or "executing"
     this.status = "offline";
@@ -174,24 +175,24 @@ function GElement(name, type, posX, posY, svg) {
             
             case "CoilNO":
                 this.outputValue  = this.inputValue;
-                values[this.name]  = this.inputValue; //
+                globalValues[this.name]  = this.inputValue; //
             break;
             
             case "CoilNC":
                 this.outputValue  = this.inputValue;
-                values[this.name]  = !this.inputValue; //
+                globalValues[this.name]  = !this.inputValue; //
             break;
             
             case "CoilSet":
                 if(this.inputValue == 1){
-                    values[this.name] = 1; //
+                    globalValues[this.name] = 1; //
                 }
                 this.outputValue = this.inputValue;
             break;
             
             case "CoilReset":
                 if(this.inputValue == 1){
-                    values[this.name]  = 0; //
+                    globalValues[this.name]  = 0; //
                 }
                 this.outputValue = this.inputValue;
             break;
@@ -200,7 +201,7 @@ function GElement(name, type, posX, posY, svg) {
                 this.outputValue = this.inputValue && !this.oldVarValue; //
                 this.oldVarValue = this.inputValue;
                 if(this.outputValue){
-                    values[this.name]++;
+                    globalValues[this.name]++;
                 }
                 break;
 
@@ -208,21 +209,21 @@ function GElement(name, type, posX, posY, svg) {
                 this.outputValue = this.inputValue && !this.oldVarValue; //
                 this.oldVarValue = this.inputValue;
                 if(this.outputValue){
-                    values[this.name]--;
+                    globalValues[this.name]--;
                 }
                 break;
 
             case "CoilTSet":
                 this.outputValue  = this.inputValue;
                 if(this.outputValue){
-                    values[this.name] = setPoints[this.name]; //
+                    globalValues[this.name] = setPoints[this.name]; //
                 }
                 break;
 
             case "CoilTReset":
                 this.outputValue  = this.inputValue;
                 if(this.outputValue){
-                    values[this.name] = 0; //
+                    globalValues[this.name] = 0; //
                 }
                 break;
 
@@ -253,9 +254,9 @@ function GElement(name, type, posX, posY, svg) {
         }
 
         if(this.type == "VerLine"){
-            this.shape.rect(20,60).fill({opacity:0.0, color:"#880000"}).move(40,20);
+            this.box=this.shape.rect(20,60).addClass("element").fill({opacity:0.0, color:"#880000"}).move(40,20);
         } else {
-            this.shape.rect(80,60).fill({opacity:0.0, color:"#880000"}).move(10,20);
+            this.box=this.shape.rect(80,60).addClass("element").fill({opacity:0.0, color:"#880000"}).move(10,20);
         }
         switch (String(this.type)){
             case "HorLine":
@@ -269,12 +270,18 @@ function GElement(name, type, posX, posY, svg) {
             case "Eraser":
                 this.shape.line(25, 25, 75, 75).addClass("line");
                 this.shape.line(75, 25, 25, 75).addClass("line");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Eraser",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "Hand":
                 this.shape.line(25, 75, 50, 50).addClass("line");
                 this.shape.line(50, 50, 30, 50).addClass("line");
                 this.shape.line(50, 70, 50, 50).addClass("line");
+                //TooTip;
+                this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(-25,70);
+                this.shape.text("Choose the Variable",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "DrawLine":
@@ -285,6 +292,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(90,10,100,20).addClass("line");
                 this.shape.line(50,70, 40,60).addClass("line");
                 this.shape.line(00,80, 30,80).addClass("line");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Draw Wire",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactNO":
@@ -292,6 +302,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
                 this.shape.line(30, 20,  30, 80).addClass("line").addClass("input");
                 this.shape.line(70, 20,  70, 80).addClass("line").addClass("output");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Contact NO",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactNC":
@@ -300,6 +313,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
                 this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
                 this.shape.line(35, 75, 65, 25).addClass("line").addClass("output");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Contact NC",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactRise":
@@ -310,6 +326,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(40, 70, 50, 70).addClass("line").addClass("output");
                 this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
                 this.shape.line(50, 30, 60, 30).addClass("line").addClass("output");
+                //TooTip;
+                this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(-25,70);
+                this.shape.text("Contact Rising Edge",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "ContactFall":
@@ -320,6 +339,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
                 this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
                 this.shape.line(50, 70, 60, 70).addClass("line").addClass("output");
+                //TooTip;
+                this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(-25,70);
+                this.shape.text("Contact Falling Edge",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactTON":
@@ -338,6 +360,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.circle(20).move(40,20).addClass("input").addClass("line");
                 this.shape.line(50,30,50,20).addClass("input").addClass("line");
                 this.shape.line(50,30,60,30).addClass("input").addClass("line");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Timer TON",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactTOF":
@@ -356,6 +381,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.circle(20).move(40,20).addClass("output").addClass("line");
                 this.shape.line(50,30,50,20).addClass("output").addClass("line");
                 this.shape.line(50,30,60,30).addClass("output").addClass("line");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Timer TOFF",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "ContactTP":
@@ -376,6 +404,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.circle(20).move(40,20).addClass("output").addClass("line");
                 this.shape.line(50,30,50,20).addClass("output").addClass("line");
                 this.shape.line(50,30,60,30).addClass("output").addClass("line");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Timer TP",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "Contact0":
@@ -396,6 +427,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     17
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,60);
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Counter Z",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactDone":
@@ -417,6 +451,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     17
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,60);
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Counter Done",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "CoilNO":
@@ -424,6 +461,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
                 this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
                 this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Coil NO",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "CoilNC":
@@ -432,6 +472,9 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
                 this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
                 this.shape.line(40, 70, 60, 30).addClass("input").addClass("line");
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Coil NC",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "CoilSet":
@@ -444,6 +487,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     30
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,35);
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Coil Set",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "CoilReset":
@@ -456,6 +502,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     30
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,35);
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Coil Reset",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "CoilUp":
@@ -472,6 +521,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     17
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,60);
+                //TooTip;
+                this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(0-25,70);
+                this.shape.text("Increase Counter",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "CoilDn":
@@ -488,6 +540,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     17
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,60);
+                //TooTip;
+                this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(-25,70);
+                this.shape.text("Decrease Counter",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "CoilTSet":
@@ -505,6 +560,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     17
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,60);
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Counter Set",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "CoilTReset":
@@ -522,6 +580,9 @@ function GElement(name, type, posX, posY, svg) {
                 , size:     17
                 , anchor:   'middle'
                 }).addClass("input").addClass("text").move(50,60);
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Counter Reset",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
         }
         // this.shape.line(35, 15, 35, 35).addClass("output");
@@ -533,8 +594,10 @@ function GElement(name, type, posX, posY, svg) {
         // this.shape.stroke({ width: 2, color: '#0f0f0f'});
         //this.shape.scale(1/50);
         this.shape.move(this.posX, this.posY);
+        this.shape.select(".toolTip").hide();
     }    
     this.draw();
+    
     
     // // Consider that the mouse is over a shape if it is not near its horizontal borders
     // this.mouseIsOver = function() {
@@ -558,7 +621,8 @@ function GElement(name, type, posX, posY, svg) {
         if (this.status == "offline"){
             this.shape.select("line,path,circle").stroke(colorOffline);
             this.shape.select("text").fill(colorOffline);
-        } else if (this.status == "selected") {
+        } 
+        else if (this.status == "selected") {
             this.shape.select("line,path,circle").stroke(colorSelected);
             this.shape.select("text").fill(colorSelected);
         } else if (this.status == "preview") {
@@ -575,9 +639,33 @@ function GElement(name, type, posX, posY, svg) {
             this.shape.select("line.variable").stroke(this.outputValue==1?colorHigh:colorLow);
         }
 
+
+        if(this.toolTip == "on"){
+            this.shape.select(".toolTip").show();
+        }
+        else if(this.toolTip == "off"){
+            this.shape.select(".toolTip").hide();
+        }
+
         this.label.text(this.name);
     }
 
+    
+
+    this.toolTip =  function(opacityTip){    
+        var tip = svg.group();
+        tip.rect(100, 16).fill('#0ff').addClass('tooloTip').move(this.posX,this.posY+50);
+        tip.text(this.type,50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(this.posX+50,this.posY+ 50);
+        tip.opacity(0.5);
+    }
+
+    this.hide = function(){
+        this.shape.hide();
+    }
+
+    this.show = function(){
+        this.shape.show();
+    }
     //json for saving and restoring
     this.json = function(){
         var returnValue;

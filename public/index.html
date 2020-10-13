@@ -1,6 +1,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>ladder.js</title>
   <script language="javascript" type="text/javascript" src="libraries/svg.min.js"></script>
   <script language="javascript" type="text/javascript" src="GElements.js"></script>
   <script language="javascript" type="text/javascript" src="Bit.js"></script>
@@ -8,12 +9,12 @@
   <script language="javascript" type="text/javascript" src="ioview.js"></script>
   <script language="javascript" type="text/javascript" src="toolbar.js"></script>
   <script language="javascript" type="text/javascript" src="elementTable.js"></script>
+  <script language="javascript" type="text/javascript" src="toolTip.js"></script>
   <script language="javascript" type="text/javascript" src="sketch.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/jsld2ard.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/FileSaver.min.js"></script>
   <!-- this line removes any default padding and style. you might only need one of these values set. -->
-  <link rel="stylesheet" type="text/css" href="style.css">    
- </style>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 
 <body>
@@ -25,7 +26,13 @@
   <input type="file" id="inputFile" name="inputFile" class="button"/>
 </div>
 <div id='contentor' class='flex-container'>
-    <div id='table' class='flex-item'></div>
+    <div id='tables' class='table-container'>
+      <div id='tableTabs' class="tab">
+        <button class="selected" onclick="openTable(event,1)">1</button>
+        <button onclick="addTable(event)">+</button>
+      </div>
+      <div id='table' class='flex-item'></div>
+</div>
     <div id='toolbar' class='flex-item'></div>
     <div id='io' class='flex-item'></div>
   </div>

@@ -26,12 +26,22 @@ function ToolBar(svg) {
     this.selectedShape.status = "selected"
 //    this.svg.line(0,0,50,50).stroke({width:4})
     this.elements.forEach(element => {
+        element.toolTip = "off";
         element.update();
-        // element.shape.mouseover(function(){
-        //     element.status = "selected";
-        //     element.update();
-        //     //console.log(element);
-        // });
+        
+        
+        element.shape.mousemove(function(){
+          element.toolTip = "on";
+          element.update();
+        });
+
+        element.shape.mouseout(function(){
+             element.toolTip = "off";
+             element.update();
+        });
+
+        element.update();
+
         var that = this;
         //console.log(that);    
         element.shape.click(function(){

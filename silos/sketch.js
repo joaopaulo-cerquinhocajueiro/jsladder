@@ -1,29 +1,40 @@
-"use strict";
+"use strict"
+
 var horz = 9, vert = 7;
 var width = 100*horz;
 var height = 100*vert;
+var sistema;
+var sistemaIntervalId;
 
+var toolBar,elementTables,elementTable;
+var buttonErase, buttonSave, buttonSimulate, inputFile;
 var selectedTable = 1;
+var simulating = false;
+
 var globalValues = {};
 var setPoints = {};
-var simulating = false;
 
 var svgToolbar;
 var svgTable;
 var svgIO;
+var simSvg;
 
-var toolBar, io, elementTables, elementTable;
-var buttonErase, buttonSave, buttonExport, buttonSimulate, inputFile;
+var memories = ["mem1", "mem2", "mem3", "mem4", "mem5"];
+var counters = ["c0", "c1", "c2", "c3"];
 
-SVG.on(document, 'DOMContentLoaded', function() {
+window.addEventListener("load", function() {
     svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
     svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
-    svgIO = SVG('io').size('100%', '100%').viewbox(0,0,350,700);
+    // var svgSim = SVG('sim').size('100%', '100%').viewbox(0,0,600,700);
 
     toolBar = new ToolBar(svgToolbar);
-    io = new IOView(svgIO, inputs, memories, outputs, counters);
+    // io = new IOView(svgIO, inputs, memories, outputs, counters);
+    // sistema = new VaiEVolta(svgSim, memories, counters);
+    simSvg = document.getElementById("silos");
 
-    elementTables = [new ElementTable(svgTable, horz, vert, io.coisos)];
+    sistema = new Silos(simSvg,memories,counters);  
+    // sistemaIntervalId = window.setInterval(sistema.simulate,100);
+    elementTables = [new ElementTable(svgTable, horz, vert, sistema.coisos)];
     elementTable = elementTables[selectedTable-1];
 
     buttonErase = document.getElementById('eraseButton');
@@ -32,8 +43,8 @@ SVG.on(document, 'DOMContentLoaded', function() {
     buttonSave = document.getElementById('saveButton');
     buttonSave.addEventListener('click',saveCode);
 
-    buttonExport = document.getElementById('exportButton');
-    buttonExport.addEventListener('click',exportCode);
+    // buttonExport = document.getElementById('exportButton');
+    // buttonExport.addEventListener('click',exportCode);
 
     buttonSimulate = document.getElementById('simulateButton');
     buttonSimulate.addEventListener('click',simulate);
@@ -43,10 +54,6 @@ SVG.on(document, 'DOMContentLoaded', function() {
     inputFile.addEventListener('change', handleFileSelect, false);
 });
 
-var inputs = ["chave1", "chave2", "nivel", "temperatura"];
-var memories = ["x", "y", "z"];
-var outputs = ["treco","coiso", "troco", "cacareco"];
-var counters = ["c0", "c1", "c2", "c3"];
 
 // var buttonInputs = [];
 // var dispMemories = [];
@@ -118,7 +125,7 @@ function isNewName(ioList,name){
 }
 
 function changeElementName(oldName,newName){
-  renameInView(io,oldName,newName);
+  renameInView(sim,oldName,newName);
   renameInTable(elementTable,oldName,newName);
 }
 
@@ -181,19 +188,30 @@ function simulate(e){
     elementTables.forEach(elementTable => {
       elementTable.simulating = simulating;      
     });
-    var ioDiv = document.getElementById("io");
+    var tableDiv = document.getElementById("tables");
+    var simDiv = document.getElementById("sim");
     var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
     if(simulating){
         simButton.style.backgroundColor = "#4C50AF";
         simButton.innerHTML = "Stop simulation";
-        ioDiv.style.display = 'flex';
+        // simDiv.style.display = 'flex';
+        simDiv.style.width = '50%';
+        tableDiv.style.width = '50%';
         toolbarDiv.style.display = 'none';
+
+        sistemaIntervalId = setInterval(sistema.simulate,10);
     } else {
         simButton.style.backgroundColor = "#4CAF50";
         simButton.innerHTML = "Simulate";
-        ioDiv.style.display = 'none';
+        //simDiv.style.display = 'none';
+        simDiv.style.width = '25%';
         toolbarDiv.style.display = 'flex';
+        toolbarDiv.style.width = '25%';
+        tableDiv.style.width = '70%';
+
+        clearInterval(sistemaIntervalId);
+        sistema.reset();
     }
     //console.log(elementTable.simulating);
 }
@@ -216,7 +234,7 @@ function handleFileSelect(evt) { // always when selecting a new file
       for(var i = 0;i<codeObject.codes.length;i++){
         addTable(null);
         elementTable.writeJson(codeObject.codes[i]);
-        elementTable.ioElements = io.coisos;
+      elementTable.ioElements = io.coisos;
       }
     };
   })(f);
