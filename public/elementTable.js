@@ -1,3 +1,4 @@
+"use strict";
 function ElementTable(svg,horz,vert,ioElements) {
     this.svg = svg;
     this.horSize = horz;
@@ -42,14 +43,14 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.phaseLine = this.svg.line(0,0,0,this.verSize*100).stroke({width:10,color:'black'});
     this.groundLine = this.svg.line(this.horSize*100,0,this.horSize*100,this.verSize*100).stroke({width:10,color:'black'});
      
-    index = 0;
+    var index = 0;
     for (var l = 0; l < this.verSize-1 ; l++){
         for (var c = 0; c < this.horSize-1; c++){
             this.verTable[index] = new GElement("", 'Empty', c*100+50, l*100+50, this.svg);
             this.verTable[index++].update();
         }
     }
-    var index = 0;
+    index = 0;
     for (var l = 0; l < this.verSize ; l++){
         for (var c = 0; c < this.horSize; c++){
             this.table[index] = new GElement(" ", 'Empty', c*100, l*100, this.svg);
@@ -123,6 +124,7 @@ function ElementTable(svg,horz,vert,ioElements) {
         var x = element.shape.rbox().x;
         var y = element.shape.rbox().y;
         var w = element.shape.rbox().w;
+        var sel;
         switch(generalType){
             case "contact": element.label.tspan(that.contactSelector.value);
                 sel = that.contactSelector ;
@@ -147,12 +149,12 @@ function ElementTable(svg,horz,vert,ioElements) {
     }
     this.selectContact = function(){ //Function when selects the variable of a contact
         var item = varList.value();
-        console.log(item)
+        //console.log(item)
         elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
     }
     this.selectCoil = function(){ //Function when selects the variable of a coil
         var item = coilList.value();
-        console.log(item)
+        //console.log(item)
         elementTable.table[selectionLoc.x+selectionLoc.y*horz].name = item;
     }
     this.selectTime = function(){ //Function when selects the time of a timer
@@ -332,13 +334,12 @@ function ElementTable(svg,horz,vert,ioElements) {
                 that.verTable[index].update();
             }
             // Reads all values to a dictionary
-            values = {};
+            //var values = {};
             that.ioElements.forEach(element =>{
-                values[element.name] = element.value;
+                globalValues[element.name] = element.value;
             });
             //console.log(values);
             // Reads all counter setPoints to a dictionary
-            setPoints = {};
             that.ioElements.forEach(element =>{
                 if(element.type == 'counter'){
                     setPoints[element.name] = element.setPoint;
@@ -360,7 +361,7 @@ function ElementTable(svg,horz,vert,ioElements) {
                     that.table[index].inputValue = that.table[index-1].outputValue;
                 }
                 // Update the variable value
-                that.table[index].varValue = values[that.table[index].name];
+                that.table[index].varValue = globalValues[that.table[index].name];
                 // if is a counter contact, has to get also the setPoint
                 if(that.counterContacts.indexOf(that.table[index].type)>-1){
                     that.table[index].sp = setPoints[that.table[index].name];
@@ -378,7 +379,7 @@ function ElementTable(svg,horz,vert,ioElements) {
                     } else { // if there is no vertical line, get the value from the previous element
                         that.table[index].inputValue = that.table[index-1].outputValue;
                     }
-                    that.table[index].varValue = values[that.table[index].name];
+                    that.table[index].varValue = globalValues[that.table[index].name];
                     // if is a counter contact, has to get also the setPoint
                     if(that.counterContacts.indexOf(that.table[index].type)>-1){
                         that.table[index].sp = setPoints[that.table[index].name];
@@ -386,7 +387,7 @@ function ElementTable(svg,horz,vert,ioElements) {
                     // and call solve on the element
                     that.table[index].solve();
                 }
-                y = vert-1; //For the last line
+                var y = vert-1; //For the last line
                 var index = indexFromXY(x,y);
                 if(x==0){ // if in the beginning of a line
                     that.table[index].inputValue = 1; // the input Value is 1
@@ -395,7 +396,7 @@ function ElementTable(svg,horz,vert,ioElements) {
                 } else { // if there is no vertical line
                     that.table[index].inputValue = that.table[index-1].outputValue;
                 }
-                that.table[index].varValue = values[that.table[index].name];
+                that.table[index].varValue = globalValues[that.table[index].name];
                 // if is a counter contact, has to get also the setPoint
                 if(that.counterContacts.indexOf(that.table[index].type)>-1){
                     that.table[index].sp = setPoints[that.table[index].name];
@@ -447,7 +448,7 @@ function ElementTable(svg,horz,vert,ioElements) {
             // update the display for variables that may have changed
             that.ioElements.forEach(element =>{
                 if(element.type != 'input'){
-                    element.value = values[element.name];
+                    element.value = globalValues[element.name];
                     // console.log("updated "+element.name + ": "+element.value);
                     element.update();
                 }

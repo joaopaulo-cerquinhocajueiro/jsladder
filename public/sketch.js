@@ -1,14 +1,19 @@
-
+"use strict";
 var horz = 9, vert = 7;
 var width = 100*horz;
 var height = 100*vert;
 
 var selectedTable = 1;
+var globalValues = {};
+var setPoints = {};
 var simulating = false;
 
 var svgToolbar;
 var svgTable;
 var svgIO;
+
+var toolBar, io, elementTables, elementTable;
+var buttonErase, buttonSave, buttonExport, buttonSimulate, inputFile;
 
 SVG.on(document, 'DOMContentLoaded', function() {
     svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
@@ -135,7 +140,7 @@ function resize(width,height) {
 //        vert = 7;
 //    }
     colSize = floor(0.9*width / (1.8*horz));
-    linSize = floor(0.9*height / (1,1*vert));
+    linSize = floor(0.9*height / (1.1*vert));
     if (colSize < linSize) {
         linSize = colSize;
 //        vert = floor(height/linSize);
@@ -157,7 +162,6 @@ function saveCode(){
     var filename = "teste";
     var codes = "[" + elementTables.map(table => {return table.jsonTable()}).join(", ") + "]";
     var variables = elementTables[0].jsonVar();
-    // console.log();
     var blob = new Blob(['{"codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
     saveAs(blob, filename+".json");
  //   console.log(elementTable.json())
@@ -205,14 +209,10 @@ function handleFileSelect(evt) { // always when selecting a new file
     return function(e) {
       var codeObject = JSON.parse(e.target.result);
       elementTables = [];
-      // console.log(codeObject);
       io.writeJson(codeObject);
-      console.log(codeObject.codes.length);
-      console.log(tableTabs);
       for(var i=tableTabs.children.length-2;i>-1;i--){
         tableTabs.removeChild(tableTabs.children[i]);
       }
-      console.log(tableTabs);
       for(var i = 0;i<codeObject.codes.length;i++){
         addTable(null);
         elementTable.writeJson(codeObject.codes[i]);

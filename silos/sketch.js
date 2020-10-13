@@ -1,30 +1,41 @@
+"use strict"
 
 var horz = 9, vert = 7;
 var width = 100*horz;
 var height = 100*vert;
 var sistema;
+var sistemaIntervalId;
+
+var toolBar,elementTables,elementTable;
+var buttonErase, buttonSave, buttonSimulate, inputFile;
+var selectedTable = 1;
+var simulating = false;
+
+var globalValues = {};
+var setPoints = {};
+
+var svgToolbar;
+var svgTable;
+var svgIO;
+var simSvg;
 
 var memories = ["mem1", "mem2", "mem3", "mem4", "mem5"];
 var counters = ["c0", "c1", "c2", "c3"];
 
 window.addEventListener("load", function() {
-    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
-    var svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
+    svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
+    svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
     // var svgSim = SVG('sim').size('100%', '100%').viewbox(0,0,600,700);
 
     toolBar = new ToolBar(svgToolbar);
     // io = new IOView(svgIO, inputs, memories, outputs, counters);
     // sistema = new VaiEVolta(svgSim, memories, counters);
-    var simSvg = document.getElementById("silos");
-    //console.log("Starting to load svg")
-    //console.log(simSvg,simSvg.contentDocument);
+    simSvg = document.getElementById("silos");
 
-    //simSvg.addEventListener("load",function() {
-    console.log("Loaded svg",memories,counters);
     sistema = new Silos(simSvg,memories,counters);  
-    sistemaIntervalId = window.setInterval(sistema.simulate,100);
-    elementTable = new ElementTable(svgTable, horz, vert, sistema.coisos);
-    //},false);
+    // sistemaIntervalId = window.setInterval(sistema.simulate,100);
+    elementTables = [new ElementTable(svgTable, horz, vert, sistema.coisos)];
+    elementTable = elementTables[selectedTable-1];
 
     buttonErase = document.getElementById('eraseButton');
     buttonErase.addEventListener('click',eraseAll);
@@ -135,8 +146,8 @@ function resize(width,height) {
 //    } else {
 //        vert = 7;
 //    }
-    colSize = floor(0.9*width / (2.0*horz));
-    linSize = floor(0.9*height / (1.8*vert));
+    colSize = floor(0.9*width / (1.8*horz));
+    linSize = floor(0.9*height / (1.1*vert));
     if (colSize < linSize) {
         linSize = colSize;
 //        vert = floor(height/linSize);
@@ -156,7 +167,9 @@ function eraseAll() {
 
 function saveCode(){
     var filename = "teste";
-    var blob = new Blob([elementTable.json()], {type: "text/json;charset=utf-8"});
+    var codes = "[" + elementTables.map(table => {return table.jsonTable()}).join(", ") + "]";
+    var variables = elementTables[0].jsonVar();
+    var blob = new Blob(['{"codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
     saveAs(blob, filename+".json");
  //   console.log(elementTable.json())
 }
@@ -170,31 +183,35 @@ function exportCode(){
 //   console.log(elementTable.json())
 }
 
-var simulatorHandler;
 function simulate(e){
-    elementTable.simulating = ! elementTable.simulating;
-    var tableDiv = document.getElementById("table");
+    simulating = !simulating;
+    elementTables.forEach(elementTable => {
+      elementTable.simulating = simulating;      
+    });
+    var tableDiv = document.getElementById("tables");
     var simDiv = document.getElementById("sim");
     var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
-    if(elementTable.simulating){
+    if(simulating){
         simButton.style.backgroundColor = "#4C50AF";
         simButton.innerHTML = "Stop simulation";
-        simDiv.style.display = 'flex';
-        simDiv.style.width = '60%';
-        tableDiv.style.width = '40%';
+        // simDiv.style.display = 'flex';
+        simDiv.style.width = '50%';
+        tableDiv.style.width = '50%';
         toolbarDiv.style.display = 'none';
 
-        simulatorHandler = setInterval(sistema.simulate(),10);
+        sistemaIntervalId = setInterval(sistema.simulate,10);
     } else {
         simButton.style.backgroundColor = "#4CAF50";
         simButton.innerHTML = "Simulate";
-        simDiv.style.display = 'none';
+        //simDiv.style.display = 'none';
+        simDiv.style.width = '25%';
         toolbarDiv.style.display = 'flex';
-        toolbarDiv.style.width = '30%';
+        toolbarDiv.style.width = '25%';
         tableDiv.style.width = '70%';
 
-        clearInterval(simulatorHandler);
+        clearInterval(sistemaIntervalId);
+        sistema.reset();
     }
     //console.log(elementTable.simulating);
 }
@@ -209,9 +226,16 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.onload = (function(theFile) {
     return function(e) {
       var codeObject = JSON.parse(e.target.result);
-      elementTable.writeJson(codeObject);
+      elementTables = [];
       io.writeJson(codeObject);
+      for(var i=tableTabs.children.length-2;i>-1;i--){
+        tableTabs.removeChild(tableTabs.children[i]);
+      }
+      for(var i = 0;i<codeObject.codes.length;i++){
+        addTable(null);
+        elementTable.writeJson(codeObject.codes[i]);
       elementTable.ioElements = io.coisos;
+      }
     };
   })(f);
 
@@ -219,3 +243,38 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.readAsText(f);
 }
 
+// Tab control
+
+function openTable(event,table){
+  var tableTabs = document.getElementById("tableTabs");
+  console.log("Abre tabela "+table);
+  tableTabs.children[selectedTable-1].classList.remove("selected");
+  selectedTable = table;
+  elementTable.hide();
+  elementTable = elementTables[selectedTable-1];
+  elementTable.show();
+  tableTabs.children[selectedTable-1].classList.add("selected");
+}
+
+function addTable(event){
+  var tableTabsLength = tableTabs.children.length;
+  var newButton = document.createElement("button");
+  elementTables.push(new ElementTable(svgTable, horz, vert, io.coisos));
+  elementTable.hide();
+  elementTable = elementTables[elementTables.length-1];
+  elementTable.show();
+  newButton.className += "selected";
+  newButton.innerHTML = tableTabsLength;
+  newButton.onclick = (event => {openTable(event,tableTabsLength)});
+  try {
+     tableTabs.children[selectedTable-1].classList.remove("selected");
+  } catch (error){
+    if(error instanceof TypeError){
+
+    }else {
+      logMyErrors(error);
+    }
+  }
+  selectedTable = tableTabsLength;
+  tableTabs.insertBefore(newButton,tableTabs.lastChild.previousSibling);
+}

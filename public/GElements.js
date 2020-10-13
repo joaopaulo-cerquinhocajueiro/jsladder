@@ -175,24 +175,24 @@ function GElement(name, type, posX, posY, svg) {
             
             case "CoilNO":
                 this.outputValue  = this.inputValue;
-                values[this.name]  = this.inputValue; //
+                globalValues[this.name]  = this.inputValue; //
             break;
             
             case "CoilNC":
                 this.outputValue  = this.inputValue;
-                values[this.name]  = !this.inputValue; //
+                globalValues[this.name]  = !this.inputValue; //
             break;
             
             case "CoilSet":
                 if(this.inputValue == 1){
-                    values[this.name] = 1; //
+                    globalValues[this.name] = 1; //
                 }
                 this.outputValue = this.inputValue;
             break;
             
             case "CoilReset":
                 if(this.inputValue == 1){
-                    values[this.name]  = 0; //
+                    globalValues[this.name]  = 0; //
                 }
                 this.outputValue = this.inputValue;
             break;
@@ -201,7 +201,7 @@ function GElement(name, type, posX, posY, svg) {
                 this.outputValue = this.inputValue && !this.oldVarValue; //
                 this.oldVarValue = this.inputValue;
                 if(this.outputValue){
-                    values[this.name]++;
+                    globalValues[this.name]++;
                 }
                 break;
 
@@ -209,21 +209,21 @@ function GElement(name, type, posX, posY, svg) {
                 this.outputValue = this.inputValue && !this.oldVarValue; //
                 this.oldVarValue = this.inputValue;
                 if(this.outputValue){
-                    values[this.name]--;
+                    globalValues[this.name]--;
                 }
                 break;
 
             case "CoilTSet":
                 this.outputValue  = this.inputValue;
                 if(this.outputValue){
-                    values[this.name] = setPoints[this.name]; //
+                    globalValues[this.name] = setPoints[this.name]; //
                 }
                 break;
 
             case "CoilTReset":
                 this.outputValue  = this.inputValue;
                 if(this.outputValue){
-                    values[this.name] = 0; //
+                    globalValues[this.name] = 0; //
                 }
                 break;
 
