@@ -200,7 +200,7 @@ function simulate(e){
 
 function handleFileSelect(evt) { // always when selecting a new file
   var files = evt.target.files; // get the array with the file (there is only one)
-  f = files[0]; // select the first (and only) file
+  var f = files[0]; // select the first (and only) file
 
   var reader = new FileReader(); // a reader
 
