@@ -82,21 +82,23 @@ function VaiEVolta(svg, memories, counters){
 
         // Desenho da simulação
         // this.carrinho = this.svg.group().rect(40,20).radius(10).stroke('black').fill('none').move(100,500);
-        this.carrinho = this.svg.image('carro.png',100,50).move(100,500);
+        this.carrinho = this.svg.image('carro.png',150,80).move(100,480);
         this.svg.image("muro.png",50,50).move(-40,500);
-        this.svg.image("muro.png",50,50).move(600,500);
+        this.svg.image("muro.png",50,50).move(-40,475);
+        this.svg.image("muro.png",50,50).move(580,500);
+        this.svg.image("muro.png",50,50).move(580,475);
         //  console.log(this.fdcEsq);
         // this.fdcEsq.draw();
         that = this
         this.intervaloSimul = setInterval(function(){
             if (this.elementTable.simulating){
-                if (that.motorDir.value == 1 && that.carrinho.bbox().x<500){
+                if (that.motorDir.value == 1 && that.carrinho.bbox().x<470){
                     that.carrinho.dx(5);
-                } else if(that.motorEsq.value == 1 && that.carrinho.bbox().x>0){
+                } else if(that.motorEsq.value == 1 && that.carrinho.bbox().x>-30){
                     that.carrinho.dx(-5);
                 }
-                that.fdcEsq.value = that.carrinho.bbox().x<20 && that.carrinho.bbox().x>-80;
-                that.fdcDir.value = that.carrinho.bbox().x>420 && that.carrinho.bbox().x<520;
+                that.fdcEsq.value = that.carrinho.bbox().x<-5 && that.carrinho.bbox().x>-80;
+                that.fdcDir.value = that.carrinho.bbox().x>400 && that.carrinho.bbox().x<520;
                 that.fdcEsq.update();
                 that.fdcDir.update();
             }

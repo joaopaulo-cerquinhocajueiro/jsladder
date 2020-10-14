@@ -1,16 +1,27 @@
+"use strict"
 
-var width = 800, height = 700;
 var horz = 9, vert = 7;
+var width = 100*horz;
+var height = 100*vert;
+
+var sistema,toolBar,elementTables,elementTable;
+var buttonErase, buttonSave, buttonSimulate, inputFile;
+var selectedTable = 1;
+var simulating = false;
+
+var globalValues = {};
+var setPoints = {};
 
 SVG.on(document, 'DOMContentLoaded', function() {
     var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
-    var svgTable = SVG('table').size('100%', '100%').viewbox(0,0,800,700);
+    var svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
     var svgSim = SVG('sim').size('100%', '100%').viewbox(0,0,600,700);
 
     toolBar = new ToolBar(svgToolbar);
     // io = new IOView(svgIO, inputs, memories, outputs, counters);
     sistema = new VaiEVolta(svgSim, memories, counters);
-    elementTable = new ElementTable(svgTable, horz, vert, sistema.coisos);
+    elementTables = [new ElementTable(svgTable, horz, vert, sistema.coisos)];
+    elementTable = elementTables[selectedTable-1];
 
     buttonErase = document.getElementById('eraseButton');
     buttonErase.addEventListener('click',eraseAll);
@@ -18,8 +29,8 @@ SVG.on(document, 'DOMContentLoaded', function() {
     buttonSave = document.getElementById('saveButton');
     buttonSave.addEventListener('click',saveCode);
 
-    buttonExport = document.getElementById('exportButton');
-    buttonExport.addEventListener('click',exportCode);
+    // buttonExport = document.getElementById('exportButton');
+    // buttonExport.addEventListener('click',exportCode);
 
     buttonSimulate = document.getElementById('simulateButton');
     buttonSimulate.addEventListener('click',simulate);
@@ -160,7 +171,7 @@ function exportCode(){
 
 function simulate(e){
     elementTable.simulating = ! elementTable.simulating;
-    var tableDiv = document.getElementById("table");
+    var tableDiv = document.getElementById("tables");
     var simDiv = document.getElementById("sim");
     var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
