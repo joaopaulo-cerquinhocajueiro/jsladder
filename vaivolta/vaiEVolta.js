@@ -17,7 +17,13 @@ function VaiEVolta(svg, memories, counters){
                    },
                    "update":function(){
                         this.line.stroke(this.value?'red':'blue');
-                   }
+                    },
+                    "json":function(){
+                     var returnValue = {};
+                     returnValue['type'] = this.type;
+                     returnValue['name'] = this.name;
+                     return returnValue;
+                    }
                 };
     this.fdcEsq = {"type":"input",
                    "name":"fdcEsq",
@@ -29,11 +35,42 @@ function VaiEVolta(svg, memories, counters){
                    },
                    "update":function(){
                         this.line.stroke(this.value?'red':'blue');
+                   },
+                   "json":function(){
+                    var returnValue = {};
+                    returnValue['type'] = this.type;
+                    returnValue['name'] = this.name;
+                    return returnValue;
                    }
                 };
-    this.motorEsq = {"type":"output","name":"motorEsq","value":0,"draw":function(){},"update":function(){}};
-    this.motorDir = {"type":"output","name":"motorDir","value":0,"draw":function(){},"update":function(){}};
-    this.alarme = {"type":"output","name":"Alarme","value":0,"draw":function(){},"update":function(){}};
+    this.motorEsq = {"type":"output",
+                     "name":"motorEsq",
+                     "value":0,
+                     "draw":function(){},
+                     "update":function(){},
+                     "json":function(){
+                     var returnValue = {};
+                     returnValue['type'] = this.type;
+                     returnValue['name'] = this.name;
+                     return returnValue;
+                     }
+                    };
+    this.motorDir = {"type":"output","name":"motorDir","value":0,"draw":function(){},"update":function(){},
+            "json":function(){
+                var returnValue = {};
+                returnValue['type'] = this.type;
+                returnValue['name'] = this.name;
+                return returnValue;
+            }
+        };
+    this.alarme = {"type":"output","name":"Alarme","value":0,"draw":function(){},"update":function(){},
+        "json":function(){
+            var returnValue = {};
+            returnValue['type'] = this.type;
+            returnValue['name'] = this.name;
+            return returnValue;
+            }
+        };
 
     this.coisos = [this.fdcEsq, this.fdcDir, this.motorEsq, this.motorDir, this.alarme];
 

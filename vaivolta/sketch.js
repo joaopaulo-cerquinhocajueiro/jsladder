@@ -4,7 +4,10 @@ var horz = 9, vert = 7;
 var width = 100*horz;
 var height = 100*vert;
 
-var sistema,toolBar,elementTables,elementTable;
+var sistema, toolBar, elementTables, elementTable;
+var svgToolbar;
+var svgTable;
+var svgSim;
 var buttonErase, buttonSave, buttonSimulate, inputFile;
 var selectedTable = 1;
 var simulating = false;
@@ -13,9 +16,9 @@ var globalValues = {};
 var setPoints = {};
 
 SVG.on(document, 'DOMContentLoaded', function() {
-    var svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
-    var svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
-    var svgSim = SVG('sim').size('100%', '100%').viewbox(0,0,600,700);
+    svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
+    svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
+    svgSim = SVG('sim').size('100%', '100%').viewbox(0,0,600,700);
 
     toolBar = new ToolBar(svgToolbar);
     // io = new IOView(svgIO, inputs, memories, outputs, counters);
@@ -154,10 +157,12 @@ function eraseAll() {
 }
 
 function saveCode(){
-    var filename = "teste";
-    var blob = new Blob([elementTable.json()], {type: "text/json;charset=utf-8"});
-    saveAs(blob, filename+".json");
- //   console.log(elementTable.json())
+  var filename = "teste";
+  var codes = "[" + elementTables.map(table => {return table.jsonTable()}).join(", ") + "]";
+  var variables = elementTables[0].jsonVar();
+  var blob = new Blob(['{"codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
+  saveAs(blob, filename+".json");
+//   console.log(elementTable.json())
 }
 
 function exportCode(){
@@ -196,7 +201,7 @@ function simulate(e){
 
 function handleFileSelect(evt) { // always when selecting a new file
   var files = evt.target.files; // get the array with the file (there is only one)
-  f = files[0]; // select the first (and only) file
+  var f = files[0]; // select the first (and only) file
 
   var reader = new FileReader(); // a reader
 
@@ -204,9 +209,16 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.onload = (function(theFile) {
     return function(e) {
       var codeObject = JSON.parse(e.target.result);
-      elementTable.writeJson(codeObject);
-      io.writeJson(codeObject);
-      elementTable.ioElements = io.coisos;
+      elementTables = [];
+      //io.writeJson(codeObject);
+      for(var i=tableTabs.children.length-2;i>-1;i--){
+        tableTabs.removeChild(tableTabs.children[i]);
+      }
+      for(var i = 0;i<codeObject.codes.length;i++){
+        addTable(null);
+        elementTable.writeJson(codeObject.codes[i]);
+        elementTable.ioElements = sistema.coisos;
+      }
     };
   })(f);
 
@@ -214,3 +226,38 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.readAsText(f);
 }
 
+// Tab control
+
+function openTable(event,table){
+  var tableTabs = document.getElementById("tableTabs");
+  console.log("Abre tabela "+table);
+  tableTabs.children[selectedTable-1].classList.remove("selected");
+  selectedTable = table;
+  elementTable.hide();
+  elementTable = elementTables[selectedTable-1];
+  elementTable.show();
+  tableTabs.children[selectedTable-1].classList.add("selected");
+}
+
+function addTable(event){
+  var tableTabsLength = tableTabs.children.length;
+  var newButton = document.createElement("button");
+  elementTables.push(new ElementTable(svgTable, horz, vert, sistema.coisos));
+  elementTable.hide();
+  elementTable = elementTables[elementTables.length-1];
+  elementTable.show();
+  newButton.className += "selected";
+  newButton.innerHTML = tableTabsLength;
+  newButton.onclick = (event => {openTable(event,tableTabsLength)});
+  try {
+     tableTabs.children[selectedTable-1].classList.remove("selected");
+  } catch (error){
+    if(error instanceof TypeError){
+
+    }else {
+      logMyErrors(error);
+    }
+  }
+  selectedTable = tableTabsLength;
+  tableTabs.insertBefore(newButton,tableTabs.lastChild.previousSibling);
+}
