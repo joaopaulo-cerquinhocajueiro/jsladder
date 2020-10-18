@@ -48,6 +48,12 @@ class Valve {
             this.element.style.fill = "rgb(255,0,0)";
         }
     }
+    json = ()=>{
+        var returnValue = {};
+        returnValue['type'] = this.type;
+        returnValue['name'] = this.name;
+        return returnValue;
+    }
 }
 
 class Selector {
@@ -85,6 +91,12 @@ class Selector {
             this.gL.style.visibility = "hidden";
         }
     }
+    json = ()=>{
+        var returnValue = {};
+        returnValue['type'] = this.type;
+        returnValue['name'] = this.name;
+        return returnValue;
+    }
 }
 
 class Sensor {
@@ -107,6 +119,12 @@ class Sensor {
             this.value = 0;
             this.element.style.fill="rgb(0,255,0)";
         }
+    }
+    json = ()=>{
+        var returnValue = {};
+        returnValue['type'] = this.type;
+        returnValue['name'] = this.name;
+        return returnValue;
     }
 }
 
@@ -136,7 +154,52 @@ class Silos{
         this.counters = counters;
         this.coisos = [this.valve, this.selector].concat(this.sensors);
 
+        //this.create(null,this.memories,this.counters);
                 
+    }
+
+    create(inputs, memories, counters){
+        //this.svg.clear();
+        var posY = 0;
+        this.svg.text('inputs').move(30,posY).font({
+            family:   'Helvetica'
+        , size:     20
+        , anchor:   'middle'
+        });
+            posY+=distanceY+20;
+        inputs.forEach(input => {
+            this.coisos.push(new Bit(input,10,posY,"input",this.svg));
+            posY +=distanceY;
+        });
+        
+        posY = 0;
+        this.svg.text('mem').move(105,posY).font({
+            family:   'Helvetica'
+        , size:     20
+        , anchor:   'middle'
+        });
+        posY+=distanceY+20;
+        
+        memories.forEach(memory => {
+            this.coisos.push(new Bit(memory,85,posY,"memory",this.svg));
+            posY +=distanceY;
+        });
+        
+        posY = 0;
+        this.svg.text('counters').move(280,posY).font({
+            family:   'Helvetica'
+        , size:     20
+        , anchor:   'middle'
+        });
+        posY+=distanceY+20;
+        counters.forEach(counter => {
+            this.coisos.push(new Value(counter,260,posY,"counter",this.svg));
+            posY +=distanceY*1.5;
+        });
+
+        this.coisos.forEach(item => {
+            item.draw();
+        });
     }
 
     reset(){

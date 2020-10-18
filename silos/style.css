@@ -1,0 +1,172 @@
+body {padding: 0; margin: 0;}
+.fs {position:fixed; bottom:20px; right:20px;}
+#enter {display:block;}
+#exit {display:none;}
+
+.flex-container {
+      padding: 0;
+      margin: 2;
+      
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      height:80%;
+      -webkit-flex-flow: row wrap;
+      justify-content: space-around;
+      flex-flow: row;
+      align-items: flex-start;
+}
+.table-container {
+      padding: 0;
+      margin: 2;
+      
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      height:100%;
+      width:50%;
+      -webkit-flex-flow: column wrap;
+      flex-flow: column;
+      align-items: flex-start;
+      color:#000000;
+}
+      
+.flex-item {
+      padding: 1px;
+      margin:1px;
+      margin-top: 1px;
+      
+      /* line-height: 60px; */
+      color: white;
+      font-weight: bold;
+      font-size: 3em;
+      text-align: center;
+}
+#table{
+      width:100%;
+      height:100%;
+      background: lavender;
+      
+}
+
+/* .element:hover{
+      fill-opacity:30%;
+} */
+
+#menu{
+      flex-basis: 10%;
+      flex-grow:2;
+      flex-shrink:7;
+      justify-content: start;
+      background: #9CFFA0;      
+      height:10%;
+}
+
+#contentor{
+      flex-basis: 10%;
+      flex-grow:2;
+      flex-shrink:7;
+      justify-content: start;
+      background: #9CFFA0      
+}
+
+
+#toolbar{
+      width: 30%;
+      height: 100%;
+      background: seashell;
+}
+#io{
+      width: 60%;
+      height:100%;
+      background: wheat;
+      display: none;
+}
+ .line{
+      stroke-width:3;
+      fill:none;
+}
+.text{
+      stroke: none;
+}
+
+.tableText{
+
+      font-family:    Helvetica;
+      font-size:      20;
+      vertical-align: middle;
+      text-align:     center;
+      fill:         orange;
+}
+
+.selector {
+      position: absolute;
+      /*background-color: #202020;*/
+      color: #000;
+      top: 25px;
+      left: 25px;
+      padding: 2px;
+      width: 50px;
+      display:none;
+      /*z-index:13;*/
+}
+
+.button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 5px 15px;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+}
+  
+.button:hover {
+      background-color: green;
+}
+/* .output{
+      width:20;
+      fill:none;
+}  */
+
+.tab {
+      display:flex;
+      width:100%;
+      border: 1px solid #ccc;
+      background-color: #efcdab;
+    }
+    
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: #acfdfe;
+      float: left;
+      border: 1px solid #ccc;
+      border-radius: 10px 10px 0px 0px;
+      outline: none;
+      cursor: pointer;
+      padding: 4px 16px;
+      transition: 0.2s;
+      font-size: 17px;
+    }
+    
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #4aa;
+    }
+    
+    /* Create an active/current tablink class */
+    button.selected {
+      background-color: #7bb;
+    }
+    
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
