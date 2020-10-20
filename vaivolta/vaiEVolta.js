@@ -1,6 +1,6 @@
 function VaiEVolta(svg, memories, counters){
     this.svg = svg;
-    this.inputs =  ["ComandoEsq", "ComandoDir", "fdcEsq", "fdcDir"];
+    this.inputs =  ["ComandoEsq", "ComandoDir","comandoLiga","comandoDesliga", "fdcEsq", "fdcDir"];
     this.outputs = ["motorEsq","motorDir", "Alarme"];
     this.memories = memories;
     this.counters = counters;
@@ -146,7 +146,7 @@ function VaiEVolta(svg, memories, counters){
         },100);
     }
 
-    this.create(["comandoEsq","comandoDir"],this.memories,this.counters);
+    this.create(["comandoEsq","comandoDir","comandoLiga","comandoDesl"],this.memories,this.counters);
 
     this.writeJson = function(codeObject){
         var variablesRead = codeObject.variables;
