@@ -19,8 +19,8 @@ var svgTable;
 var svgIO;
 var simSvg;
 
-var memories = ["mem1", "mem2", "mem3", "mem4", "mem5"];
-var counters = ["c0", "c1", "c2", "c3"];
+var memories = ["m0", "m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8", "m9"];
+var counters = ["c0", "c1", "c2", "c3", "c4", "c5"];
 
 window.addEventListener("load", function() {
     svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
@@ -235,7 +235,7 @@ function handleFileSelect(evt) { // always when selecting a new file
       for(var i = 0;i<codeObject.codes.length;i++){
         addTable(null);
         elementTable.writeJson(codeObject.codes[i]);
-        elementTable.ioElements = sistema.coisos;
+        elementTable.ioElements = sistema.coisos.concat(io.coisos);
       }
     };
   })(f);
@@ -260,7 +260,7 @@ function openTable(event,table){
 function addTable(event){
   var tableTabsLength = tableTabs.children.length;
   var newButton = document.createElement("button");
-  elementTables.push(new ElementTable(svgTable, horz, vert, sistema.coisos));
+  elementTables.push(new ElementTable(svgTable, horz, vert, sistema.coisos.concat(io.coisos)));
   elementTable.hide();
   elementTable = elementTables[elementTables.length-1];
   elementTable.show();

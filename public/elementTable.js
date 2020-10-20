@@ -333,13 +333,11 @@ function ElementTable(svg,horz,vert,ioElements) {
                 that.verTable[index].status = "executing";
                 that.verTable[index].update();
             }
-            // Reads all values to a dictionary
-            //var values = {};
+
+            // TODO This should be executed only by the last table
             that.ioElements.forEach(element =>{
                 globalValues[element.name] = element.value;
             });
-            //console.log(values);
-            // Reads all counter setPoints to a dictionary
             that.ioElements.forEach(element =>{
                 if(element.type == 'counter'){
                     setPoints[element.name] = element.setPoint;
@@ -563,6 +561,7 @@ function ElementTable(svg,horz,vert,ioElements) {
         this.verTable.forEach(element =>{
             element.hide();
         });
+        this.coilArea.hide();
     }
 
     this.show = function(){
@@ -572,6 +571,6 @@ function ElementTable(svg,horz,vert,ioElements) {
         this.verTable.forEach(element =>{
             element.show();
         });
-       
+        this.coilArea.show();
     }
 }

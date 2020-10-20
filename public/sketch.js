@@ -43,10 +43,10 @@ SVG.on(document, 'DOMContentLoaded', function() {
     inputFile.addEventListener('change', handleFileSelect, false);
 });
 
-var inputs = ["chave1", "chave2", "nivel", "temperatura"];
-var memories = ["x", "y", "z"];
-var outputs = ["treco","coiso", "troco", "cacareco"];
-var counters = ["c0", "c1", "c2", "c3"];
+var inputs = ["i0", "i1", "i2", "i3","i4", "i5", "i6", "i7", "i8", "i9"];
+var memories = ["m0", "m1", "m2", "m3","m4", "m5", "m6", "m7", "m8", "m9"];
+var outputs = ["q0", "q1", "q2", "q3","q4", "q5", "q6", "q7", "q8", "q9"];
+var counters = ["c0", "c1", "c2", "c3", "c4", "c5"];
 
 // var buttonInputs = [];
 // var dispMemories = [];

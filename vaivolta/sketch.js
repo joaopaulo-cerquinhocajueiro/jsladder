@@ -43,8 +43,8 @@ SVG.on(document, 'DOMContentLoaded', function() {
     inputFile.addEventListener('change', handleFileSelect, false);
 });
 
-var memories = ["mem1", "mem2", "mem3", "mem4", "mem5"];
-var counters = ["c0", "c1", "c2", "c3"];
+var memories = ["m0", "m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8", "m9"];
+var counters = ["c0", "c1", "c2", "c3", "c4", "c5"];
 
 // var buttonInputs = [];
 // var dispMemories = [];
