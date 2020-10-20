@@ -107,6 +107,15 @@ body {padding: 0; margin: 0;}
       stroke: none;
 }
 
+.tableText{
+
+      font-family:    Helvetica;
+      font-size:      20;
+      vertical-align: middle;
+      text-align:     center;
+      fill:         orange;
+}
+
 .selector {
       position: absolute;
       /*background-color: #202020;*/
@@ -136,3 +145,40 @@ body {padding: 0; margin: 0;}
       width:20;
       fill:none;
 }  */
+.tab {
+      display:flex;
+      width:100%;
+      border: 1px solid #ccc;
+      background-color: #efcdab;
+    }
+    
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: #acfdfe;
+      float: left;
+      border: 1px solid #ccc;
+      border-radius: 10px 10px 0px 0px;
+      outline: none;
+      cursor: pointer;
+      padding: 4px 16px;
+      transition: 0.2s;
+      font-size: 17px;
+    }
+    
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #4aa;
+    }
+    
+    /* Create an active/current tablink class */
+    button.selected {
+      background-color: #7bb;
+    }
+    
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }

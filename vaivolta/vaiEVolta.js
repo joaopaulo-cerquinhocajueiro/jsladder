@@ -119,7 +119,7 @@ function VaiEVolta(svg, memories, counters){
 
         // Desenho da simulação
         // this.carrinho = this.svg.group().rect(40,20).radius(10).stroke('black').fill('none').move(100,500);
-        this.carrinho = this.svg.image('carro.png',150,80).move(100,480);
+        this.carrinho = this.svg.image('carro.png',150,80).move(200,480);
         this.svg.image("muro.png",50,50).move(-40,500);
         this.svg.image("muro.png",50,50).move(-40,475);
         this.svg.image("muro.png",50,50).move(580,500);
@@ -128,7 +128,8 @@ function VaiEVolta(svg, memories, counters){
         // this.fdcEsq.draw();
         that = this
         this.intervaloSimul = setInterval(function(){
-            if (this.elementTable.simulating){
+            if (simulating){
+                // console.log("Simulando");
                 if (that.motorDir.value == 1 && that.carrinho.bbox().x<470){
                     that.carrinho.dx(5);
                 } else if(that.motorEsq.value == 1 && that.carrinho.bbox().x>-30){
@@ -138,6 +139,9 @@ function VaiEVolta(svg, memories, counters){
                 that.fdcDir.value = that.carrinho.bbox().x>400 && that.carrinho.bbox().x<520;
                 that.fdcEsq.update();
                 that.fdcDir.update();
+            } else {
+                // console.log("Não simulando");
+                sistema.carrinho.x(200);
             }
         },100);
     }

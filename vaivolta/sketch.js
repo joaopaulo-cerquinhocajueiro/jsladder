@@ -43,8 +43,8 @@ SVG.on(document, 'DOMContentLoaded', function() {
     inputFile.addEventListener('change', handleFileSelect, false);
 });
 
-var memories = ["m0", "m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8", "m9"];
-var counters = ["c0", "c1", "c2", "c3", "c4", "c5"];
+var memories = ["m0", "m1", "m2", "m3", "m4", "m5", "m6"];
+var counters = ["c0", "c1", "c2", "c3", "c4"];
 
 // var buttonInputs = [];
 // var dispMemories = [];
@@ -175,12 +175,15 @@ function exportCode(){
 }
 
 function simulate(e){
-    elementTable.simulating = ! elementTable.simulating;
+    simulating = !simulating;
+  elementTables.forEach(elementTable => {
+      elementTable.simulating = simulating;      
+    });
     var tableDiv = document.getElementById("tables");
     var simDiv = document.getElementById("sim");
     var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
-    if(elementTable.simulating){
+    if(simulating){
         simButton.style.backgroundColor = "#4C50AF";
         simButton.innerHTML = "Stop simulation";
         simDiv.style.display = 'flex';
