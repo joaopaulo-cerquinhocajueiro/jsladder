@@ -131,9 +131,9 @@ function VaiEVolta(svg, memories, counters){
             if (simulating){
                 // console.log("Simulando");
                 if (that.motorDir.value == 1 && that.carrinho.bbox().x<470){
-                    that.carrinho.dx(5);
+                    that.carrinho.dx(50);
                 } else if(that.motorEsq.value == 1 && that.carrinho.bbox().x>-30){
-                    that.carrinho.dx(-5);
+                    that.carrinho.dx(-50);
                 }
                 that.fdcEsq.value = that.carrinho.bbox().x<-5 && that.carrinho.bbox().x>-80;
                 that.fdcDir.value = that.carrinho.bbox().x>400 && that.carrinho.bbox().x<520;
