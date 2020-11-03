@@ -1,0 +1,20 @@
+    aguaBaixo, visível
+    aguaTopo, visível altura
+temp, altura
+    aguaSaindo, visível
+    VA, cor
+    SN, cor
+    PO, cor
+    VG, cor
+    centelha, cor
+    SG, cor
+    SPP, cor
+    POfechado, visível
+    POaberto, visível
+    ovoinicial, visível
+    ovo1, visível
+    ovo2, visível
+    ovo3, visível
+    rachadura,visível
+    panela,visível
+    fogo, visível

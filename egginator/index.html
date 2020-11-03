@@ -1,0 +1,58 @@
+<html lang="br">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>egginator - ladder.js</title>
+    <script language="javascript" type="text/javascript" src="../public/libraries/svg.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/GElements.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/Bit.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/Value.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/ioview.js"></script>
+  <!-- <script language="javascript" type="text/javascript" src="vaiEVolta.js"></script> -->
+    <script type="text/javascript" src="egginator.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/toolbar.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/elementTable.js"></script>
+    <script language="javascript" type="text/javascript" src="sketch.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/libraries/jsld2ard.js"></script>
+    <script language="javascript" type="text/javascript" src="../public/libraries/FileSaver.min.js"></script>
+    <!-- this line removes any default padding and style. you might only need one of these values set. -->
+    <link rel="stylesheet" type="text/css" href="../public/style.css">
+  </head>
+
+  <body>
+    <div id='menu' class='flex-item' class='flex-container'>
+      <button type="button" class="button" id="eraseButton" class='flex-item'>Erase all</button>
+      <button type="button" class="button" id="saveButton" class='flex-item'>Save project</button>
+<!---      <button type="button" class="button" id="exportButton" class='flex-item'>Export arduino</button>  -->
+      <button type="button" class="button" id="simulateButton" class='flex-item'>Simulate</button>
+      <input type="file" id="inputFile" name="inputFile" class="button"/>
+    </div>
+    <div id='contentor' class='flex-container'>
+    <div id='tables' class='table-container'>
+      <div id='tableTabs' class="tab">
+        <button class="selected" onclick="openTable(event,1)">1</button>
+        <button onclick="addTable(event)">+</button>
+      </div>
+      <div id='table' class='flex-item'></div>
+    </div>
+      <div id='toolbar' class='flex-item'></div>
+      <div id='sim' class='flex-item'>
+        <div id='io' class='flex-item'></div>
+        <object id="sistema" type="image/svg+xml" data="./sistema.svg" width="100%"></object>
+        <button class="panela" onclick="togglePan(event)">Coloca panela</button>
+        <button onclick="reset(event)">Reset</button>
+      </div>
+    </div>
+<!--    <div id='simContentor' class='flex-container'>
+    </div>
+-->      
+
+
+
+<!--    <input type="button" id="bValve" value="Válvula desligada"></input>
+    <input type="button" id="bSel" value="Esquerda"></input>
+-->
+  </body>
+</html>
