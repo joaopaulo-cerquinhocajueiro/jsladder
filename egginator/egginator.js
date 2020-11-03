@@ -27,7 +27,7 @@ class Ovo {
                 }
                 break;
             case 2: if(++this.aniCounter>=this.aniCounterMax){
-                if(sistema.panela.h >= sistema.panela.hmax){
+                if(sistema.panela.h >= 0.6*sistema.panela.hmax){
                     this.estado = 3;
                 } else {
                     this.estado = 4;
@@ -47,6 +47,8 @@ class Ovo {
         if(this.estado == 4){
             this.ovos[3].style.visibility="visible";
             this.crack.style.visibility="visible";
+        } else {
+            this.crack.style.visibility="hidden";
         }
     }
 }
@@ -69,6 +71,13 @@ class Panela {
     setH = (newH)=>{
         this.aguaTopo.height.baseVal.value = newH;
         this.aguaTopo.y.baseVal.value = this.y0+this.hmax - newH;
+        if(this.h>0){
+            this.aguaBaixo.style.visibility = "visible";
+            this.aguaTopo.style.visibility = "visible";
+        } else {
+            this.aguaBaixo.style.visibility = "hidden";
+            this.aguaTopo.style.visibility = "hidden";
+        }
     }
     increase = (amount)=>{
         // console.log(this);
@@ -187,7 +196,7 @@ class Sensor {
     }
     update = ()=>{
         switch(this.name){
-            case "SN": this.value = sistema.panela.h > sistema.panela.hmax?1:0;
+            case "SN": this.value = sistema.panela.h > 0.9*sistema.panela.hmax?1:0;
                 break;
             case "SPP": this.value = sistema.panela.present?1:0;
                 break;
@@ -228,23 +237,24 @@ class SensorTemp {
         this.out = false;
         this.value = 0;
         this.temperature = 20.0;
-        this.y0 = this.element.y.baseVal.value;
-        this.hmax = this.element.height.baseVal.value;
+        this.y0 = this.element.y.baseVal.value-3*this.element.height.baseVal.value;
+        this.hmax = this.element.height.baseVal.value*4;
         this.h = 0;
         this.type = 'input';
         this.name = "ST";
     }
     update = ()=>{
         if(sistema.panela.present){
-            if (sistema.fogo.visibility == "visible"){
-                this.temperature += 0.2*(100.0-this.temperature);
+            if (sistema.fogo.style.visibility == "visible"){
+                this.temperature += 0.02*(100.0-this.temperature);
+                console.log("Updating temp",this.temperature);
             } else {
                 this.temperature -= 0.2*(this.temperature-20.0);
             }
         }  else {
             this.temperature = 20;
         }
-        let h = (this.temperatura-20.0)*this.hmax/80.0;
+        var h = (this.temperature-20.0)*this.hmax/80.0;
         this.element.height.baseVal.value = h;
         this.element.y.baseVal.value = this.y0 + this.hmax - h;
 
@@ -384,12 +394,15 @@ class Egginator{
     }
 
     reset(){
-        this.PO.value = 0;
-        this.PO.update();
+        // console.log(this.portinhola);
+        this.portinhola.value = 0;
+        this.portinhola.update();
+        this.centelha.value = 0;
+        this.centelha.update();
         this.ovo.estado = 0;
         this.ovo.update();
-        this.panela.present = true;
-        this.panela.update();
+        this.panela.present = false;
+        // this.panela.update();
         this.valveAgua.value = 0;
         this.valveAgua.update();
         this.valveGas.value = 0;
@@ -407,8 +420,15 @@ class Egginator{
         for(let x of this.outputs){
             x.update();
         }
-
-        this.panela.update();
+        if(this.valveAgua.value == 1){
+            this.aguaSaindo.style.visibility = "visible";
+            if(this.panela.present){
+                this.panela.increase(2);
+            }
+        } else {
+            this.aguaSaindo.style.visibility = "hidden";
+        }
+        // this.panela.update();
         this.ovo.update();
         if(this.valveGas.value == 0){
             this.fogo.style.visibility = "hidden";
