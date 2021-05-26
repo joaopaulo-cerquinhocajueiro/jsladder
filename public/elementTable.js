@@ -18,11 +18,13 @@ function ElementTable(svg,horz,vert,ioElements) {
         // var posX = element.posX;
         // var posY = element.posY;
         // var name = element.name;
-        element.shape.clear();
-        element.type = newType;
-        element.draw();
-        element.toolTip = "off";
-        element.update();
+        if(!simulating){
+            element.shape.clear();
+            element.type = newType;
+            element.draw();
+            element.toolTip = "off";
+            element.update();
+        }
     }
     this.selectVariable = false;
     this.simulating = false;
@@ -177,105 +179,117 @@ function ElementTable(svg,horz,vert,ioElements) {
         if((index+1)%that.horSize == 0){ //if on the last column
 
             element.shape.mouseout(function(e){
-                if(toolBar.selectedShape.type == 'Eraser' ||
-                   toolBar.selectedShape.type == 'Hand' || 
-                   that.counterCoils.indexOf(toolBar.selectedShape.type) > -1 ||
-                   that.coils.indexOf(toolBar.selectedShape.type) > -1){
-                        element.box.attr('fill-opacity',0.0);
+                if(!simulating){
+                    if(toolBar.selectedShape.type == 'Eraser' ||
+                    toolBar.selectedShape.type == 'Hand' || 
+                    that.counterCoils.indexOf(toolBar.selectedShape.type) > -1 ||
+                    that.coils.indexOf(toolBar.selectedShape.type) > -1){
+                            element.box.attr('fill-opacity',0.0);
+                    }
                 }
             });
 
             element.shape.mouseover(function(e){
-                if(toolBar.selectedShape.type == 'Eraser' ||
-                   toolBar.selectedShape.type == 'Hand' || 
-                   that.counterCoils.indexOf(toolBar.selectedShape.type) > -1 ||
-                   that.coils.indexOf(toolBar.selectedShape.type) > -1){
-                        element.box.attr('fill-opacity',0.2);
+                if(!simulating){
+                    if(toolBar.selectedShape.type == 'Eraser' ||
+                    toolBar.selectedShape.type == 'Hand' || 
+                    that.counterCoils.indexOf(toolBar.selectedShape.type) > -1 ||
+                    that.coils.indexOf(toolBar.selectedShape.type) > -1){
+                            element.box.attr('fill-opacity',0.2);
+                    }
                 }
             });
 
             element.shape.mousedown(function(){
-                // If using the eraser
-                if(toolBar.selectedShape.type == "Eraser"){
-                    element.name = "";
-                    that.clickFunction(element,"Empty",origTable,index); // add an empty element
-                } else if(toolBar.selectedShape.type == "Hand"){ // If using the Hand
-                    if(that.coils.indexOf(element.type) > -1){ // If the clicked element is a coil
+                if(!simulating){
+                    // If using the eraser
+                    if(toolBar.selectedShape.type == "Eraser"){
+                        element.name = "";
+                        that.clickFunction(element,"Empty",origTable,index); // add an empty element
+                    } else if(toolBar.selectedShape.type == "Hand"){ // If using the Hand
+                        if(that.coils.indexOf(element.type) > -1){ // If the clicked element is a coil
+                            that.setLabel(element,"coil");
+                        } else if(that.counterCoils.indexOf(element.type) > -1){ // If the clicked element is a coil
+                            that.setLabel(element,"counterCoil");
+                        }
+                    } else if(that.coils.indexOf(toolBar.selectedShape.type) > -1){
+                        that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                         that.setLabel(element,"coil");
-                    } else if(that.counterCoils.indexOf(element.type) > -1){ // If the clicked element is a coil
+                    } else if(that.counterCoils.indexOf(toolBar.selectedShape.type) > -1){
+                        that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                         that.setLabel(element,"counterCoil");
                     }
-                } else if(that.coils.indexOf(toolBar.selectedShape.type) > -1){
-                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
-                    that.setLabel(element,"coil");
-                } else if(that.counterCoils.indexOf(toolBar.selectedShape.type) > -1){
-                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
-                    that.setLabel(element,"counterCoil");
                 }
             });    
         } else {
             element.shape.mousedown(function(){
-                if(toolBar.selectedShape.type == "Eraser"){
-                    element.name = "";
-                    that.clickFunction(element,"Empty",origTable,index);
-                } else if(toolBar.selectedShape.type == "Hand"){ // If using the Hand
-                    if(that.contacts.indexOf(element.type) > -1){ // If the clicked element is a coil
+                if(!simulating){
+                    if(toolBar.selectedShape.type == "Eraser"){
+                        element.name = "";
+                        that.clickFunction(element,"Empty",origTable,index);
+                    } else if(toolBar.selectedShape.type == "Hand"){ // If using the Hand
+                        if(that.contacts.indexOf(element.type) > -1){ // If the clicked element is a coil
+                            that.setLabel(element,"contact");
+                        } else if(that.counterContacts.indexOf(element.type) > -1){ // If the clicked element is a coil
+                            that.setLabel(element,"counterContact");
+                        } else if(that.timers.indexOf(element.type) > -1){ // If the clicked element is a coil
+                            that.setLabel(element,"timer");
+                        }
+                    } else if(toolBar.selectedShape.type == 'DrawLine'){
+                        element.name = "";
+                        that.clickFunction(element,'HorLine',origTable,index);
+                    } else if(that.contacts.indexOf(toolBar.selectedShape.type) > -1){
+                        that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                         that.setLabel(element,"contact");
-                    } else if(that.counterContacts.indexOf(element.type) > -1){ // If the clicked element is a coil
-                        that.setLabel(element,"counterContact");
-                    } else if(that.timers.indexOf(element.type) > -1){ // If the clicked element is a coil
+                    } else if(that.timers.indexOf(toolBar.selectedShape.type) > -1){
+                        that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                         that.setLabel(element,"timer");
+                    } else if(that.counterContacts.indexOf(toolBar.selectedShape.type) > -1){
+                        that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
+                        that.setLabel(element,"counterContact");
                     }
-                } else if(toolBar.selectedShape.type == 'DrawLine'){
-                    element.name = "";
-                    that.clickFunction(element,'HorLine',origTable,index);
-                } else if(that.contacts.indexOf(toolBar.selectedShape.type) > -1){
-                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
-                    that.setLabel(element,"contact");
-                } else if(that.timers.indexOf(toolBar.selectedShape.type) > -1){
-                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
-                    that.setLabel(element,"timer");
-                } else if(that.counterContacts.indexOf(toolBar.selectedShape.type) > -1){
-                    that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
-                    that.setLabel(element,"counterContact");
                 }
             });
 
             element.shape.mouseout(function(e){
-                if(toolBar.selectedShape.type == 'DrawLine' ||
-                   toolBar.selectedShape.type == 'Eraser' ||
-                   toolBar.selectedShape.type == 'Hand' || 
-                   that.counterContacts.indexOf(toolBar.selectedShape.type) > -1 ||
-                   that.timers.indexOf(toolBar.selectedShape.type) > -1 || 
-                   that.contacts.indexOf(toolBar.selectedShape.type) > -1){
-                        element.box.attr('fill-opacity',0.0);
+                if(!simulating){
+                    if(toolBar.selectedShape.type == 'DrawLine' ||
+                    toolBar.selectedShape.type == 'Eraser' ||
+                    toolBar.selectedShape.type == 'Hand' || 
+                    that.counterContacts.indexOf(toolBar.selectedShape.type) > -1 ||
+                    that.timers.indexOf(toolBar.selectedShape.type) > -1 || 
+                    that.contacts.indexOf(toolBar.selectedShape.type) > -1){
+                            element.box.attr('fill-opacity',0.0);
+                    }
                 }
             });
 
             element.shape.mouseover(function(e){
-                if(toolBar.selectedShape.type == 'DrawLine' || 
-                   toolBar.selectedShape.type == 'Eraser' ||
-                   toolBar.selectedShape.type == 'Hand' || 
-                   that.counterContacts.indexOf(toolBar.selectedShape.type) > -1 || 
-                   that.timers.indexOf(toolBar.selectedShape.type) > -1 || 
-                   that.contacts.indexOf(toolBar.selectedShape.type) > -1){
-                        element.box.attr('fill-opacity',0.2);
-                }
-                // Determina se tem um botão do mouse apertado e se sim, qual é
-                var whichButton = e.buttons === undefined? e.which : e.buttons;
-                // Se for o botão 1 (esquerdo)
-                if (whichButton == 1){
-                    // Se estiver com a ferramenta de desenhar, continua o traço
-                    if(toolBar.selectedShape.type == 'DrawLine'){
-                        element.name = "";
-                        that.clickFunction(element,'HorLine',origTable,index);
-                    // Se estiver com a ferramenta de apagar, continua apagando
-                    } else if(toolBar.selectedShape.type == "Eraser"){
-                        element.name = "";
-                        that.clickFunction(element,"Empty",origTable,index);
+                if(!simulating){
+                    if(toolBar.selectedShape.type == 'DrawLine' || 
+                    toolBar.selectedShape.type == 'Eraser' ||
+                    toolBar.selectedShape.type == 'Hand' || 
+                    that.counterContacts.indexOf(toolBar.selectedShape.type) > -1 || 
+                    that.timers.indexOf(toolBar.selectedShape.type) > -1 || 
+                    that.contacts.indexOf(toolBar.selectedShape.type) > -1){
+                            element.box.attr('fill-opacity',0.2);
                     }
-                } else {
+                    // Determina se tem um botão do mouse apertado e se sim, qual é
+                    var whichButton = e.buttons === undefined? e.which : e.buttons;
+                    // Se for o botão 1 (esquerdo)
+                    if (whichButton == 1){
+                        // Se estiver com a ferramenta de desenhar, continua o traço
+                        if(toolBar.selectedShape.type == 'DrawLine'){
+                            element.name = "";
+                            that.clickFunction(element,'HorLine',origTable,index);
+                        // Se estiver com a ferramenta de apagar, continua apagando
+                        } else if(toolBar.selectedShape.type == "Eraser"){
+                            element.name = "";
+                            that.clickFunction(element,"Empty",origTable,index);
+                        }
+                    } else {
 
+                    }
                 }
             });
         }
@@ -285,34 +299,43 @@ function ElementTable(svg,horz,vert,ioElements) {
         element.update();
         //var that = this;
         element.shape.mouseout(function(e){
-            if(toolBar.selectedShape.type == 'DrawLine' ||
-               toolBar.selectedShape.type == 'Eraser'){
-                    element.box.attr('fill-opacity',0.0);
+            if(!simulating){
+                if(toolBar.selectedShape.type == 'DrawLine' ||
+                toolBar.selectedShape.type == 'Eraser'){
+                        element.box.attr('fill-opacity',0.0);
+                }
             }
         });
 
         element.shape.mouseover(function(e){
-            if(toolBar.selectedShape.type == 'DrawLine' || 
-               toolBar.selectedShape.type == 'Eraser'){
-                    element.box.attr('fill-opacity',0.2);
+            if(!simulating){
+                if(toolBar.selectedShape.type == 'DrawLine' || 
+                toolBar.selectedShape.type == 'Eraser'){
+                        element.box.attr('fill-opacity',0.2);
+                }
             }
         });
 
-    element.shape.mousedown(function(){
-            //that.clickFunction(element,"HorLine",origTable,index)
-            if(toolBar.selectedShape.type == 'DrawLine'){
-                that.clickFunction(element,'VerLine',origTable,index)
-            } else if(toolBar.selectedShape.type == 'Eraser'){
-                that.clickFunction(element,'Empty',origTable,index)
-            }
-        });
-        element.shape.mouseover(function(e){
-            var whichButton = e.buttons === undefined? e.which : e.buttons;
-            if (whichButton == 1){
+        element.shape.mousedown(function(){
+            if(!simulating){
+                //that.clickFunction(element,"HorLine",origTable,index)
                 if(toolBar.selectedShape.type == 'DrawLine'){
-                    that.clickFunction(element,'VerLine',origTable,index);
-                } else if(toolBar.selectedShape.type == "Eraser"){
-                    that.clickFunction(element,"Empty",origTable,index);
+                    that.clickFunction(element,'VerLine',origTable,index)
+                } else if(toolBar.selectedShape.type == 'Eraser'){
+                    that.clickFunction(element,'Empty',origTable,index)
+                }
+            }
+        });
+
+        element.shape.mouseover(function(e){
+            if(!simulating){
+                var whichButton = e.buttons === undefined? e.which : e.buttons;
+                if (whichButton == 1){
+                    if(toolBar.selectedShape.type == 'DrawLine'){
+                        that.clickFunction(element,'VerLine',origTable,index);
+                    } else if(toolBar.selectedShape.type == "Eraser"){
+                        that.clickFunction(element,"Empty",origTable,index);
+                    }
                 }
             }
         });

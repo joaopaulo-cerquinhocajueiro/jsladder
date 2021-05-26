@@ -155,7 +155,9 @@ function resize(width,height) {
 
 
 function eraseAll() {
+  if (!simulating){
     elementTable.eraseAll();
+  }
 }
 
 function saveCode(){
