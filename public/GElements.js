@@ -68,13 +68,15 @@ function GElement(name, type, posX, posY, svg) {
             break;
         // update the timers completion bar
             case "ContactTON":
+                // console.log(this.inputValue,this.oldInputValue);
                 if( this.inputValue &&  !this.oldInputValue){
                     this.isCounting = true;
                     var that = this;
                     this.intervalId = setInterval(function(){
-                        //console.log("triggered Again!",that.timeLength, that.isCounting);
                         that.timeLength += 0.05;
-                        if(that.timeLength >= 1.0){
+                        // If counted up to timeLength (always 1.0) or if it is not simulating, shutdown
+                        if((that.timeLength >= 1.0) || (that.status=="offline")){
+                            console.log("timer TON shutdown");
                             that.isCounting = false;
                             that.timeLength = 0.0;
                             clearInterval(that.intervalId);
@@ -109,6 +111,7 @@ function GElement(name, type, posX, posY, svg) {
                         //console.log("triggered Again!",that.timeLength, that.isCounting);
                         that.timeLength += 0.05;
                         if(that.timeLength >= 1.0){
+                            console.log("timer TOF shutdown");
                             that.isCounting = false;
                             that.timeLength = 1.0;
                             clearInterval(that.intervalId);
@@ -139,7 +142,8 @@ function GElement(name, type, posX, posY, svg) {
                     this.intervalId = setInterval(function(){
                         //console.log("triggered Again!",that.timeLength, that.isCounting);
                         that.timeLength += 0.05;
-                        if(that.timeLength >= 1.0){
+                        // If counted up to timeLength (always 1.0) or if it is not simulating, shutdown
+                        if((that.timeLength >= 1.0) || (that.status=="offline")){
                             that.isCounting = false;
                             that.timeLength = 0;
                             clearInterval(that.intervalId);
