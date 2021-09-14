@@ -180,6 +180,11 @@ function exportCode(){
 
 function simulate(e){
     simulating = !simulating;
+    if(!simulating){
+      for(let i=0;i<io.coisos.length;i++){
+        io.coisos[i].value = 0;
+      }
+    }
     elementTables.forEach(elementTable => {
       elementTable.simulating = simulating;      
     });
