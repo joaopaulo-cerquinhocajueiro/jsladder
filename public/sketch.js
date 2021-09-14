@@ -183,6 +183,7 @@ function simulate(e){
     if(!simulating){
       for(let i=0;i<io.coisos.length;i++){
         io.coisos[i].value = 0;
+        io.coisos[i].update();
       }
     }
     elementTables.forEach(elementTable => {
