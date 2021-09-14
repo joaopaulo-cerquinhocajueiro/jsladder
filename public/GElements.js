@@ -679,8 +679,9 @@ function GElement(name, type, posX, posY, svg) {
             returnValue = this.type;
         } else {
             returnValue = {};
-        returnValue['type'] = this.type;
-        returnValue['name'] = this.name;
+            returnValue['type'] = this.type;
+            returnValue['name'] = this.name;
+            // if(this.type == "")
         }
         return returnValue
     }

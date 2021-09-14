@@ -1,13 +1,13 @@
 // Object that represents a binary memory element - inputs, outputs and internal memory
 
-function Value(name,posX,posY,type,svg){
+function Value(name,posX,posY,type,svg,sp=5){
     this.name = name;
     this.posX = posX;
     this.posY = posY;
     this.type = type;
     this.svg = svg;
     this.value = 0;
-    this.setPoint = 5;
+    this.setPoint = sp;
     this.shape = this.svg.group();
     this.toggle = null;
 

@@ -58,7 +58,7 @@ function IOView(svg, inputs, memories, outputs, counters){
         });
         posY+=distanceY+20;
         counters.forEach(counter => {
-            this.coisos.push(new Value(counter,260,posY,"counter",this.svg));
+            this.coisos.push(new Value(counter[0],260,posY,"counter",this.svg,counter[1]));
             posY +=distanceY*1.5;
         });
 
@@ -86,7 +86,7 @@ function IOView(svg, inputs, memories, outputs, counters){
                 break;
             case 'output': outputs.push(variable.name);
                 break;
-                case 'counter': counters.push(variable.name);
+                case 'counter': counters.push([variable.name,variable.setPoint]);
                 break;
             }
         });
