@@ -174,6 +174,7 @@ function ElementTable(svg,horz,vert,ioElements) {
     }
     // Creates the dropdown list of variables for a contact
     var that = this;
+    this.setGUI = function(){
     this.table.forEach(function(element,index,origTable){
         element.update();
         if((index+1)%that.horSize == 0){ //if on the last column
@@ -340,6 +341,10 @@ function ElementTable(svg,horz,vert,ioElements) {
             }
         });
     });
+
+    }
+    this.setGUI();
+
     
     
     this.update = function() {
@@ -573,7 +578,8 @@ function ElementTable(svg,horz,vert,ioElements) {
                     this.table[index++] = new GElement(horTableRead[i][j].name,horTableRead[i][j].type,100*j,100*i,this.svg);
                 }
             }
-          }
+        }
+        this.setGUI();
     
     }
 

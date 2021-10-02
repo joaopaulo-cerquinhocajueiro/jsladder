@@ -270,9 +270,12 @@ function handleFileSelect(evt) { // always when selecting a new file
         tableTabs.removeChild(tableTabs.children[i]);
       }
       for(var i = 0;i<codeObject.codes.length;i++){
+        console.log(selectedTable);
         addTable(null);
+        console.log(selectedTable);
         elementTable.writeJson(codeObject.codes[i]);
         elementTable.ioElements = io.coisos;
+        console.log(elementTables,elementTable);
       }
     };
   })(f);
