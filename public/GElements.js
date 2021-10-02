@@ -33,13 +33,16 @@ function GElement(name, type, posX, posY, svg) {
         case "ContactTP":
             this.oldInputValue;
             this.isCounting = false;
-            this.timeLength = 0.0; // goes form 0 to 1
+            this.timeLength = 0.0; // goes from 0 to 1
+            this.startTime = Date.now();
             this.intervalId;
             break;
         case "ContactTOF":
             this.oldInputValue;
             this.isCounting = false;
-            this.timeLength = 1.0; // goes form 0 to 1
+            this.timeLength = 1.0; // goes from 1 to 0
+            this.startTime = Date.now();
+            this.finalTime;
             this.intervalId;
             break;
         case "ContactDN":
@@ -68,97 +71,88 @@ function GElement(name, type, posX, posY, svg) {
             break;
         // update the timers completion bar
             case "ContactTON":
-                // console.log(this.inputValue,this.oldInputValue);
-                if( this.inputValue &&  !this.oldInputValue){
+                if( this.inputValue &&  !this.oldInputValue){ // if rising edge
                     this.isCounting = true;
-                    var that = this;
-                    this.intervalId = setInterval(function(){
-                        that.timeLength += 0.05;
-                        // If counted up to timeLength (always 1.0) or if it is not simulating, shutdown
-                        if((that.timeLength >= 1.0) || (that.status=="offline")){
-                            console.log("timer TON shutdown");
-                            that.isCounting = false;
-                            that.timeLength = 0.0;
-                            clearInterval(that.intervalId);
-                            that.update();
-                        }
-                        that.completionBar.attr('x2',30+that.timeLength*(70-30));
-                    }, that.name*50);
+                    this.startTime = Date.now();
+                    this.outputValue = 0;
                 }
                 if(this.isCounting) {
                     if(this.inputValue == 0){
                         this.isCounting = false;
-                        this.timeLength = 0,0;
-                        clearInterval(this.intervalId);
-                        that.update();
-                        console.log(that.name);
-                        this.outputValue = this.inputValue;
-                    } else {
+                        this.timeLength = 0.0;
                         this.outputValue = 0;
+                    } else { // is counting and inputValue == 1
+                        this.timeLength = (Date.now() - this.startTime)/(this.name*1000);
+                        if (this.timeLength >= 1.0){
+                            this.outputValue = 1;
+                            this.timeLength = 1.0;
+                            this.isCounting = false;
+                        }
+                        else{
+                            this.outputValue = 0;
+                        }
                     }
                 } else {
                     this.outputValue = this.inputValue;
+                    this.timeLength = this.outputValue;
                 }
+                this.completionBar.attr('x2',30+this.timeLength*(70-30));
                 this.oldInputValue = this.inputValue; 
+                this.update();
                 break;
             case "ContactTOF":
-                if( !this.inputValue &&  this.oldInputValue){
+                if( !this.inputValue &&  this.oldInputValue){ // if falling edge
                     this.isCounting = true;
-                    this.timeLength = 0;
-                    //console.log("triggered!",this.isCounting);
-                    var that = this;
-                    this.intervalId = setInterval(function(){
-                        //console.log("triggered Again!",that.timeLength, that.isCounting);
-                        that.timeLength += 0.05;
-                        if(that.timeLength >= 1.0){
-                            console.log("timer TOF shutdown");
-                            that.isCounting = false;
-                            that.timeLength = 1.0;
-                            clearInterval(that.intervalId);
-                        }
-                        that.completionBar.attr('x1',30+that.timeLength*(70-30));
-                    },this.name*50);
+                    this.startTime = Date.now();
+                    this.outputValue = 1;
                 }
                 if(this.isCounting) {
                     if(this.inputValue == 1){
                         this.isCounting = false;
-                        this.timeLength = 1,0;
-                        clearInterval(this.intervalId);   
-                        this.outputValue = this.inputValue;
-                    } else {
+                        this.timeLength = 0.0;
                         this.outputValue = 1;
+                    } else { // is counting and inputValue == 0
+                        this.timeLength = (Date.now() - this.startTime)/(this.name*1000);
+                        if (this.timeLength >= 1.0){
+                            this.outputValue = 0;
+                            this.timeLength = 1.0;
+                            this.isCounting = false;
+                        }
+                        else{
+                            this.outputValue = 1;
+                        }
                     }
-                } else {
+                } else { // if isn't counting
                     this.outputValue = this.inputValue;
+                    this.timeLength = this.outputValue;
                 }
+                this.completionBar.attr('x2',30+this.timeLength*(70-30));
                 this.oldInputValue = this.inputValue; 
-                    //console.log(d.getTime());
+                this.update();
                 break;
 
             case "ContactTP":
-                if( this.inputValue &&  !this.oldInputValue && !this.isCounting){
-                    this.isCounting = true;
-                    var that = this;
-                    this.intervalId = setInterval(function(){
-                        //console.log("triggered Again!",that.timeLength, that.isCounting);
-                        that.timeLength += 0.05;
-                        // If counted up to timeLength (always 1.0) or if it is not simulating, shutdown
-                        if((that.timeLength >= 1.0) || (that.status=="offline")){
-                            that.isCounting = false;
-                            that.timeLength = 0;
-                            clearInterval(that.intervalId);
-                            console.log('End counting')
-                            //that.completionBar.attr('x2',30+that.timeLength*(70-30));
-                        }
-                        that.completionBar.attr('x2',30+that.timeLength*(70-30));
-                    },this.name*50);
-                }
                 if(this.isCounting) {
+                    this.timeLength = (Date.now() - this.startTime)/(this.name*1000);
+                    if (this.timeLength >= 1.0){
+                        this.outputValue = 0;
+                        this.timeLength = 1.0;
+                        this.isCounting = false;
+                    }
+                    else{
+                        this.outputValue = 1;
+                    }
+                } else if( this.inputValue &&  !this.oldInputValue){ // if rising edge
+                    this.isCounting = true;
+                    this.startTime = Date.now();
                     this.outputValue = 1;
                 } else {
                     this.outputValue = 0;
+                    this.timeLength = 0;
                 }
+                this.completionBar.attr('x2',30+this.timeLength*(70-30));
                 this.oldInputValue = this.inputValue; 
+                this.update();
             break;
 
             case "Contact0":
