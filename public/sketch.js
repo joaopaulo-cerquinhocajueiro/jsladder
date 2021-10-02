@@ -13,7 +13,7 @@ var svgTable;
 var svgIO;
 
 var toolBar, io, elementTables, elementTable;
-var buttonErase, buttonSave, buttonExport, buttonSimulate, inputFile;
+var buttonErase, buttonSave, buttonExport, buttonSimulate, inputFile, buttonEdit, buttonIO;
 
 SVG.on(document, 'DOMContentLoaded', function() {
     svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,360,700);
@@ -32,11 +32,21 @@ SVG.on(document, 'DOMContentLoaded', function() {
     buttonSave = document.getElementById('saveButton');
     buttonSave.addEventListener('click',saveCode);
 
-    buttonExport = document.getElementById('exportButton');
-    buttonExport.addEventListener('click',exportCode);
+    buttonSave = document.getElementById('svgButton');
+    buttonSave.addEventListener('click',saveSvg);
+
+    // buttonExport = document.getElementById('exportButton');
+    // buttonExport.addEventListener('click',exportCode);
 
     buttonSimulate = document.getElementById('simulateButton');
     buttonSimulate.addEventListener('click',simulate);
+
+    buttonEdit = document.getElementById('toolMenuButton');
+    buttonEdit.addEventListener('click',toggleEditMenu);
+
+    buttonIO = document.getElementById('IOMenuButton');
+    buttonIO.addEventListener('click',toggleIO);
+    buttonIO.style.backgroundColor = "#4C50AF";
 
     // Sempre que mudar o arquivo, carrega o novo
     inputFile = document.getElementById('inputFile');
@@ -165,8 +175,16 @@ function saveCode(){
     var codes = "[" + elementTables.map(table => {return table.jsonTable()}).join(", ") + "]";
     var variables = elementTables[0].jsonVar();
     var blob = new Blob(['{"codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
-    saveAs(blob, filename+".json");
+    saveAs(blob, filename+".jsld");
  //   console.log(elementTable.json())
+}
+
+function saveSvg(){
+  var filename = "teste";
+  var blob = new Blob([elementTable.svg.svg(false)], {type: "image/svg+xml;charset=utf-8"});
+  // var blob = new Blob([elementTable.svg.svg(function(node){node.fill("none");})], {type: "image/svg+xml;charset=utf-8"});
+  saveAs(blob, filename+".svg");
+//   console.log(elementTable.json())
 }
 
 function exportCode(){
@@ -189,21 +207,51 @@ function simulate(e){
     elementTables.forEach(elementTable => {
       elementTable.simulating = simulating;      
     });
-    var ioDiv = document.getElementById("io");
+    // var ioDiv = document.getElementById("io");
     var toolbarDiv = document.getElementById("toolbar");
     var simButton = e.target;
     if(simulating){
+        buttonEdit.disabled = true;
         simButton.style.backgroundColor = "#4C50AF";
         simButton.innerHTML = "Stop simulation";
-        ioDiv.style.display = 'flex';
+        // ioDiv.style.display = 'flex';
         toolbarDiv.style.display = 'none';
     } else {
+        buttonEdit.disabled = false;
         simButton.style.backgroundColor = "#4CAF50";
         simButton.innerHTML = "Simulate";
-        ioDiv.style.display = 'none';
+        // ioDiv.style.display = 'none';
         toolbarDiv.style.display = 'flex';
     }
     //console.log(elementTable.simulating);
+}
+
+function toggleIO(e){
+  var ioDiv = document.getElementById("io");
+  var tButton = e.target;
+  if(ioDiv.style.display == 'none'){
+    ioDiv.style.display = 'flex';
+    tButton.style.backgroundColor = "#4CAF50";
+    tButton.innerHTML = "Hide IO";
+  } else {
+    ioDiv.style.display = 'none';
+    tButton.style.backgroundColor = "#4C50AF";
+    tButton.innerHTML = "Show IO";
+  }
+}
+
+function toggleEditMenu(e){
+  var toolDiv = document.getElementById("toolbar");
+  var tButton = e.target;
+  if(toolDiv.style.display == 'none'){
+    toolDiv.style.display = 'flex';
+    tButton.style.backgroundColor = "#4CAF50";
+    tButton.innerHTML = "Hide Edit Menu";
+} else {
+    toolDiv.style.display = 'none';
+    tButton.style.backgroundColor = "#4C50AF";
+    tButton.innerHTML = "Show Edit Menu";
+  }
 }
 
 function handleFileSelect(evt) { // always when selecting a new file

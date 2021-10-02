@@ -361,7 +361,7 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(50, 75, 50, 55).addClass("input").addClass("line");
                 this.shape.line(50, 55, 60, 55).addClass("input").addClass("line");
                 //clock
-                this.shape.circle(20).move(40,20).addClass("input").addClass("line");
+                this.shape.circle(20).move(40,20).addClass("input").addClass("line").fill("none");
                 this.shape.line(50,30,50,20).addClass("input").addClass("line");
                 this.shape.line(50,30,60,30).addClass("input").addClass("line");
                 //TooTip;
@@ -382,7 +382,7 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(50, 75, 50, 55).addClass("output").addClass("line");
                 this.shape.line(50, 55, 40, 55).addClass("output").addClass("line");
                 //clock
-                this.shape.circle(20).move(40,20).addClass("output").addClass("line");
+                this.shape.circle(20).move(40,20).addClass("output").addClass("line").fill("none");
                 this.shape.line(50,30,50,20).addClass("output").addClass("line");
                 this.shape.line(50,30,60,30).addClass("output").addClass("line");
                 //TooTip;
@@ -405,7 +405,7 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.line(55, 75, 55, 55).addClass("output").addClass("line");
                 this.shape.line(45, 55, 55, 55).addClass("output").addClass("line");
                 //clock
-                this.shape.circle(20).move(40,20).addClass("output").addClass("line");
+                this.shape.circle(20).move(40,20).addClass("output").addClass("line").fill("none");
                 this.shape.line(50,30,50,20).addClass("output").addClass("line");
                 this.shape.line(50,30,60,30).addClass("output").addClass("line");
                 //TooTip;
@@ -463,8 +463,8 @@ function GElement(name, type, posX, posY, svg) {
             case "CoilNO":
                 this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Coil NO",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
@@ -473,8 +473,8 @@ function GElement(name, type, posX, posY, svg) {
             case "CoilNC":
                 this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
                 this.shape.line(40, 70, 60, 30).addClass("input").addClass("line");
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
@@ -484,8 +484,8 @@ function GElement(name, type, posX, posY, svg) {
             case "CoilSet":
                 this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").fill("none");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").fill("none");
                 this.shape.text('S',50,50).font({
                     family:   'Helvetica'
                 , size:     30
@@ -514,8 +514,8 @@ function GElement(name, type, posX, posY, svg) {
             case "CoilUp":
                 this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
                 //internal
                 this.shape.line(60, 40, 50, 40).addClass("output").addClass("line");
                 this.shape.line(50, 40, 50, 60).addClass("output").addClass("line");
@@ -533,8 +533,8 @@ function GElement(name, type, posX, posY, svg) {
             case "CoilDn":
                 this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
                 //internal
                 this.shape.line(60, 60, 50, 60).addClass("output").addClass("line");
                 this.shape.line(50, 40, 50, 60).addClass("output").addClass("line");
@@ -552,8 +552,8 @@ function GElement(name, type, posX, posY, svg) {
             case "CoilTSet":
                 this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").fill("none");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").fill("none");
                 this.shape.text('S',50,50).font({
                     family:   'Helvetica'
                 , size:     30
@@ -572,8 +572,8 @@ function GElement(name, type, posX, posY, svg) {
             case "CoilTReset":
                 this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line");
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").fill("none");
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").fill("none");
                 this.shape.text('R').font({
                     family:   'Helvetica'
                 , size:     30
