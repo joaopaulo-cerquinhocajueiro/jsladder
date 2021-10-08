@@ -12,6 +12,7 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.timers = ["ContactTON","ContactTOF","ContactTP"];
     this.counterCoils = ["CoilUp", "CoilDn", "CoilTSet", "CoilTReset"];
     this.counterContacts = ["Contact0", "ContactDone"];
+    this.compContact = "ContactComp";
     this.visible = false;
 
     this.clickFunction = function(element, newType, table, index){
@@ -84,6 +85,34 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.counterSelector.id = 'counterSelector';
     this.counterSelector.className += 'selector';
 
+    this.compSelector = document.createElement('div');
+    document.body.appendChild(this.compSelector);
+    this.compSelector.id = "compSelector";
+    this.compSelector.className += "divSelector"
+    
+    this.leftSelector = document.createElement('select');
+    this.compSelector.appendChild(this.leftSelector);
+    this.leftSelector.id = 'leftSelector';
+    this.leftSelector.className += 'inSelector';
+
+    this.opSelector = document.createElement('select');
+    this.compSelector.appendChild(this.opSelector);
+    this.opSelector.id = 'opSelector';
+    this.opSelector.className += 'inSelector';
+    let compOptions = [">","<",">=","<=","==","!="];
+    for(let i=0; i<6;i++){
+        var option = document.createElement("option");
+        option.value = option.text = compOptions[i];
+        this.opSelector.add(option);
+    }
+
+    this.rightSelector = document.createElement('input');
+    this.rightSelector.setAttribute('type', 'number');
+    this.rightSelector.setAttribute('value', 10);
+    this.compSelector.appendChild(this.rightSelector);
+    this.rightSelector.id = 'rightSelector';
+    this.rightSelector.className += 'inSelector';
+
     //Populate the lists
     var that = this;
     this.ioElements.forEach(element =>{
@@ -100,7 +129,9 @@ function ElementTable(svg,horz,vert,ioElements) {
             var option = document.createElement("option");
             option.value = option.text = element.name;
             that.counterSelector.add(option);
-            
+            var op2 = document.createElement("option");
+            op2.value = op2.text = element.name;
+            that.leftSelector.add(op2);
         }
     });
 
@@ -113,12 +144,24 @@ function ElementTable(svg,horz,vert,ioElements) {
     }
 
     var that = this;
+    var changeComp = function(e){
+        generalElement.name = that.leftSelector.value;
+        generalElement.left = that.leftSelector.value;
+        generalElement.op = that.opSelector.value;
+        generalElement.right = that.rightSelector.value;
+        generalElement.update();
+        console.log(e);
+        e.target.style.display = 'none';
+    }
+
+    var that = this;
     ['change','mouseout'].forEach(function(evt){
         that.contactSelector.addEventListener(evt, changeLabel);
         that.coilSelector.addEventListener(evt, changeLabel);
         that.counterSelector.addEventListener(evt, changeLabel);
         that.timerDelaySelector.addEventListener(evt, changeLabel);
     });
+    this.compSelector.addEventListener('mouseleave',changeComp);
 
     this.setLabel = function(element,generalType){
         generalElement = element;
@@ -141,12 +184,24 @@ function ElementTable(svg,horz,vert,ioElements) {
             case "counterContact": element.label.tspan(that.counterSelector.value);
                 sel = that.counterSelector;
             break;
+            case "compContact": console.log(element);
+                sel = that.compSelector;
+                element.left = that.leftSelector.value;
+                element.label.tspan(element.left);
+                element.op = that.opSelector.value;
+                element.right = that.rightSelector.value;
+            break;
         }
         sel.style.left = x;
         sel.style.top = y;
         sel.style.width = w;
         sel.style.display = 'block';
         sel.focus();
+        if(generalType=="compContact"){
+            for(let i = 0; i<sel.childElementCount;i++){
+                sel.children[i].style.display = 'block';
+            }
+        }
             
     }
     this.selectContact = function(){ //Function when selects the variable of a contact
@@ -235,6 +290,8 @@ function ElementTable(svg,horz,vert,ioElements) {
                             that.setLabel(element,"counterContact");
                         } else if(that.timers.indexOf(element.type) > -1){ // If the clicked element is a coil
                             that.setLabel(element,"timer");
+                        } else if(toolBar.selectedShape.type == that.compContact){ // If the clicked element is a coil
+                        that.setLabel(element,"compContact");
                         }
                     } else if(toolBar.selectedShape.type == 'DrawLine'){
                         element.name = "";
@@ -248,6 +305,9 @@ function ElementTable(svg,horz,vert,ioElements) {
                     } else if(that.counterContacts.indexOf(toolBar.selectedShape.type) > -1){
                         that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
                         that.setLabel(element,"counterContact");
+                    } else if(toolBar.selectedShape.type == that.compContact){
+                        that.clickFunction(element,toolBar.selectedShape.type,origTable,index);
+                        that.setLabel(element,"compContact");
                     }
                 }
             });

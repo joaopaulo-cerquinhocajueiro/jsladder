@@ -48,6 +48,12 @@ function GElement(name, type, posX, posY, svg) {
         case "ContactDN":
             this.sp=-1;
             break;
+        case "ContactComp":
+            this.left;
+            this.right;
+            this.rightIsConst = true;
+            this.op = "<>";
+            break;
     }
     this.solve = function(){
         // console.log("Solving",this.type)
@@ -224,7 +230,29 @@ function GElement(name, type, posX, posY, svg) {
                     globalValues[this.name] = 0; //
                 }
                 break;
-
+            case "ContactComp":
+                switch(this.op){
+                case ">":
+                    this.varValue = (globalValues[this.left]>(Number(this.right)))?1:0;
+                    break;
+                case "<":
+                    this.varValue = (globalValues[this.left]<(Number(this.right)))?1:0;
+                    break; 
+                case ">=":
+                    this.varValue = (globalValues[this.left]>=(Number(this.right)))?1:0;
+                    break; 
+                case "<=":            
+                    this.varValue = (globalValues[this.left]<=(Number(this.right)))?1:0;
+                    break; 
+                case "==":            
+                    this.varValue = (globalValues[this.left]==(Number(this.right)))?1:0;
+                    break; 
+                case "!=":            
+                    this.varValue = (globalValues[this.left]!=(Number(this.right)))?1:0;
+                    break; 
+                }
+                this.outputValue = this.inputValue && this.varValue; //
+                console.log(this.op,this.inputValue,this.varValue,globalValues[this.left],Number(this.right));
         }
     }
 
@@ -454,6 +482,30 @@ function GElement(name, type, posX, posY, svg) {
                 this.shape.text("Counter Done",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
+            case "ContactComp":
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
+                // this.shape.line(50, 70, 60, 70).addClass("line").addClass("output");
+                this.opLabel = this.shape.text('<>',50,50).font({
+                    family:   'Helvetica'
+                , size:     25
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,35);
+                this.rightLabel = this.shape.text('cons',50,25).font({
+                    family:   'Helvetica'
+                , size:     17
+                , anchor:   'middle'
+                }).addClass("input").addClass("text").move(50,60);
+                //TooTip;
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.text("Contact Compare",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
+            break;
+    
             case "CoilNO":
                 this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
                 this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
@@ -646,6 +698,12 @@ function GElement(name, type, posX, posY, svg) {
         }
 
         this.label.text(this.name);
+        
+        if(this.type == "ContactComp"){
+            // console.log("Sanity");
+            this.opLabel.text(this.op);
+            this.rightLabel.text(this.right);
+        }
     }
 
     
