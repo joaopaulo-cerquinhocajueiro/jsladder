@@ -51,6 +51,9 @@ SVG.on(document, 'DOMContentLoaded', function() {
     // Sempre que mudar o arquivo, carrega o novo
     inputFile = document.getElementById('inputFile');
     inputFile.addEventListener('change', handleFileSelect, false);
+
+    // Presente para tirar um bug que o botão de mostrar IO não funcionava de primeira.
+    document.getElementById("io").style.display="none";
 });
 
 var inputs = ["i0", "i1", "i2", "i3","i4", "i5", "i6", "i7", "i8", "i9"];
@@ -264,18 +267,21 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.onload = (function(theFile) {
     return function(e) {
       var codeObject = JSON.parse(e.target.result);
+      // console.log('1');
       elementTables = [];
       io.writeJson(codeObject);
+      // console.log('2',io);
       for(var i=tableTabs.children.length-2;i>-1;i--){
         tableTabs.removeChild(tableTabs.children[i]);
       }
+      // console.log('3')
       for(var i = 0;i<codeObject.codes.length;i++){
-        console.log(selectedTable);
+        // console.log(selectedTable);
         addTable(null);
-        console.log(selectedTable);
+        // console.log(selectedTable);
         elementTable.writeJson(codeObject.codes[i]);
         elementTable.ioElements = io.coisos;
-        console.log(elementTables,elementTable);
+        // console.log(elementTables,elementTable);
       }
     };
   })(f);

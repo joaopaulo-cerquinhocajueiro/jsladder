@@ -252,7 +252,7 @@ function GElement(name, type, posX, posY, svg) {
                     break; 
                 }
                 this.outputValue = this.inputValue && this.varValue; //
-                console.log(this.op,this.inputValue,this.varValue,globalValues[this.left],Number(this.right));
+                // console.log(this.op,this.inputValue,this.varValue,globalValues[this.left],Number(this.right));
         }
     }
 
@@ -733,7 +733,10 @@ function GElement(name, type, posX, posY, svg) {
             returnValue = {};
             returnValue['type'] = this.type;
             returnValue['name'] = this.name;
-            // if(this.type == "")
+            if(this.type == "ContactComp"){
+                returnValue['op'] = this.op;    
+                returnValue['right'] = this.right;    
+            }
         }
         return returnValue
     }

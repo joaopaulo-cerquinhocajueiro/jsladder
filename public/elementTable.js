@@ -150,7 +150,7 @@ function ElementTable(svg,horz,vert,ioElements) {
         generalElement.op = that.opSelector.value;
         generalElement.right = that.rightSelector.value;
         generalElement.update();
-        console.log(e);
+        // console.log(e);
         e.target.style.display = 'none';
     }
 
@@ -184,7 +184,7 @@ function ElementTable(svg,horz,vert,ioElements) {
             case "counterContact": element.label.tspan(that.counterSelector.value);
                 sel = that.counterSelector;
             break;
-            case "compContact": console.log(element);
+            case "compContact":
                 sel = that.compSelector;
                 element.left = that.leftSelector.value;
                 element.label.tspan(element.left);
@@ -634,8 +634,12 @@ function ElementTable(svg,horz,vert,ioElements) {
                 this.table[index].shape.clear();
                 if(horTableRead[i][j]=='HorLine' || horTableRead[i][j]=='Empty'){
                     this.table[index++] = new GElement(' ',horTableRead[i][j],100*j,100*i,this.svg);
-                } else{
-                    this.table[index++] = new GElement(horTableRead[i][j].name,horTableRead[i][j].type,100*j,100*i,this.svg);
+                } else if(horTableRead[i][j].name=='ContactComp') {
+
+                } else {
+                    this.table[index] = new GElement(horTableRead[i][j].name,horTableRead[i][j].type,100*j,100*i,this.svg);
+                    this.table[index].op = horTableRead[i][j].op;
+                    this.table[index++].right = horTableRead[i][j].right;
                 }
             }
         }

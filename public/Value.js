@@ -14,9 +14,14 @@ function Value(name,posX,posY,type,svg,sp=5){
     var that = this;
 
     this.draw = function(){
+        // let name,setpoint;
+        if(typeof this.name!='string'){
+            this.setPoint = this.name[1];
+            this.name = this.name[0];
+        }
         if(this.type=="counter"){
             this.drawCounter()
-        } 
+        }
         this.label = this.shape.text(this.name).move(25,-45).font({
             family:   'Lucida'
         , size:     15
