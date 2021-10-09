@@ -18,7 +18,9 @@ function Value(name,posX,posY,type,svg,sp=5){
             this.name = this.name[0];
         }
         if(this.type=="counter"){
-            this.drawCounter()
+            this.drawCounter();
+        } else if(this.type="analogInput"){
+            this.drawAnalogI();
         }
         this.label = this.shape.text(this.name).font({
             family:   'Lucida'
@@ -98,6 +100,27 @@ function Value(name,posX,posY,type,svg,sp=5){
         
     }
 
+    this.drawAnalogI = function(){
+        //console.log(this);
+        
+        //Value
+        this.valGroup = this.shape.group();
+        this.valBox = this.valGroup.rect(100,20).radius(2).fill('white').stroke('black');
+        this.value = 50;
+        this.valRect = this.valGroup.rect(this.value,20).radius(2).fill('red');
+        this.valDisp = this.valGroup.text(this.value.toString()).font({
+            family:   'Lucida'
+            , size:     15
+            , anchor:   'middle'
+        }).stroke({width:0}).addClass("text").move(50,3);
+        this.valGroup.move(0,0);
+        that = this;
+        this.valGroup.click(function(e){
+            that.value = parseInt((e.x-this.rbox().x)*100/this.rbox().w);
+            that.update();
+        });
+    }
+
     this.updateValue = function(){
         var boundingRect = this.node.getBoundingClientRect();
         sel = document.createElement('input');
@@ -121,9 +144,12 @@ function Value(name,posX,posY,type,svg,sp=5){
         // that.update();
     }
 
-
     this.update = function(){
-        that.spDisp.text(that.setPoint.toString());
+        if(this.type=="counter"){
+            that.spDisp.text(that.setPoint.toString());
+        } else {
+            this.valRect.width(this.value);
+        }
         // that.spDisp.move(25,22);
         that.valDisp.text(that.value.toString());
         // that.valDisp.move(25,2);

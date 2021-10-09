@@ -18,10 +18,10 @@ var buttonErase, buttonSave, buttonExport, buttonSimulate, inputFile, buttonEdit
 SVG.on(document, 'DOMContentLoaded', function() {
     svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,510,700);
     svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
-    svgIO = SVG('io').size('100%', '100%').viewbox(0,0,350,700);
+    svgIO = SVG('io').size('100%', '100%').viewbox(0,0,400,700);
 
     toolBar = new ToolBar(svgToolbar);
-    io = new IOView(svgIO, inputs, memories, outputs, counters);
+    io = new IOView(svgIO, inputs, memories, outputs, counters, analogInputs);
 
     elementTables = [new ElementTable(svgTable, horz, vert, io.coisos)];
     elementTable = elementTables[selectedTable-1];
@@ -56,10 +56,11 @@ SVG.on(document, 'DOMContentLoaded', function() {
     document.getElementById("io").style.display="flex";
 });
 
-var inputs = ["i0", "i1", "i2", "i3","i4", "i5", "i6", "i7", "i8", "i9"];
-var memories = ["m0", "m1", "m2", "m3","m4", "m5", "m6", "m7", "m8", "m9"];
-var outputs = ["q0", "q1", "q2", "q3","q4", "q5", "q6", "q7", "q8", "q9"];
-var counters = ["c0", "c1", "c2", "c3", "c4", "c5"];
+var inputs = ["i0", "i1", "i2", "i3","i4", "i5", "i6", "i7"];
+var memories = ["m0", "m1", "m2", "m3","m4", "m5", "m6", "m7"];
+var outputs = ["q0", "q1", "q2", "q3","q4", "q5", "q6", "q7"];
+var counters = ["c0", "c1", "c2", "c3"];
+var analogInputs = ["ai0", "ai1"];
 
 // var buttonInputs = [];
 // var dispMemories = [];
@@ -120,6 +121,12 @@ function renameInView(ioView,oldName,newName){
   });
   if (index > -1){
     ioView.counters[index] = newName;
+  }
+  var index = ioView.analogInputs.findIndex(name =>{
+    return name == oldName;
+  });
+  if (index > -1){
+    ioView.analogInputs[index] = newName;
   }
   
 }

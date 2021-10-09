@@ -1,15 +1,16 @@
-function IOView(svg, inputs, memories, outputs, counters){
+function IOView(svg, inputs, memories, outputs, counters, analogInputs){
     this.svg = svg;
     this.inputs = inputs;
     this.outputs = outputs;
     this.memories = memories;
     this.counters = counters;
+    this.analogInputs = analogInputs;
 
     distanceY = 50;
 
     this.coisos = [];
 
-    this.create = function(inputs, memories, outputs,counters){
+    this.create = function(inputs, memories, outputs, counters, analogInputs){
         this.coisos = [];
         this.svg.clear();
         posY = 0;
@@ -57,9 +58,23 @@ function IOView(svg, inputs, memories, outputs, counters){
         , anchor:   'middle'
         });
         posY+=distanceY+20;
+
         counters.forEach(counter => {
             this.coisos.push(new Value(counter,260,posY,"counter",this.svg,5));
             posY +=distanceY*1.5;
+        });
+
+         posY -=distanceY-10;
+        this.svg.text('Analog').move(280,posY).font({
+            family:   'Helvetica'
+        , size:     20
+        , anchor:   'middle'
+        });
+        posY+=distanceY+25;
+
+        analogInputs.forEach(coiso => {
+            this.coisos.push(new Value(coiso,260,posY,"analogInput",this.svg,5));
+            posY +=distanceY;
         });
 
         this.coisos.forEach(item => {
@@ -70,7 +85,7 @@ function IOView(svg, inputs, memories, outputs, counters){
 
     }
 
-    this.create(this.inputs,this.memories,this.outputs,this.counters);
+    this.create(this.inputs,this.memories,this.outputs,this.counters,this.analogInputs);
 
     this.writeJson = function(codeObject){
         var variablesRead = codeObject.variables;
@@ -78,6 +93,7 @@ function IOView(svg, inputs, memories, outputs, counters){
         var memories = [];
         var outputs = [];
         var counters = [];
+        var analogInputs = [];
         variablesRead.forEach(variable =>{
             switch(variable.type){
             case 'input': inputs.push(variable.name);
@@ -90,6 +106,6 @@ function IOView(svg, inputs, memories, outputs, counters){
                 break;
             }
         });
-        this.create(inputs,memories,outputs,counters);
+        this.create(inputs,memories,outputs,counters,analogInputs);
     }
 }
