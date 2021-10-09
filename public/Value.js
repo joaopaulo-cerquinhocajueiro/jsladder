@@ -108,11 +108,11 @@ function Value(name,posX,posY,type,svg,sp=5){
         this.valBox = this.valGroup.rect(100,20).radius(2).fill('white').stroke('black');
         this.value = 50;
         this.valRect = this.valGroup.rect(this.value,20).radius(2).fill('red');
-        this.valDisp = this.valGroup.text(this.value.toString()).font({
+        this.valDisp = this.shape.text(this.value.toString()).font({
             family:   'Lucida'
             , size:     15
             , anchor:   'middle'
-        }).stroke({width:0}).addClass("text").move(50,3);
+        }).stroke({width:0}).addClass("text").move(110,3);
         this.valGroup.move(0,0);
         that = this;
         this.valGroup.click(function(e){

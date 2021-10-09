@@ -132,6 +132,10 @@ function ElementTable(svg,horz,vert,ioElements) {
             var op2 = document.createElement("option");
             op2.value = op2.text = element.name;
             that.leftSelector.add(op2);
+        } else if(element.type == "analogInput"){
+            var op2 = document.createElement("option");
+            op2.value = op2.text = element.name;
+            that.leftSelector.add(op2);
         }
     });
 
