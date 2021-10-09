@@ -16,11 +16,11 @@ function Bit(name,posX,posY,type,svg){
         } else {
             this.drawOutput()
         }
-        this.label = this.shape.text(this.name).move(20,-22).font({
+        this.label = this.shape.text(this.name).font({
             family:   'Lucida'
         , size:     15
         , anchor:   'middle'
-        }).stroke({width:0}).addClass("variable").addClass("text");
+        }).stroke({width:0}).addClass("variable").addClass("text").move(20,-17);
         this.shape.move(this.posX, this.posY);
         this.label.dblclick(event =>{
             var boundingRect = event.target.getBoundingClientRect();
@@ -31,7 +31,7 @@ function Bit(name,posX,posY,type,svg){
             sel.setAttribute('value', event.target.innerHTML);
             sel.id='label';
             sel.className += 'selector';
-            sel.style.left = boundingRect.x;
+            sel.style.left = boundingRect.x + boundingRect.width/2 -25;
             sel.style.top = boundingRect.y;
             sel.style.width = 50;
             sel.style.display = 'block';
@@ -86,7 +86,7 @@ function Bit(name,posX,posY,type,svg){
         } else {
             this.display.fill(this.value?'red':'blue');
         }
-        this.label.plain(this.name).move(20,-17);
+        this.label.text(this.name);
     }
 
     this.json = function(){

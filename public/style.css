@@ -84,7 +84,7 @@ body {padding: 0; margin: 0;}
       width: 30%;
       height:100%;
       background: wheat;
-      display: none;
+      display: flex;
 }
 #io .show{
       display: flex;

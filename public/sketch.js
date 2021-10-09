@@ -53,7 +53,7 @@ SVG.on(document, 'DOMContentLoaded', function() {
     inputFile.addEventListener('change', handleFileSelect, false);
 
     // Presente para tirar um bug que o botão de mostrar IO não funcionava de primeira.
-    document.getElementById("io").style.display="none";
+    document.getElementById("io").style.display="flex";
 });
 
 var inputs = ["i0", "i1", "i2", "i3","i4", "i5", "i6", "i7", "i8", "i9"];

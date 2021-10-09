@@ -1,4 +1,4 @@
-// Object that represents a binary memory element - inputs, outputs and internal memory
+// Object that represents a numerical memory element - analog inputs and counters
 
 function Value(name,posX,posY,type,svg,sp=5){
     this.name = name;
@@ -11,8 +11,6 @@ function Value(name,posX,posY,type,svg,sp=5){
     this.shape = this.svg.group();
     this.toggle = null;
 
-    var that = this;
-
     this.draw = function(){
         // let name,setpoint;
         if(typeof this.name!='string'){
@@ -22,21 +20,22 @@ function Value(name,posX,posY,type,svg,sp=5){
         if(this.type=="counter"){
             this.drawCounter()
         }
-        this.label = this.shape.text(this.name).move(25,-45).font({
+        this.label = this.shape.text(this.name).font({
             family:   'Lucida'
         , size:     15
         , anchor:   'middle'
-        }).stroke({width:0}).addClass("variable").addClass("text");
+        }).stroke({width:0}).addClass("variable").addClass("text").move(25,-18);
+        // Controle do renomear o elemento
         this.label.dblclick(event =>{
             var boundingRect = event.target.getBoundingClientRect();
             sel = document.createElement('input');
             document.body.appendChild(sel);
             sel.setAttribute('type', 'text');
-            console.log(event);
+            // console.log(event);
             sel.setAttribute('value', event.target.innerHTML);
             sel.id='setPoint';
             sel.className += 'selector';
-            sel.style.left = boundingRect.x;
+            sel.style.left = boundingRect.x + boundingRect.width/2 - 25 ;
             sel.style.top = boundingRect.y;
             sel.style.width = 50;
             sel.style.display = 'block';
@@ -52,36 +51,49 @@ function Value(name,posX,posY,type,svg,sp=5){
                 }
                 event.target.parentNode.removeChild(event.target);            });
         });
+        // that.valDisp.move(25,-28);
+        // that.spDisp.move(25,-8);
+        // that.label.move(25,-45);
         this.shape.move(this.posX, this.posY);
+        that.update();
     }
 
+    var that = this;
     this.drawCounter = function(){
-        that.valBox = that.shape.rect(50,20).radius(2).fill('white').stroke('black');
-        that.shape.text("S").move(55,17).font({
-            family:   'Lucida'
-        , size:     15
-        , anchor:   'middle'
-        }).stroke({width:0}).addClass("text");
-        that.spBox = that.shape.rect(50,20).radius(2).fill('white').stroke('black').move(0,20);
-        that.shape.text("V").move(55,-3).font({
-            family:   'Lucida'
-        , size:     15
-        , anchor:   'middle'
-        }).stroke({width:0}).addClass("text");
-
-        that.spDisp = that.shape.text(that.setPoint.toString()).move(25,-8).font({
-            family:   'Lucida'
-        , size:     15
-        , anchor:   'middle'
-        }).stroke({width:0}).addClass("text");
+        //console.log(this);
         
-        that.valDisp = that.shape.text(that.value.toString()).move(25,-28).font({
+        //Value
+        this.valGroup = this.shape.group();
+        this.valBox = this.valGroup.rect(50,20).radius(2).fill('white').stroke('black');
+        this.valGroup.text("V").font({
             family:   'Lucida'
         , size:     15
         , anchor:   'middle'
-        }).stroke({width:0}).addClass("text");
+        }).stroke({width:0}).addClass("text").move(55,3);
+        this.valDisp = this.valGroup.text(that.value.toString()).font({
+            family:   'Lucida'
+            , size:     15
+            , anchor:   'middle'
+        }).stroke({width:0}).addClass("text").move(25,3);
+        this.valGroup.move(0,0);
 
-        that.spBox.click(that.updateValue);
+        //Setpoint
+        this.spGroup = this.shape.group();
+        this.spBox = this.spGroup.rect(50,20).radius(2).fill('white').stroke('black').move(0,0);
+        this.spGroup.text("S").font({
+            family:   'Lucida'
+            , size:     15
+            , anchor:   'middle'
+            }).stroke({width:0}).addClass("text").move(55,3);
+        this.spDisp = this.spGroup.text(this.setPoint.toString()).font({
+            family:   'Lucida'
+            , size:     15
+            , anchor:   'middle'
+        }).stroke({width:0}).addClass("text").move(25,3);
+        this.spGroup.move(0,20);
+        
+
+        that.spGroup.click(that.updateValue);
         //that.valBox.click(that.updateValue);
         
     }
@@ -111,11 +123,11 @@ function Value(name,posX,posY,type,svg,sp=5){
 
 
     this.update = function(){
-        that.spDisp.plain(that.setPoint.toString());
-        that.spDisp.move(25,22);
-        that.valDisp.plain(that.value.toString());
-        that.valDisp.move(25,2);
-        that.label.plain(that.name).move(25,-17);
+        that.spDisp.text(that.setPoint.toString());
+        // that.spDisp.move(25,22);
+        that.valDisp.text(that.value.toString());
+        // that.valDisp.move(25,2);
+        that.label.text(that.name);
     }
 
     this.json = function(){
