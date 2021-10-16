@@ -49,7 +49,7 @@ function GElement(name, type, posX, posY, svg) {
             this.sp=-1;
             break;
         case "ContactComp":
-            this.left;
+            //this.left;
             this.right;
             this.rightIsConst = true;
             this.op = "<>";
@@ -233,22 +233,22 @@ function GElement(name, type, posX, posY, svg) {
             case "ContactComp":
                 switch(this.op){
                 case ">":
-                    this.varValue = (globalValues[this.left]>(Number(this.right)))?1:0;
+                    this.varValue = (globalValues[this.name]>(Number(this.right)))?1:0;
                     break;
                 case "<":
-                    this.varValue = (globalValues[this.left]<(Number(this.right)))?1:0;
+                    this.varValue = (globalValues[this.name]<(Number(this.right)))?1:0;
                     break; 
                 case ">=":
-                    this.varValue = (globalValues[this.left]>=(Number(this.right)))?1:0;
+                    this.varValue = (globalValues[this.name]>=(Number(this.right)))?1:0;
                     break; 
                 case "<=":            
-                    this.varValue = (globalValues[this.left]<=(Number(this.right)))?1:0;
+                    this.varValue = (globalValues[this.name]<=(Number(this.right)))?1:0;
                     break; 
                 case "==":            
-                    this.varValue = (globalValues[this.left]==(Number(this.right)))?1:0;
+                    this.varValue = (globalValues[this.name]==(Number(this.right)))?1:0;
                     break; 
                 case "!=":            
-                    this.varValue = (globalValues[this.left]!=(Number(this.right)))?1:0;
+                    this.varValue = (globalValues[this.name]!=(Number(this.right)))?1:0;
                     break; 
                 }
                 this.outputValue = this.inputValue && this.varValue; //

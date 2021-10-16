@@ -102,8 +102,9 @@ function IOView(svg, inputs, memories, outputs, counters, analogInputs){
                 break;
             case 'output': outputs.push(variable.name);
                 break;
-                case 'counter': counters.push([variable.name,variable.setPoint]);
+            case 'counter': counters.push([variable.name,variable.setPoint]);
                 break;
+            case 'analogInput': analogInputs.push(variable.name);
             }
         });
         this.create(inputs,memories,outputs,counters,analogInputs);

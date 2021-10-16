@@ -7,12 +7,15 @@ function Value(name,posX,posY,type,svg,sp=5){
     this.type = type;
     this.svg = svg;
     this.value = 0;
-    this.setPoint = sp;
+    if(this.type=='counter'){
+        this.setPoint = sp;
+    }
     this.shape = this.svg.group();
     this.toggle = null;
 
     this.draw = function(){
         // let name,setpoint;
+        // console.log(this.name);
         if(typeof this.name!='string'){
             this.setPoint = this.name[1];
             this.name = this.name[0];
@@ -87,6 +90,7 @@ function Value(name,posX,posY,type,svg,sp=5){
             , size:     15
             , anchor:   'middle'
             }).stroke({width:0}).addClass("text").move(55,3);
+            // console.log(this);
         this.spDisp = this.spGroup.text(this.setPoint.toString()).font({
             family:   'Lucida'
             , size:     15
@@ -160,7 +164,10 @@ function Value(name,posX,posY,type,svg,sp=5){
         var returnValue = {};
         returnValue['type'] = this.type;
         returnValue['name'] = this.name;
-        returnValue['setPoint'] = this.setPoint;
+        if(this.hasOwnProperty('setPoint')){
+            // console.log(this.setPoint)
+            returnValue['setPoint'] = this.setPoint;
+        }
         return returnValue;
     }
 }
