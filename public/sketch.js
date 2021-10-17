@@ -184,7 +184,7 @@ function saveCode(){
     var filename = "teste";
     var codes = "[" + elementTables.map(table => {return table.jsonTable()}).join(", ") + "]";
     var variables = elementTables[0].jsonVar();
-    var blob = new Blob(['{"codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
+    var blob = new Blob(['{"version":1.0, "codes":' + codes + ', "variables":' + variables +'}'], {type: "text/json;charset=utf-8"});
     saveAs(blob, filename+".jsld");
  //   console.log(elementTable.json())
 }
@@ -274,21 +274,26 @@ function handleFileSelect(evt) { // always when selecting a new file
   reader.onload = (function(theFile) {
     return function(e) {
       var codeObject = JSON.parse(e.target.result);
-      // console.log('1');
-      elementTables = [];
-      io.writeJson(codeObject);
-      // console.log('2',io);
-      for(var i=tableTabs.children.length-2;i>-1;i--){
-        tableTabs.removeChild(tableTabs.children[i]);
-      }
-      // console.log('3')
-      for(var i = 0;i<codeObject.codes.length;i++){
-        // console.log(selectedTable);
-        addTable(null);
-        // console.log(selectedTable);
-        elementTable.writeJson(codeObject.codes[i]);
-        elementTable.ioElements = io.coisos;
-        // console.log(elementTables,elementTable);
+      if (codeObject.version != "1.0"){
+        console.log(codeObject.version)
+        console.log("Incompatible version")
+      } else {
+        // console.log('1');
+        elementTables = [];
+        io.writeJson(codeObject);
+        // console.log('2',io);
+        for(var i=tableTabs.children.length-2;i>-1;i--){
+          tableTabs.removeChild(tableTabs.children[i]);
+        }
+        // console.log('3')
+        for(var i = 0;i<codeObject.codes.length;i++){
+          // console.log(selectedTable);
+          addTable(null);
+          // console.log(selectedTable);
+          elementTable.writeJson(codeObject.codes[i]);
+          elementTable.ioElements = io.coisos;
+          // console.log(elementTables,elementTable);
+        }
       }
     };
   })(f);
