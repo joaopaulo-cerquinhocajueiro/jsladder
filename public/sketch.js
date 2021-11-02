@@ -17,7 +17,7 @@ var buttonErase, buttonSave, buttonExport, buttonSimulate, inputFile, buttonEdit
 
 SVG.on(document, 'DOMContentLoaded', function() {
     svgToolbar = SVG('toolbar').size('100%', '100%').viewbox(0,0,510,700);
-    svgTable = SVG('table').size('100%', '100%').viewbox(-20,-20,width+40,height+60);
+    svgTable = SVG('table').size('100%', '100%').viewbox(-30,-30,width+60,height+60);
     svgIO = SVG('io').size('100%', '100%').viewbox(0,0,400,700);
 
     toolBar = new ToolBar(svgToolbar);

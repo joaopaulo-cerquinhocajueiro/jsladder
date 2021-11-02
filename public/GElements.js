@@ -258,6 +258,7 @@ function GElement(name, type, posX, posY, svg) {
 
     // Each element has its own shape, defined in a square with size 100.
     this.shape = this.svg.group();
+    this.shape.fill('none');
     this.draw = function(){
         switch (String(this.type)){
             case "ContactRise":
@@ -286,85 +287,196 @@ function GElement(name, type, posX, posY, svg) {
         }
         switch (String(this.type)){
             case "HorLine":
-            this.shape.line(0, 50, 100, 50).addClass("input").addClass("output").addClass("line");
+            this.shape.line(0, 50, 100, 50).addClass("input").addClass("output").addClass("line").attr({
+                fill: null
+              , 'stroke-width': 3
+              });
             break;
 
             case "VerLine":
-            this.shape.line(50, 00, 50, 100).addClass("input").addClass("output").addClass("line");
+            this.shape.line(50, 00, 50, 100).addClass("input").addClass("output").addClass("line").attr({
+                fill: null
+              , 'stroke-width': 3
+              });
             break;
             
             case "Eraser":
-                this.shape.line(25, 25, 75, 75).addClass("line");
-                this.shape.line(75, 25, 25, 75).addClass("line");
+                this.shape.line(25, 25, 75, 75).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 25, 25, 75).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Eraser",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "Hand":
-                this.shape.line(25, 75, 50, 50).addClass("line");
-                this.shape.line(50, 50, 30, 50).addClass("line");
-                this.shape.line(50, 70, 50, 50).addClass("line");
+                this.shape.line(25, 75, 50, 50).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 50, 30, 50).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 70, 50, 50).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(-25,70);
                 this.shape.text("Choose the Variable",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "DrawLine":
-                this.shape.line(30,80, 50,70).addClass("line");
-                this.shape.line(50,70,100,20).addClass("line");
-                this.shape.line(30,80, 40,60).addClass("line");
-                this.shape.line(40,60, 90,10).addClass("line");
-                this.shape.line(90,10,100,20).addClass("line");
-                this.shape.line(50,70, 40,60).addClass("line");
-                this.shape.line(00,80, 30,80).addClass("line");
+                this.shape.line(30,80, 50,70).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,70,100,20).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30,80, 40,60).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(40,60, 90,10).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(90,10,100,20).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,70, 40,60).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(00,80, 30,80).addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Draw Wire",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactNO":
-                this.shape.line( 0, 50,  30, 50).addClass("line").addClass("input");
-                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
-                this.shape.line(30, 20,  30, 80).addClass("line").addClass("input");
-                this.shape.line(70, 20,  70, 80).addClass("line").addClass("output");
+                this.shape.line( 0, 50,  30, 50).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20,  30, 80).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20,  70, 80).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Contact NO",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactNC":
-                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
-                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
-                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
-                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
-                this.shape.line(35, 75, 65, 25).addClass("line").addClass("output");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(35, 75, 65, 25).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Contact NC",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "ContactRise":
-                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
-                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
-                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
-                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
-                this.shape.line(40, 70, 50, 70).addClass("line").addClass("output");
-                this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
-                this.shape.line(50, 30, 60, 30).addClass("line").addClass("output");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(40, 70, 50, 70).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 70, 50, 30).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 30, 60, 30).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(-25,70);
                 this.shape.text("Contact Rising Edge",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "ContactFall":
-                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
-                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
-                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
-                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
-                this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
-                this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
-                this.shape.line(50, 70, 60, 70).addClass("line").addClass("output");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(40, 30, 50, 30).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 70, 50, 30).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 70, 60, 70).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(150, 16).fill('#9CFFA0').addClass('toolTip').move(-25,70);
                 this.shape.text("Contact Falling Edge",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
@@ -374,18 +486,48 @@ function GElement(name, type, posX, posY, svg) {
                 //completion bar
                 this.completionBar = this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("input").addClass("line");
                 //contact
-                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line");
-                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line");
-                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line");
+                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //internal
-                this.shape.line(40, 75, 50, 75).addClass("input").addClass("line");
-                this.shape.line(50, 75, 50, 55).addClass("input").addClass("line");
-                this.shape.line(50, 55, 60, 55).addClass("input").addClass("line");
+                this.shape.line(40, 75, 50, 75).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 75, 50, 55).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 55, 60, 55).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //clock
-                this.shape.circle(20).move(40,20).addClass("input").addClass("line").fill("none");
-                this.shape.line(50,30,50,20).addClass("input").addClass("line");
-                this.shape.line(50,30,60,30).addClass("input").addClass("line");
+                this.shape.circle(20).move(40,20).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,30,50,20).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,30,60,30).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Timer TON",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
@@ -393,53 +535,140 @@ function GElement(name, type, posX, posY, svg) {
             
             case "ContactTOF":
                 //completion bar
-                this.completionBar = this.shape.line(30+this.timeLength*(70-30),50,70,50).addClass("output").addClass("line");
+                this.completionBar = this.shape.line(30+this.timeLength*(70-30),50,70,50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //contact
-                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line");
-                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line");
-                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line");
+                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //internal
-                this.shape.line(60, 75, 50, 75).addClass("output").addClass("line");
-                this.shape.line(50, 75, 50, 55).addClass("output").addClass("line");
-                this.shape.line(50, 55, 40, 55).addClass("output").addClass("line");
+                this.shape.line(60, 75, 50, 75).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 75, 50, 55).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 55, 40, 55).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //clock
-                this.shape.circle(20).move(40,20).addClass("output").addClass("line").fill("none");
-                this.shape.line(50,30,50,20).addClass("output").addClass("line");
-                this.shape.line(50,30,60,30).addClass("output").addClass("line");
+                this.shape.circle(20).move(40,20).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,30,50,20).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,30,60,30).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
-                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
+                this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70).attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 this.shape.text("Timer TOFF",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
 
             case "ContactTP":
                 //completion bar
-                this.completionBar = this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("output").addClass("line");
+                this.completionBar = this.shape.line(30,50,30+this.timeLength*(70-30),50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //contact
-                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line");
-                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line");
-                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line");
+                this.shape.line(0, 50, 30, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //internal
-                this.shape.line(35, 75, 45, 75).addClass("output").addClass("line");
-                this.shape.line(55, 75, 65, 75).addClass("output").addClass("line");
-                this.shape.line(45, 75, 45, 55).addClass("output").addClass("line");
-                this.shape.line(55, 75, 55, 55).addClass("output").addClass("line");
-                this.shape.line(45, 55, 55, 55).addClass("output").addClass("line");
+                this.shape.line(35, 75, 45, 75).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(55, 75, 65, 75).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(45, 75, 45, 55).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(55, 75, 55, 55).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(45, 55, 55, 55).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //clock
-                this.shape.circle(20).move(40,20).addClass("output").addClass("line").fill("none");
-                this.shape.line(50,30,50,20).addClass("output").addClass("line");
-                this.shape.line(50,30,60,30).addClass("output").addClass("line");
+                this.shape.circle(20).move(40,20).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,30,50,20).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50,30,60,30).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Timer TP",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "Contact0":
-                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
-                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
-                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
-                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
                 // this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
                 // this.shape.line(50, 70, 60, 70).addClass("line").addClass("output");
@@ -459,10 +688,22 @@ function GElement(name, type, posX, posY, svg) {
             break;
             
             case "ContactDone":
-                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
-                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
-                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
-                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
                 // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
                 // this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
@@ -483,10 +724,22 @@ function GElement(name, type, posX, posY, svg) {
             break;
             
             case "ContactComp":
-                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input");
-                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output");
-                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input");
-                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output");
+                this.shape.line(0, 50, 30, 50).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 50, 100, 50).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(30, 20, 30, 80).addClass("line").addClass("input").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(70, 20, 70, 80).addClass("line").addClass("output").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
                 // this.shape.line(40, 30, 50, 30).addClass("line").addClass("output");
                 // this.shape.line(50, 70, 50, 30).addClass("line").addClass("output");
@@ -507,31 +760,70 @@ function GElement(name, type, posX, posY, svg) {
             break;
     
             case "CoilNO":
-                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
+                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Coil NO",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "CoilNC":
-                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
-                this.shape.line(40, 70, 60, 30).addClass("input").addClass("line");
+                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(40, 70, 60, 30).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //TooTip;
                 this.shape.rect(100, 16).fill('#9CFFA0').addClass('toolTip').move(0,70);
                 this.shape.text("Coil NC",50,50).font({family:   'Arial', size:     14, anchor:   'middle'}).addClass('toolTip').move(50,70);
             break;
             
             case "CoilSet":
-                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").fill("none");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").fill("none");
+                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 this.shape.text('S',50,50).font({
                     family:   'Helvetica'
                 , size:     30
@@ -543,10 +835,22 @@ function GElement(name, type, posX, posY, svg) {
             break;
             
             case "CoilReset":
-                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line");
+                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 this.shape.text('R').font({
                     family:   'Helvetica'
                 , size:     30
@@ -558,14 +862,35 @@ function GElement(name, type, posX, posY, svg) {
             break;
 
             case "CoilUp":
-                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
+                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //internal
-                this.shape.line(60, 40, 50, 40).addClass("output").addClass("line");
-                this.shape.line(50, 40, 50, 60).addClass("output").addClass("line");
-                this.shape.line(50, 60, 40, 60).addClass("output").addClass("line");
+                this.shape.line(60, 40, 50, 40).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 40, 50, 60).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 60, 40, 60).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 this.shape.text('cnt',50,25).font({
                     family:   'Helvetica'
                 , size:     17
@@ -577,14 +902,35 @@ function GElement(name, type, posX, posY, svg) {
             break;
 
             case "CoilDn":
-                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").fill("none");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").fill("none");
+                this.shape.line(0, 50, 25, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 //internal
-                this.shape.line(60, 60, 50, 60).addClass("output").addClass("line");
-                this.shape.line(50, 40, 50, 60).addClass("output").addClass("line");
-                this.shape.line(50, 40, 40, 40).addClass("output").addClass("line");
+                this.shape.line(60, 60, 50, 60).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 40, 50, 60).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(50, 40, 40, 40).addClass("output").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 this.shape.text('cnt',50,25).font({
                     family:   'Helvetica'
                 , size:     17
@@ -596,10 +942,22 @@ function GElement(name, type, posX, posY, svg) {
             break;
 
             case "CoilTSet":
-                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").fill("none");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").fill("none");
+                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line").attr({
+                    fill: 'none'
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 this.shape.text('S',50,50).font({
                     family:   'Helvetica'
                 , size:     30
@@ -616,10 +974,22 @@ function GElement(name, type, posX, posY, svg) {
             break;
             
             case "CoilTReset":
-                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line");
-                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line");
-                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").fill("none");
-                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").fill("none");
+                this.shape.line(0, 50, 25, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.line(75, 50, 100, 50).addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 40 20 C 20 25, 20 75, 40 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
+                this.shape.path('M 60 20 C 80 25, 80 75, 60 80').addClass("input").addClass("line").attr({
+                    fill: null
+                  , 'stroke-width': 3
+                  });
                 this.shape.text('R').font({
                     family:   'Helvetica'
                 , size:     30

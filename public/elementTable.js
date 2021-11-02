@@ -31,20 +31,22 @@ function ElementTable(svg,horz,vert,ioElements) {
     this.simulating = false;
     this.selectionLoc;
 
+
+    this.background = this.svg.group();
     for (var i = 1; i < this.horSize; i++) {
-        this.svg.line(100*i,50,100*i,100*(this.verSize-0.5)).stroke('darkGray');
-        this.svg.text(i.toString()).addClass('tableText').move(100*(i-0.5),-20);
+        this.background.line(100*i,50,100*i,100*(this.verSize-0.5)).stroke('darkGray');
+        this.background.text(i.toString()).addClass('tableText').move(100*(i-0.5),-20);
     }
     this.svg.text(this.horSize.toString()).addClass('tableText').move(100*(this.horSize-0.5),-20);
     for (var i = 0; i <= this.verSize-1; i++) {
-        this.svg.line(0,100*(i+0.5),100*this.horSize,100*(i+0.5)).stroke('darkGray');
-        this.svg.text(String.fromCharCode(i+65)).addClass('tableText').move(-25,100*(i+0.4));
+        this.background.line(0,100*(i+0.5),100*this.horSize,100*(i+0.5)).stroke('darkGray');
+        this.background.text(String.fromCharCode(i+65)).addClass('tableText').move(-25,100*(i+0.4));
     }
 
-    this.coilArea = this.svg.rect(100,100*this.verSize).fill({opacity:0.2,color:'magenta'}).radius(10).move(100*(this.horSize-1),0);
+    this.coilArea = this.background.rect(100,100*this.verSize).fill({opacity:0.2,color:'magenta'}).radius(10).move(100*(this.horSize-1),0);
 
-    this.phaseLine = this.svg.line(0,0,0,this.verSize*100).stroke({width:10,color:'black'});
-    this.groundLine = this.svg.line(this.horSize*100,0,this.horSize*100,this.verSize*100).stroke({width:10,color:'black'});
+    this.phaseLine = this.background.line(0,0,0,this.verSize*100).stroke({width:6,color:'black'});
+    this.groundLine = this.background.line(this.horSize*100,0,this.horSize*100,this.verSize*100).stroke({width:6,color:'black'});
      
     var index = 0;
     for (var l = 0; l < this.verSize-1 ; l++){
@@ -658,16 +660,18 @@ function ElementTable(svg,horz,vert,ioElements) {
         this.verTable.forEach(element =>{
             element.hide();
         });
-        this.coilArea.hide();
+        this.background.hide();
+        // this.coilArea.hide();
     }
 
     this.show = function(){
+        this.background.show();
         this.table.forEach(element =>{
             element.show();
         });
         this.verTable.forEach(element =>{
             element.show();
         });
-        this.coilArea.show();
+        // this.coilArea.show();
     }
 }
