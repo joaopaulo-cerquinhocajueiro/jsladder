@@ -17,6 +17,7 @@ body {padding: 0; margin: 0;}
       justify-content: space-around;
       flex-flow: row;
       align-items: flex-start;
+      user-select: none;
 }
 .table-container {
       padding: 0;
