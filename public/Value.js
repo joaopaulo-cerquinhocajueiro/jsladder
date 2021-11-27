@@ -49,11 +49,12 @@ function Value(name,posX,posY,type,svg,sp=5){
                 if(isNewName(elementTable.ioElements,event.target.value)){
                     changeElementName(that.name,event.target.value);
                     that.name = event.target.value;
-                    // console.log(that)
+                    // console.log("oi");
                     that.update();
                 //this.timerDelaySelector.style.display = 'none';
                     // event.target.style.display = 'none';    
                 }
+                // console.log("tchau");
                 event.target.parentNode.removeChild(event.target);            });
         });
         // that.valDisp.move(25,-28);

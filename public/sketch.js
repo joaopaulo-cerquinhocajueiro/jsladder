@@ -56,11 +56,11 @@ SVG.on(document, 'DOMContentLoaded', function() {
     document.getElementById("io").style.display="flex";
 });
 
-var inputs = ["i0", "i1", "i2", "i3","i4", "i5", "i6", "i7"];
-var memories = ["m0", "m1", "m2", "m3","m4", "m5", "m6", "m7"];
-var outputs = ["q0", "q1", "q2", "q3","q4", "q5", "q6", "q7"];
-var counters = ["c0", "c1", "c2", "c3"];
-var analogInputs = ["ai0", "ai1"];
+var inputs   = ["I0", "I1", "I2", "I3", "I4", "I5", "I6", "I7"];
+var memories = ["M0", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
+var outputs  = ["Q0", "Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"];
+var counters = ["C0", "C1", "C2", "C3"];
+var analogInputs = ["AI0", "AI1"];
 
 // var buttonInputs = [];
 // var dispMemories = [];
@@ -92,6 +92,12 @@ function renameInTable(elementTable,oldName,newName){
     if(elementTable.counterSelector.options[i].text == oldName){
       elementTable.counterSelector.options[i].text = newName;
       elementTable.counterSelector.options[i].value = newName;
+    }
+  }
+  for(var i=0; i<elementTable.leftSelector.options.length; i++){
+    if(elementTable.leftSelector.options[i].text == oldName){
+      elementTable.leftSelector.options[i].text = newName;
+      elementTable.leftSelector.options[i].value = newName;
     }
   }
   
