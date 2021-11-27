@@ -43,7 +43,7 @@ function ElementTable(svg,horz,vert,ioElements) {
         this.background.text(String.fromCharCode(i+65)).addClass('tableText').move(-25,100*(i+0.4));
     }
 
-    this.coilArea = this.background.rect(100,100*this.verSize).fill({opacity:0.2,color:'magenta'}).radius(10).move(100*(this.horSize-1),0);
+    this.coilArea = this.background.rect(100,100*this.verSize).fill({opacity:0.2,color:'#b3b3b3'}).radius(10).move(100*(this.horSize-1),0);
 
     this.phaseLine = this.background.line(0,0,0,this.verSize*100).stroke({width:6,color:'black'});
     this.groundLine = this.background.line(this.horSize*100,0,this.horSize*100,this.verSize*100).stroke({width:6,color:'black'});
